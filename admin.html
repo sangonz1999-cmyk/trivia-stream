@@ -45,68 +45,68 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
 <body>
 <div class="wrap">
 
-  <div id="gate">
-    <h1>PANEL <span style="color:var(--yel)">ADMIN</span></h1>
-    <p class="small">Trivia del Stream — INPUT_</p>
-    <div class="card" style="max-width:420px">
-      <label>Clave</label>
-      <input id="pw" type="password" autocomplete="off" placeholder="••••••">
-      <button onclick="adm()">ENTRAR</button>
-      <div id="pe" style="color:var(--red);font-size:14px"></div>
-      <p class="small" style="margin-bottom:0">¿Sos jugador? <a href="index.html">Ir a la trivia</a></p>
-    </div>
-  </div>
+ <div id="gate">
+ <h1>PANEL <span style="color:var(--yel)">ADMIN</span></h1>
+ <p class="small">Trivia del Stream — INPUT_</p>
+ <div class="card" style="max-width:420px">
+ <label>Clave</label>
+ <input id="pw" type="password" autocomplete="off" placeholder="••••••">
+ <button onclick="adm()">ENTRAR</button>
+ <div id="pe" style="color:var(--red);font-size:14px"></div>
+ <p class="small" style="margin-bottom:0">¿Sos jugador? <a href="index.html">Ir a la trivia</a></p>
+ </div>
+ </div>
 
-  <div id="app" class="hide">
-    <h1>PANEL <span style="color:var(--yel)">ADMIN</span></h1>
-    <p class="small" style="margin-top:4px">
-      <a href="index.html">Juego</a> · <a href="ranking.html" target="_blank">Ranking para OBS</a> ·
-      <span id="mode">comprobando base…</span>
-    </p>
+ <div id="app" class="hide">
+ <h1>PANEL <span style="color:var(--yel)">ADMIN</span></h1>
+ <p class="small" style="margin-top:4px">
+ <a href="index.html">Juego</a> · <a href="ranking.html" target="_blank">Ranking para OBS</a> ·
+ <span id="mode">comprobando base…</span>
+ </p>
 
-    <h2>Ranking</h2>
-    <div class="card">
-      <div class="row" style="margin-bottom:10px">
-        <div class="fix"><span class="badge" id="genb">—</span></div>
-        <div class="fix"><span class="badge" id="cntb">—</span></div>
-        <div class="fix"><button class="p" onclick="loadRank()">Actualizar</button></div>
-      </div>
-      <div id="tb" class="small">Cargando…</div>
-      <div style="margin-top:12px">
-        <button class="r" onclick="resetRank()">REINICIAR RANKING</button>
-        <span class="small">Borra la tabla para todos y empieza de cero (los jugadores pueden volver a jugar).</span>
-      </div>
-    </div>
+ <h2>Ranking</h2>
+ <div class="card">
+ <div class="row" style="margin-bottom:10px">
+ <div class="fix"><span class="badge" id="genb">—</span></div>
+ <div class="fix"><span class="badge" id="cntb">—</span></div>
+ <div class="fix"><button class="p" onclick="loadRank()">Actualizar</button></div>
+ </div>
+ <div id="tb" class="small">Cargando…</div>
+ <div style="margin-top:12px">
+ <button class="r" onclick="resetRank()">REINICIAR RANKING</button>
+ <span class="small">Borra la tabla para todos y empieza de cero (los jugadores pueden volver a jugar).</span>
+ </div>
+ </div>
 
-    <h2>Configuración del juego</h2>
-    <div class="card">
-      <div class="row">
-        <div><label>Segundos por pregunta</label><input id="c-t" type="number" min="5" max="60" step="1"></div>
-        <div><label>Preguntas fáciles (2 opciones)</label><input id="c-n1" type="number" min="1" max="50"></div>
-        <div><label>Preguntas medias (3 opciones)</label><input id="c-n2" type="number" min="0" max="50"></div>
-        <div><label>Preguntas difíciles (4 opciones)</label><input id="c-n3" type="number" min="0" max="50"></div>
-      </div>
-      <label style="margin-top:14px"><input type="checkbox" id="c-show" style="width:auto;margin-right:8px">Los jugadores ven el ranking (top 3 / top 10)</label>
-      <button class="g" onclick="saveCfg()">GUARDAR CONFIGURACIÓN</button>
-      <div id="cfgmsg" class="small"></div>
-    </div>
+ <h2>Configuración del juego</h2>
+ <div class="card">
+ <div class="row">
+ <div><label>Segundos por pregunta</label><input id="c-t" type="number" min="5" max="60" step="1"></div>
+ <div><label>Preguntas fáciles (2 opciones)</label><input id="c-n1" type="number" min="1" max="50"></div>
+ <div><label>Preguntas medias (3 opciones)</label><input id="c-n2" type="number" min="0" max="50"></div>
+ <div><label>Preguntas difíciles (4 opciones)</label><input id="c-n3" type="number" min="0" max="50"></div>
+ </div>
+ <label style="margin-top:14px"><input type="checkbox" id="c-show" style="width:auto;margin-right:8px">Los jugadores ven el ranking (top 3 / top 10)</label>
+ <button class="g" onclick="saveCfg()">GUARDAR CONFIGURACIÓN</button>
+ <div id="cfgmsg" class="small"></div>
+ </div>
 
-    <h2>Preguntas <span class="small" id="qcount"></span></h2>
-    <div class="card">
-      <div class="row" style="margin-bottom:12px">
-        <div class="fix"><button class="g" onclick="saveQs()">GUARDAR PREGUNTAS</button></div>
-        <div class="fix"><button onclick="addQ()">+ AGREGAR</button></div>
-        <div class="fix"><button class="p" onclick="restoreQs()">RESTAURAR DEL ARCHIVO</button></div>
-        <div class="fix"><button onclick="exportQs()">EXPORTAR JSON</button></div>
-        <div class="fix"><button onclick="importQs()">IMPORTAR JSON</button></div>
-      </div>
-      <input id="impfile" type="file" accept=".json,application/json" style="display:none" onchange="readImport(this)">
-      <p class="small">Todas las preguntas son un solo banco: en cada partida se mezclan todas y el nivel (color y cantidad de opciones) lo decide <b>la posición</b> en la partida, no la pregunta. Así cualquier pregunta puede tocar en cualquier nivel. Poné 5 distractores para que puedan mostrarse con 6 opciones.</p>
-      <div id="qs"></div>
-    </div>
+ <h2>Preguntas <span class="small" id="qcount"></span></h2>
+ <div class="card">
+ <div class="row" style="margin-bottom:12px">
+ <div class="fix"><button class="g" onclick="saveQs()">GUARDAR PREGUNTAS</button></div>
+ <div class="fix"><button onclick="addQ()">+ AGREGAR</button></div>
+ <div class="fix"><button class="p" onclick="restoreQs()">RESTAURAR DEL ARCHIVO</button></div>
+ <div class="fix"><button onclick="exportQs()">EXPORTAR JSON</button></div>
+ <div class="fix"><button onclick="importQs()">IMPORTAR JSON</button></div>
+ </div>
+ <input id="impfile" type="file" accept=".json,application/json" style="display:none" onchange="readImport(this)">
+ <p class="small">Todas las preguntas son un solo banco: en cada partida se mezclan todas y el nivel (color y cantidad de opciones) lo decide <b>la posición</b> en la partida, no la pregunta. Así cualquier pregunta puede tocar en cualquier nivel. Poné 5 distractores para que puedan mostrarse con 6 opciones.</p>
+ <div id="qs"></div>
+ </div>
 
-    <p class="small">Recordá: los cambios se ven en vivo para todos. El juego y el ranking leen la misma base.</p>
-  </div>
+ <p class="small">Recordá: los cambios se ven en vivo para todos. El juego y el ranking leen la misma base.</p>
+ </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
@@ -119,133 +119,134 @@ var PWH=6118475695008877,qs=[],$=function(i){return document.getElementById(i)};
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function adm(){
-  if(hh($("pw").value)===PWH){
-    $("gate").classList.add("hide");$("app").classList.remove("hide");
-    boot();
-  }else $("pe").textContent="Clave incorrecta";
+ if(hh($("pw").value)===PWH){
+ $("gate").classList.add("hide");$("app").classList.remove("hide");
+ boot();
+ }else $("pe").textContent="Clave incorrecta";
 }
 $("pw").onkeydown=function(e){if(e.key==="Enter")adm()};
 
 async function boot(){
-  await FB.readCfg();
-  $("mode").textContent=FB.shared()?"Base compartida conectada":"Modo local (sin base)";
-  $("mode").style.color=FB.shared()?"var(--grn)":"var(--red)";
-  loadCfgUI();loadRank();qs=await FB.loadQuestions();renderQs();
-  FB.watchCfg(function(){loadCfgUI()});
+ await FB.readCfg();
+ $("mode").textContent=FB.shared()?"Base compartida conectada":"Modo local (sin base)";
+ $("mode").style.color=FB.shared()?"var(--grn)":"var(--red)";
+ loadCfgUI();loadRank();qs=await FB.loadQuestions();renderQs();
+ FB.watchCfg(function(){loadCfgUI()});
 }
 
 /* ---------- config ---------- */
 function loadCfgUI(){
-  var c=FB.cfg();
-  $("c-t").value=Math.round(c.t/1000);
-  $("c-n1").value=c.n[0];$("c-n2").value=c.n[1];$("c-n3").value=c.n[2];
-  $("c-show").checked=c.showRank!==false;
-  $("genb").textContent="Ranking #"+c.gen;
+ var c=FB.cfg();
+ $("c-t").value=Math.round(c.t/1000);
+ $("c-n1").value=c.n[0];$("c-n2").value=c.n[1];$("c-n3").value=c.n[2];
+ $("c-show").checked=c.showRank!==false;
+ $("genb").textContent="Ranking #"+c.gen;
 }
 async function saveCfg(){
-  var n=[+$("c-n1").value|0,+$("c-n2").value|0,+$("c-n3").value|0];
-  var t=Math.max(5,Math.min(60,+$("c-t").value|0))*1000;
-  await FB.setCfg({t:t,n:n,showRank:$("c-show").checked});
-  $("cfgmsg").textContent="Guardado ✓ — total "+n[0]+"+"+n[1]+"+"+n[2]+" = "+(n[0]+n[1]+n[2])+" preguntas por partida";
-  setTimeout(function(){$("cfgmsg").textContent=""},6000);
-  loadCfgUI();
+ var n=[+$("c-n1").value|0,+$("c-n2").value|0,+$("c-n3").value|0];
+ var t=Math.max(5,Math.min(60,+$("c-t").value|0))*1000;
+ await FB.setCfg({t:t,n:n,showRank:$("c-show").checked});
+ $("cfgmsg").textContent="Guardado ✓ — total "+n[0]+"+"+n[1]+"+"+n[2]+" = "+(n[0]+n[1]+n[2])+" preguntas por partida";
+ setTimeout(function(){$("cfgmsg").textContent=""},6000);
+ loadCfgUI();
 }
 
 /* ---------- ranking ---------- */
 async function loadRank(){
-  var l=await FB.listScores();
-  $("cntb").textContent=l.length+(l.length===1?" jugador":" jugadores");
-  $("genb").textContent="Ranking #"+FB.cfg().gen;
-  if(!l.length){$("tb").textContent="Todavía no hay puntajes.";return}
-  var h="<table><tr><th>#</th><th>Jugador</th><th>Niv</th><th>Pts</th><th>Hora</th></tr>";
-  l.forEach(function(r,i){
-    h+="<tr><td>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td class='s'>"+r.score+"</td><td class='small'>"+(r.ts?new Date(r.ts).toLocaleTimeString("es-AR"):"—")+"</td></tr>";
-  });
-  $("tb").innerHTML=h+"</table>";
+ var l=await FB.listScores();
+ $("cntb").textContent=l.length+(l.length===1?" jugador":" jugadores");
+ $("genb").textContent="Ranking #"+FB.cfg().gen;
+ if(!l.length){$("tb").textContent="Todavía no hay puntajes.";return}
+ var h="<table><tr><th>#</th><th>Jugador</th><th>Niv</th><th>Pts</th><th>Hora</th></tr>";
+ l.forEach(function(r,i){
+ h+="<tr><td>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td class='s'>"+r.score+"</td><td class='small'>"+(r.ts?new Date(r.ts).toLocaleTimeString("es-AR"):"—")+"</td></tr>";
+ });
+ $("tb").innerHTML=h+"</table>";
 }
 async function resetRank(){
-  if(!confirm("¿Reiniciar el ranking para todos? Los jugadores van a poder volver a jugar."))return;
-  await FB.resetRank();
-  await loadRank();
+ if(!confirm("¿Reiniciar el ranking para todos? Los jugadores van a poder volver a jugar."))return;
+ await FB.resetRank();
+ await loadRank();
 }
 
 /* ---------- preguntas ---------- */
 function renderQs(){
-  $("qcount").textContent="("+qs.length+")";
-  var h="";
-  qs.forEach(function(x,i){
-    var opts=1+(x.bad||[]).length;
-    h+='<div class="q">'+
-      '<div class="lvl">Pregunta '+(i+1)+' · '+opts+' opciones <button class="r fix" style="float:right;padding:4px 10px;margin:0" onclick="delQ('+i+')">Borrar</button></div>'+
-      '<label>Pregunta</label><input data-f="q" data-i="'+i+'" value="'+esc(x.q)+'">'+
-      '<label>Respuesta correcta</label><input data-f="ok" data-i="'+i+'" value="'+esc(x.ok)+'">'+
-      '<label>Distractores (separados con |)</label><input data-f="bad" data-i="'+i+'" value="'+esc((x.bad||[]).join(" | "))+'">'+
-      '</div>';
-  });
-  $("qs").innerHTML=h;
+ $("qcount").textContent="("+qs.length+")";
+ var h="";
+ qs.forEach(function(x,i){
+ var opts=1+(x.bad||[]).length;
+ h+='<div class="q">'+
+ '<div class="lvl">Pregunta '+(i+1)+' · '+opts+' opciones <button class="r fix" style="float:right;padding:4px 10px;margin:0" onclick="delQ('+i+')">Borrar</button></div>'+
+ '<label>Pregunta</label><input data-f="q" data-i="'+i+'" value="'+esc(x.q)+'">'+
+ '<label>Respuesta correcta</label><input data-f="ok" data-i="'+i+'" value="'+esc(x.ok)+'">'+
+ '<label>Distractores (separados con |)</label><input data-f="bad" data-i="'+i+'" value="'+esc((x.bad||[]).join(" | "))+'">'+
+ '</div>';
+ });
+ $("qs").innerHTML=h;
 }
 function collect(){
-  var out=qs.map(function(x){return{q:x.q,ok:x.ok,bad:(x.bad||[]).slice()}});
-  var ins=$("qs").querySelectorAll("input[data-f]");
-  for(var i=0;i<ins.length;i++){
-    var f=ins[i].dataset.f,k=+ins[i].dataset.i;
-    if(!out[k])continue;
-    if(f==="bad")out[k].bad=ins[i].value.split("|").map(function(s){return s.trim()}).filter(Boolean);
-    else out[k][f]=ins[i].value.trim();
-  }
-  return out;
+ var out=qs.map(function(x){return{q:x.q,ok:x.ok,bad:(x.bad||[]).slice()}});
+ var ins=$("qs").querySelectorAll("input[data-f]");
+ for(var i=0;i<ins.length;i++){
+ var f=ins[i].dataset.f,k=+ins[i].dataset.i;
+ if(!out[k])continue;
+ if(f==="bad")out[k].bad=ins[i].value.split("|").map(function(s){return s.trim()}).filter(Boolean);
+ else out[k][f]=ins[i].value.trim();
+ }
+ return out;
 }
 async function saveQs(){
-  var list=collect().filter(function(x){return x.q&&x.ok&&x.bad.length});
-  qs=list;renderQs();
-  await FB.saveQuestions(list);
-  alert("Preguntas guardadas: "+list.length);
+ var list=collect().filter(function(x){return x.q&&x.ok&&x.bad.length});
+ qs=list;renderQs();
+ await FB.saveQuestions(list);
+ alert("Preguntas guardadas: "+list.length);
 }
 function addQ(){
-  qs=collect();qs.push({q:"",ok:"",bad:["","","","",""]});renderQs();
-  window.scrollTo(0,document.body.scrollHeight);
+ qs=collect();qs.push({q:"",ok:"",bad:["","","","",""]});renderQs();
+ window.scrollTo(0,document.body.scrollHeight);
 }
 function delQ(i){
-  qs=collect();
-  if(!confirm("¿Borrar la pregunta "+(i+1)+"?"))return;
-  qs.splice(i,1);renderQs();
+ qs=collect();
+ if(!confirm("¿Borrar la pregunta "+(i+1)+"?"))return;
+ qs.splice(i,1);renderQs();
 }
 function restoreQs(){
-  if(!confirm("Reemplazar todas las preguntas por las del archivo original (questions.js)?"))return;
-  qs=SEED.map(function(a){return{q:a[0],ok:a[1],bad:(a[2]||[]).slice()}});
-  renderQs();alert("Restauradas en pantalla. Tocá GUARDAR PREGUNTAS para aplicarlas.");
+ if(!confirm("Reemplazar todas las preguntas por las del archivo original (questions.js)?"))return;
+ qs=SEED.map(function(a){return{q:a[0],ok:a[1],bad:(a[2]||[]).slice()}});
+ renderQs();alert("Restauradas en pantalla. Tocá GUARDAR PREGUNTAS para aplicarlas.");
 }
 function exportQs(){
-  var data=JSON.stringify(collect(),null,2);
-  var a=document.createElement("a");
-  a.href="data:application/json;charset=utf-8,"+encodeURIComponent(data);
-  a.download="trivia-preguntas.json";a.click();
+ var data=JSON.stringify(collect(),null,2);
+ var a=document.createElement("a");
+ a.href="data:application/json;charset=utf-8,"+encodeURIComponent(data);
+ a.download="trivia-preguntas.json";a.click();
 }
 function importQs(){$("impfile").value="";$("impfile").click()}
 function readImport(inp){
-  var f=inp.files&&inp.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=async function(){
-    var arr=null;
-    try{arr=JSON.parse(String(r.result))}catch(e){alert("Ese archivo no es un JSON válido.");return}
-    if(arr&&!Array.isArray(arr)&&Array.isArray(arr.questions))arr=arr.questions;
-    if(!Array.isArray(arr)){alert("El archivo tiene que tener una lista de preguntas.");return}
-    var list=arr.map(function(x){
-      if(Array.isArray(x))return{q:String(x[0]||"").trim(),ok:String(x[1]||"").trim(),bad:(x[2]||[]).map(function(s){return String(s).trim()}).filter(Boolean)};
-      x=x||{};
-      return{q:String(x.q||"").trim(),ok:String(x.ok||"").trim(),bad:(x.bad||[]).map(function(s){return String(s).trim()}).filter(Boolean)};
-    }).filter(function(x){return x.q&&x.ok&&x.bad.length});
-    if(!list.length){alert("No encontré preguntas válidas en ese archivo.\nCada una necesita: pregunta, respuesta correcta y al menos 1 distractor.");return}
-    var pocas=list.filter(function(x){return x.bad.length<5}).length;
-    var msg="Se van a reemplazar las "+qs.length+" preguntas por las "+list.length+" del archivo.";
-    if(pocas)msg+="\n\nOjo: "+pocas+(pocas===1?" pregunta tiene":" preguntas tienen")+" menos de 5 distractores, así que en el nivel experto se van a ver con menos de 6 opciones.";
-    if(!confirm(msg+"\n\n¿Seguir?"))return;
-    qs=list;renderQs();
-    await FB.saveQuestions(list);
-    alert("Importadas y guardadas: "+list.length+(list.length===1?" pregunta":" preguntas")+". Ya se ven en el juego.");
-  };
-  r.readAsText(f,"utf-8");
+ var f=inp.files&&inp.files[0];if(!f)return;
+ var r=new FileReader();
+ r.onload=async function(){
+ var arr=null;
+ try{arr=JSON.parse(String(r.result))}catch(e){alert("Ese archivo no es un JSON válido.");return}
+ if(arr&&!Array.isArray(arr)&&Array.isArray(arr.questions))arr=arr.questions;
+ if(!Array.isArray(arr)){alert("El archivo tiene que tener una lista de preguntas.");return}
+ var list=arr.map(function(x){
+ if(Array.isArray(x))return{q:String(x[0]||"").trim(),ok:String(x[1]||"").trim(),bad:(x[2]||[]).map(function(s){return String(s).trim()}).filter(Boolean)};
+ x=x||{};
+ return{q:String(x.q||"").trim(),ok:String(x.ok||"").trim(),bad:(x.bad||[]).map(function(s){return String(s).trim()}).filter(Boolean)};
+ }).filter(function(x){return x.q&&x.ok&&x.bad.length});
+ if(!list.length){alert("No encontré preguntas válidas en ese archivo.\nCada una necesita: pregunta, respuesta correcta y al menos 1 distractor.");return}
+ var pocas=list.filter(function(x){return x.bad.length<5}).length;
+ var msg="Se van a reemplazar las "+qs.length+" preguntas por las "+list.length+" del archivo.";
+ if(pocas)msg+="\n\nOjo: "+pocas+(pocas===1?" pregunta tiene":" preguntas tienen")+" menos de 5 distractores, así que en el nivel experto se van a ver con menos de 6 opciones.";
+ if(!confirm(msg+"\n\n¿Seguir?"))return;
+ qs=list;renderQs();
+ await FB.saveQuestions(list);
+ alert("Importadas y guardadas: "+list.length+(list.length===1?" pregunta":" preguntas")+". Ya se ven en el juego.");
+ };
+ r.readAsText(f,"utf-8");
 }
 </script>
+<script src="admin-parche.js?v=1"></script>
 </body>
 </html>
