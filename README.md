@@ -27,10 +27,12 @@ se ve en el juego, en el ranking para OBS y en el panel admin, en vivo.
 ## Cómo se juega
 
 - 4 vidas; cada error o tiempo agotado saca una.
-- 24 preguntas por partida (8 fáciles + 8 medias + 8 difíciles) **elegidas al
+- 16 preguntas por partida (6 fáciles + 5 medias + 5 difíciles) **elegidas al
   azar** de un banco de 51: cada persona juega una selección y un orden distinto.
-- 3 niveles, con aviso en pantalla al subir: fácil (2 opciones), medio (3),
-  difícil (4). El nivel cambia en la pregunta 9 y en la 17.
+- 3 niveles, sin carteles: cambia el color del borde. Fácil (2 opciones), medio
+  (3) y difícil (4). El nivel cambia en la pregunta 7 y en la 12.
+- Las opciones también se mezclan: la respuesta correcta puede caer en A, B, C o D
+  distinto para cada persona y cada partida.
 - 15 segundos por pregunta; más rápido y más nivel = más puntos.
 - Bonus por las vidas que quedan al terminar. Una partida por celular.
 - La cantidad de preguntas por nivel y los segundos se cambian en el panel admin.

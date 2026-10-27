@@ -37,11 +37,6 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 .bl{border:2px solid;border-radius:10px 10px 0 0;background:var(--card);display:flex;justify-content:center;padding-top:6px;font:700 1.8rem "Courier New",monospace}
 .l3{padding:10px 14px}.l3 div{display:flex;justify-content:space-between;font-size:.95rem}.l3 .you{margin-top:6px;padding-top:6px;border-top:1px solid #3a1a55;color:var(--yel);font-weight:700}
 .ov{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}.ov .card{width:100%;max-width:340px}
-#up{background:#05010bee;z-index:12}
-#up .card{border-width:4px;animation:pop .35s ease-out}
-#up-t{font-size:2.4rem;line-height:1.1;color:var(--yel);text-shadow:0 0 16px var(--yel)}
-#up-s{font-weight:700;font-size:1.15rem;margin-top:8px}
-@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
@@ -81,12 +76,11 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 </section>
 </div>
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
-<div class="ov hide" id="up"><div class="card y c"><div class="mono" id="up-t"></div><div id="up-s"></div></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=7"></script>
-<script src="questions.js?v=7"></script>
-<script src="fb.js?v=7"></script>
+<script src="fb-config.js?v=8"></script>
+<script src="questions.js?v=8"></script>
+<script src="fb.js?v=8"></script>
 <script>
 var D=[];
 var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
@@ -96,7 +90,7 @@ function applyCfg(){
   LV=[["FÁCIL",0,n1,2,"#3dff8a"],["MEDIO",n1,n1+n2,3,"#ffe600"],["DIFÍCIL",n1+n2,n1+n2+n3,4,"#ff3b6b"]];
 }
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
-var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[],lastLv=0;
+var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
 var $=function(i){return document.getElementById(i)};
 function show(id){["s-name","s-how","s-game","s-end","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});window.scrollTo(0,0)}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
@@ -194,30 +188,17 @@ function play(){
   if(!D.length){show("s-name");$("err").textContent="No se cargaron las preguntas. Recargá la página.";return}
   order=buildOrder();
   if(!order.length){show("s-name");$("err").textContent="Las preguntas están incompletas. Avisale al admin.";return}
-  qi=0;hp=MAXHP;score=0;lastLv=lvOf(0);
+  qi=0;hp=MAXHP;score=0;
   if(!test)ls("played",String(FB.cfg().gen));
   $("live").classList.toggle("hide",!rankVisible());
   saveScore().then(refresh);ask();
 }
-function levelUp(l){
-  var L=LV[l],g=$("s-game");
-  g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
-  $("up-t").textContent="¡NIVEL "+(l+1)+"!";
-  $("up-s").textContent=L[0]+" · "+L[3]+" opciones";
-  $("up-s").style.color=L[4];
-  $("up").querySelector(".card").style.borderColor=L[4];
-  $("up").classList.remove("hide");
-  setTimeout(function(){$("up").classList.add("hide");ask()},1500);
-}
 function ask(){
-  var l=lvOf(qi);
-  if(l!==lastLv){lastLv=l;levelUp(l);return}
-  paint();
-}
-function paint(){
   var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
   var g=$("s-game");g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
-  var opts=shuf([d.ok].concat(d.bad.slice(0,n-1)));
+  // distractores y orden de opciones al azar: a cada persona le toca distinto
+  var bad=shuf(d.bad).slice(0,n-1);
+  var opts=shuf([d.ok].concat(bad));
   $("h-lv").textContent="NIVEL "+(l+1)+" · "+L[0];$("h-hp").innerHTML=hearts();
   $("h-q").textContent="Pregunta "+(qi+1)+" de "+order.length;$("h-sc").textContent=score+" pts";
   $("tag").textContent=L[0];$("qt").textContent=d.q;live();
