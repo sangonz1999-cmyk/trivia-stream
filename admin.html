@@ -99,7 +99,7 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
         <div class="fix"><button class="p" onclick="restoreQs()">RESTAURAR DEL ARCHIVO</button></div>
         <div class="fix"><button onclick="exportQs()">EXPORTAR JSON</button></div>
       </div>
-      <p class="small">El orden de la lista define el nivel: las primeras son fáciles, después medias y al final difíciles (según la configuración de arriba).</p>
+      <p class="small">El banco está ordenado por dificultad: el primer tercio es fácil, el segundo medio y el último difícil. En cada partida el juego <b>elige al azar</b> las preguntas de cada nivel, así que no todos ven las mismas.</p>
       <div id="qs"></div>
     </div>
 
@@ -109,9 +109,9 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
 
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=5"></script>
-<script src="questions.js?v=5"></script>
-<script src="fb.js?v=5"></script>
+<script src="fb-config.js?v=6"></script>
+<script src="questions.js?v=6"></script>
+<script src="fb.js?v=6"></script>
 <script>
 var PWH=6118475695008877,qs=[],$=function(i){return document.getElementById(i)};
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
@@ -169,11 +169,11 @@ async function resetRank(){
 
 /* ---------- preguntas ---------- */
 function renderQs(){
-  var c=FB.cfg(),n1=c.n[0]|0,n2=c.n[1]|0,acc=n1+n2;
+  var t=Math.round(qs.length/3);
   $("qcount").textContent="("+qs.length+")";
   var h="";
   qs.forEach(function(x,i){
-    var lv=i<n1?"FÁCIL":(i<acc?"MEDIO":"DIFÍCIL");
+    var lv=i<t?"FÁCIL":(i<2*t?"MEDIO":"DIFÍCIL");
     var opts=1+(x.bad||[]).length;
     h+='<div class="q">'+
       '<div class="lvl">'+(i+1)+' · <b>'+lv+'</b> · '+opts+' opciones <button class="r fix" style="float:right;padding:4px 10px;margin:0" onclick="delQ('+i+')">Borrar</button></div>'+

@@ -37,6 +37,11 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 .bl{border:2px solid;border-radius:10px 10px 0 0;background:var(--card);display:flex;justify-content:center;padding-top:6px;font:700 1.8rem "Courier New",monospace}
 .l3{padding:10px 14px}.l3 div{display:flex;justify-content:space-between;font-size:.95rem}.l3 .you{margin-top:6px;padding-top:6px;border-top:1px solid #3a1a55;color:var(--yel);font-weight:700}
 .ov{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}.ov .card{width:100%;max-width:340px}
+#up{background:#05010bee;z-index:12}
+#up .card{border-width:4px;animation:pop .35s ease-out}
+#up-t{font-size:2.4rem;line-height:1.1;color:var(--yel);text-shadow:0 0 16px var(--yel)}
+#up-s{font-weight:700;font-size:1.15rem;margin-top:8px}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
@@ -53,7 +58,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <section id="s-how" class="hide">
 <h2>CÓMO SE JUEGA</h2>
 <div class="card"><p>Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
-<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">51</b> preguntas en orden aleatorio, distinto para cada persona.</li><li><b>3 niveles</b> que cambian el color del borde: fácil (2 opciones), medio (3) y difícil (4).</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las <span id="how-n2">51</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
+<ol><li>Tenés <b class="red" id="how-v">6</b> vidas ♥♥♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">24</b> preguntas por partida, <b>elegidas al azar</b> de un banco de <span id="how-bank">51</span>. Cada persona juega una selección distinta.</li><li><b>3 niveles</b>: fácil (2 opciones), medio (3) y difícil (4). Cambian el color y te avisan en pantalla.</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las <span id="how-n2">24</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
 <button onclick="play()">JUGAR ▶</button>
 </section>
 <section id="s-game" class="hide">
@@ -76,21 +81,22 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 </section>
 </div>
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
+<div class="ov hide" id="up"><div class="card y c"><div class="mono" id="up-t"></div><div id="up-s"></div></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=5"></script>
-<script src="questions.js?v=5"></script>
-<script src="fb.js?v=5"></script>
+<script src="fb-config.js?v=6"></script>
+<script src="questions.js?v=6"></script>
+<script src="fb.js?v=6"></script>
 <script>
 var D=[];
-var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
+var LV=[],T=15000,MAXHP=6,PWH=6118475695008877;
 function applyCfg(){
   var c=FB.cfg(),n1=c.n[0]|0,n2=c.n[1]|0,n3=c.n[2]|0;
   T=c.t||15000;
   LV=[["FÁCIL",0,n1,2,"#3dff8a"],["MEDIO",n1,n1+n2,3,"#ffe600"],["DIFÍCIL",n1+n2,n1+n2+n3,4,"#ff3b6b"]];
 }
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
-var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
+var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[],lastLv=0;
 var $=function(i){return document.getElementById(i)};
 function show(id){["s-name","s-how","s-game","s-end","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});window.scrollTo(0,0)}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
@@ -98,12 +104,31 @@ function hearts(){var h="";for(var i=0;i<MAXHP;i++)h+=i<hp?"♥":"<s>♥</s>";re
 function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function lvOf(i){var c=FB.cfg(),a=c.n[0]|0,b=a+(c.n[1]|0);return i<a?0:(i<b?1:2)}
+function totalQ(){var n=FB.cfg().n;return (n[0]|0)+(n[1]|0)+(n[2]|0)}
+function isValid(x){return !!(x&&x.q&&x.ok&&x.bad&&x.bad.length)}
+/* Arma la partida: elige AL AZAR las preguntas de cada nivel.
+   El banco va ordenado por dificultad (primer tercio fácil,
+   segundo medio, último difícil), así que cada tercio es un pozo. */
+function buildOrder(){
+  var c=FB.cfg(),ns=[c.n[0]|0,c.n[1]|0,c.n[2]|0],need=ns[0]+ns[1]+ns[2];
+  var bank=D.filter(isValid),t=Math.round(bank.length/3);
+  var pools=[bank.slice(0,t),bank.slice(t,2*t),bank.slice(2*t)];
+  var out=[],used={};
+  for(var i=0;i<3;i++){
+    var p=shuf(pools[i]);
+    for(var k=0;k<ns[i]&&k<p.length;k++){out.push(p[k]);used[p[k].id]=1}
+  }
+  var rest=shuf(bank).filter(function(x){return !used[x.id]});
+  while(out.length<need&&rest.length)out.push(rest.shift());
+  return out;
+}
 function isMe(x){return x.uid===FB.uid()}
 function getList(){return FB.listScores()}
 function saveScore(){
   if(test)return Promise.resolve();
   if(score<=0)return Promise.resolve();
-  return FB.saveScore({uid:FB.uid(),name:name,score:score,lvl:lvOf(Math.min(qi,D.length-1))+1,ts:Date.now()});
+  var idx=order.length?Math.min(qi,order.length-1):0;
+  return FB.saveScore({uid:FB.uid(),name:name,score:score,lvl:lvOf(idx)+1,ts:Date.now()});
 }
 function rankVisible(){return FB.cfg().showRank!==false}
 async function refresh(){cache=await getList();loaded=true;repaint()}
@@ -135,8 +160,8 @@ function renderStart(){
   var p=hasPlayed(),i=mineIdx();
   $("form").classList.toggle("hide",p);$("played").classList.toggle("hide",!p);$("tst").classList.toggle("hide",!test);
   if(p)$("played").innerHTML=i>=0?"Ya jugaste y ya figurás en la tabla: <b>puesto #"+(i+1)+"</b> con <b>"+cache[i].score+" pts</b>. Solo se puede jugar una vez.":"Ya jugaste. Solo se puede jugar una vez.";
-  $("how-n").textContent=D.length;$("how-n2").textContent=D.length;
-  $("how-t").textContent=Math.round(T/1000);$("how-v").textContent=MAXHP;
+  $("how-n").textContent=Math.min(totalQ(),D.length);$("how-n2").textContent=Math.min(totalQ(),D.length);
+  $("how-t").textContent=Math.round(T/1000);$("how-v").textContent=MAXHP;$("how-bank").textContent=D.length;
 }
 async function init(){
   podium();tbl("tb");
@@ -167,14 +192,29 @@ function start(){
 function play(){
   if(hasPlayed()){show("s-name");renderStart();return}
   if(!D.length){show("s-name");$("err").textContent="No se cargaron las preguntas. Recargá la página.";return}
-  order=shuf(D.filter(function(x){return x&&x.q&&x.ok&&x.bad&&x.bad.length}));
+  order=buildOrder();
   if(!order.length){show("s-name");$("err").textContent="Las preguntas están incompletas. Avisale al admin.";return}
-  qi=0;hp=MAXHP;score=0;
+  qi=0;hp=MAXHP;score=0;lastLv=lvOf(0);
   if(!test)ls("played",String(FB.cfg().gen));
   $("live").classList.toggle("hide",!rankVisible());
   saveScore().then(refresh);ask();
 }
+function levelUp(l){
+  var L=LV[l],g=$("s-game");
+  g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
+  $("up-t").textContent="¡NIVEL "+(l+1)+"!";
+  $("up-s").textContent=L[0]+" · "+L[3]+" opciones";
+  $("up-s").style.color=L[4];
+  $("up").querySelector(".card").style.borderColor=L[4];
+  $("up").classList.remove("hide");
+  setTimeout(function(){$("up").classList.add("hide");ask()},1500);
+}
 function ask(){
+  var l=lvOf(qi);
+  if(l!==lastLv){lastLv=l;levelUp(l);return}
+  paint();
+}
+function paint(){
   var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
   var g=$("s-game");g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
   var opts=shuf([d.ok].concat(d.bad.slice(0,n-1)));
