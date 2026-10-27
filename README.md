@@ -26,7 +26,7 @@ se ve en el juego, en el ranking para OBS y en el panel admin, en vivo.
 
 ## Cómo se juega
 
-- 6 vidas; cada error o tiempo agotado saca una.
+- 4 vidas; cada error o tiempo agotado saca una.
 - 24 preguntas por partida (8 fáciles + 8 medias + 8 difíciles) **elegidas al
   azar** de un banco de 51: cada persona juega una selección y un orden distinto.
 - 3 niveles, con aviso en pantalla al subir: fácil (2 opciones), medio (3),

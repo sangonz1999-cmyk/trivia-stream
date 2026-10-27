@@ -58,7 +58,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <section id="s-how" class="hide">
 <h2>CÓMO SE JUEGA</h2>
 <div class="card"><p>Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
-<ol><li>Tenés <b class="red" id="how-v">6</b> vidas ♥♥♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">24</b> preguntas por partida, <b>elegidas al azar</b> de un banco de <span id="how-bank">51</span>. Cada persona juega una selección distinta.</li><li><b>3 niveles</b>: fácil (2 opciones), medio (3) y difícil (4). Cambian el color y te avisan en pantalla.</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las <span id="how-n2">24</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
+<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">24</b> preguntas por partida, <b>elegidas al azar</b> de un banco de <span id="how-bank">51</span>. Cada persona juega una selección distinta.</li><li><b>3 niveles</b>: fácil (2 opciones), medio (3) y difícil (4). Cambian el color y te avisan en pantalla.</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las <span id="how-n2">24</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
 <button onclick="play()">JUGAR ▶</button>
 </section>
 <section id="s-game" class="hide">
@@ -84,12 +84,12 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <div class="ov hide" id="up"><div class="card y c"><div class="mono" id="up-t"></div><div id="up-s"></div></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=6"></script>
-<script src="questions.js?v=6"></script>
-<script src="fb.js?v=6"></script>
+<script src="fb-config.js?v=7"></script>
+<script src="questions.js?v=7"></script>
+<script src="fb.js?v=7"></script>
 <script>
 var D=[];
-var LV=[],T=15000,MAXHP=6,PWH=6118475695008877;
+var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
 function applyCfg(){
   var c=FB.cfg(),n1=c.n[0]|0,n2=c.n[1]|0,n3=c.n[2]|0;
   T=c.t||15000;
