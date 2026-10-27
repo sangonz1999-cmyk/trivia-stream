@@ -2,6 +2,7 @@
 // El juego lee primero la base de datos; si esta vacia usa este archivo.
 // Formato: [pregunta, respuesta correcta, [distractores...]]
 var SEED=[
+["¿Qué significan las siglas OBS?","Open Broadcaster Software",["Online Broadcast System","Output Broadcast Server","Optimal Base Studio"]],
 ["En el equipo del stream, ¿qué puesto crea las miniaturas de los resúmenes?","Editor",["Productor","Sonidista","CM"]],
 ["¿Qué significa CM en el equipo?","Community Manager",["Control de Mezcla","Camarógrafo Mayor","Contenido Multimedia"]],
 ["¿Qué puesto del equipo crea un overlay personalizado para cada programa?","Productor",["Editor","Sonidista","CM"]],
