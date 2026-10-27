@@ -114,15 +114,20 @@ var FB = (function () {
     return out;
   }
 
+  function localScores() {
+    return lsGet("trivia_scores", []).filter(function (x) { return x && (x.score | 0) > 0; })
+      .sort(function (a, b) { return b.score - a.score; });
+  }
+
   function listScores() {
-    if (!db) return Promise.resolve(lsGet("trivia_scores", []));
+    if (!db) return Promise.resolve(localScores());
     return readCfg().then(function (c) {
       return query(c.gen).once("value").then(fromSnap);
-    }).catch(function () { return lsGet("trivia_scores", []); });
+    }).catch(function () { return localScores(); });
   }
 
   function watchScores(cb) {
-    if (!db) { cb(lsGet("trivia_scores", [])); return; }
+    if (!db) { cb(localScores()); return; }
     readCfg().then(function (c) {
       query(c.gen).on("value", function (s) { cb(fromSnap(s)); }, function (e) { lastError = e.message; });
     });

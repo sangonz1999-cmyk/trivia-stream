@@ -53,7 +53,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <section id="s-how" class="hide">
 <h2>CÓMO SE JUEGA</h2>
 <div class="card"><p>Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
-<ol><li>Tenés <b class="red">4 vidas</b> ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b>51 preguntas</b> en orden aleatorio, distinto para cada persona.</li><li><b>3 niveles</b> que cambian el color del borde: fácil (2 opciones), medio (3) y difícil (4).</li><li>15 segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las 51.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
+<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">51</b> preguntas en orden aleatorio, distinto para cada persona.</li><li><b>3 niveles</b> que cambian el color del borde: fácil (2 opciones), medio (3) y difícil (4).</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las <span id="how-n2">51</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
 <button onclick="play()">JUGAR ▶</button>
 </section>
 <section id="s-game" class="hide">
@@ -102,6 +102,7 @@ function isMe(x){return x.uid===FB.uid()}
 function getList(){return FB.listScores()}
 function saveScore(){
   if(test)return Promise.resolve();
+  if(score<=0)return Promise.resolve();
   return FB.saveScore({uid:FB.uid(),name:name,score:score,lvl:lvOf(Math.min(qi,D.length-1))+1,ts:Date.now()});
 }
 function rankVisible(){return FB.cfg().showRank!==false}
@@ -125,13 +126,15 @@ function podium(){
   [1,0,2].forEach(function(k){var r=cache[k];s+="<div class='tw'><div class='tn'>"+(r?esc(r.name):"—")+"</div><div class='ts'>"+(r?r.score+" pts":"")+"</div><div class='bl' style='height:"+h[k]+"px;color:"+c[k]+";border-color:"+c[k]+";box-shadow:0 0 14px "+c[k]+"66'>"+(k+1)+"</div></div>"});
   $("pod").innerHTML=s;
 }
-function hasPlayed(){return !test&&(ls("played")==="1"||mineIdx()>=0)}
+function hasPlayed(){return !test&&ls("played")===String(FB.cfg().gen)}
 function renderStart(){
   podium();tbl("tb");
   $("rankpub").classList.toggle("hide",!rankVisible());
   var p=hasPlayed(),i=mineIdx();
   $("form").classList.toggle("hide",p);$("played").classList.toggle("hide",!p);$("tst").classList.toggle("hide",!test);
   if(p)$("played").innerHTML=i>=0?"Ya jugaste y ya figurás en la tabla: <b>puesto #"+(i+1)+"</b> con <b>"+cache[i].score+" pts</b>. Solo se puede jugar una vez.":"Ya jugaste. Solo se puede jugar una vez.";
+  $("how-n").textContent=D.length;$("how-n2").textContent=D.length;
+  $("how-t").textContent=Math.round(T/1000);$("how-v").textContent=MAXHP;
 }
 async function init(){
   await FB.readCfg();applyCfg();
@@ -155,13 +158,14 @@ function live(){
 function start(){
   var n=$("nom").value.trim();
   if(!n){$("err").textContent="Falta el nombre";return}
-  if(hasPlayed())return;
-  name=n;ls("name",n);$("hi").textContent=n;show("s-how");
+  if(hasPlayed()){renderStart();return}
+  name=n;ls("name",n);$("hi").textContent=n;$("err").textContent="";show("s-how");
 }
 function play(){
-  if(hasPlayed())return;
+  if(hasPlayed()){show("s-name");renderStart();return}
+  if(!D.length){show("s-name");$("err").textContent="No se cargaron las preguntas. Recargá la página.";return}
   order=shuf(D);qi=0;hp=MAXHP;score=0;
-  if(!test)ls("played","1");
+  if(!test)ls("played",String(FB.cfg().gen));
   $("live").classList.toggle("hide",!rankVisible());
   saveScore().then(refresh);ask();
 }
@@ -211,6 +215,18 @@ var taps=0,tt=0;
 $("ttl").onclick=function(){var n=Date.now();if(n-tt>4000)taps=0;tt=n;if(++taps>=7){taps=0;$("pw").value="";$("pe").textContent="";$("adm").classList.remove("hide");$("pw").focus()}};
 $("pw").onkeydown=function(e){if(e.key==="Enter")adm()};
 function adm(){if(hh($("pw").value)===PWH){test=true;$("adm").classList.add("hide");renderStart()}else $("pe").textContent="Incorrecta"}
+(function(){
+  var q=new URLSearchParams(location.search),force=q.get("reset")==="1";
+  if(force||ls("v")!=="2"){
+    try{
+      localStorage.removeItem("played");
+      localStorage.removeItem("mine");
+      localStorage.removeItem("trivia_scores");
+      localStorage.setItem("v","2");
+    }catch(e){}
+    if(force&&history.replaceState)history.replaceState(null,"",location.pathname+location.hash);
+  }
+})();
 (function(){var s=ls("name");if(s)$("nom").value=s})();
 init();
 </script>
