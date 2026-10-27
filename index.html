@@ -45,15 +45,15 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <h1 class="cur" id="ttl">INPUT</h1>
 <p class="mono red" style="margin-top:0">// la trivia del stream</p>
 <div id="tst" class="hide yel mono c">[ MODO PRUEBA ]</div>
-<h2>TOP 3</h2><div class="pod" id="pod"></div>
-<h2>TOP 10</h2><div class="card"><div id="tb"></div></div>
+<div id="rankpub"><h2>TOP 3</h2><div class="pod" id="pod"></div>
+<h2>TOP 10</h2><div class="card"><div id="tb"></div></div></div>
 <div class="card y hide" id="played"></div>
 <div class="card y" id="form"><label>NOMBRE</label><input id="nom" maxlength="20" autocomplete="given-name" placeholder="Nombre"><button onclick="start()">ENTRAR ▶</button><small id="err" class="red"></small></div>
 </section>
 <section id="s-how" class="hide">
 <h2>CÓMO SE JUEGA</h2>
 <div class="card"><p>Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
-<ol><li>Tenés <b class="red">4 vidas</b> ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b>51 preguntas</b> en orden aleatorio, distinto para cada persona.</li><li><b>3 niveles</b> que cambian el color del borde: fácil (2 opciones), medio (3) y difícil (4).</li><li>15 segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las 50.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
+<ol><li>Tenés <b class="red">4 vidas</b> ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b>51 preguntas</b> en orden aleatorio, distinto para cada persona.</li><li><b>3 niveles</b> que cambian el color del borde: fácil (2 opciones), medio (3) y difícil (4).</li><li>15 segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las 51.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
 <button onclick="play()">JUGAR ▶</button>
 </section>
 <section id="s-game" class="hide">
@@ -66,7 +66,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 </section>
 <section id="s-end" class="hide">
 <div class="card r"><div class="big red" id="end-t"></div><p class="c" id="end-s"></p><p class="c yel" style="font-weight:700" id="end-p"></p></div>
-<button class="p" onclick="showRank()">VER RANKING</button>
+<button class="p" id="end-rk" onclick="showRank()">VER RANKING</button>
 <button class="r hide" id="end-r" onclick="play()">REINTENTAR (PRUEBA)</button>
 </section>
 <section id="s-rank" class="hide">
@@ -75,7 +75,12 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <button onclick="go()">VOLVER</button>
 </section>
 </div>
-<div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small></div></div>
+<div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
+<script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
+<script src="fb-config.js"></script>
+<script src="questions.js"></script>
+<script src="fb.js"></script>
 <script>
 var D=[
 ["¿Qué significan las siglas OBS?","Open Broadcaster Software",["Online Broadcast System","Output Broadcast Server","Optimal Base Studio"]],
@@ -130,8 +135,12 @@ var D=[
 ["¿Cuál de estos fue el primer programa del stream?","Abro hilo",["Desconectados","Los del fondo","Mente abierta"]],
 ["¿En qué fecha fue el primer stream del canal?","5 de septiembre de 2025",["12 de septiembre de 2025","5 de octubre de 2025","5 de agosto de 2025"]]
 ];
-var LV=[["FÁCIL",0,17,2,"#3dff8a"],["MEDIO",17,34,3,"#ffe600"],["DIFÍCIL",34,50,4,"#ff3b6b"]];
-var T=15000,MAXHP=4,PWH=6118475695008877;
+var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
+function applyCfg(){
+  var c=FB.cfg(),n1=c.n[0]|0,n2=c.n[1]|0,n3=c.n[2]|0;
+  T=c.t||15000;
+  LV=[["FÁCIL",0,n1,2,"#3dff8a"],["MEDIO",n1,n1+n2,3,"#ffe600"],["DIFÍCIL",n1+n2,n1+n2+n3,4,"#ff3b6b"]];
+}
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
 var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,db=null,uid=null,shared=false,cache=[];
 var $=function(i){return document.getElementById(i)};
@@ -140,19 +149,19 @@ function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorag
 function hearts(){var h="";for(var i=0;i<MAXHP;i++)h+=i<hp?"♥":"<s>♥</s>";return h}
 function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function lvOf(i){return i<17?0:i<34?1:2}
-var ready=(async function(){try{var u=await claude.use("user");if(u&&u.id)uid=await u.id();var d=await claude.use("db");if(d&&uid){db=d;shared=true}}catch(e){}})();
-function isMe(x){return uid?x.id===uid:x.id==="me"}
-async function getList(){
-  if(db){try{var sn=await db.collection("scores").orderBy("score","desc").limit(300).get();return sn.docs.map(function(d){var x=d.data();x.id=d.id;return x})}catch(e){}}
-  try{var m=JSON.parse(ls("mine")||"null");if(m){m.id="me";return[m]}}catch(e){}
-  return[];
+function lvOf(i){var c=FB.cfg(),a=c.n[0]|0,b=a+(c.n[1]|0);return i<a?0:(i<b?1:2)}
+function isMe(x){return x.uid===FB.uid()}
+function getList(){return FB.listScores()}
+function saveScore(){
+  if(test)return Promise.resolve();
+  return FB.saveScore({uid:FB.uid(),name:name,score:score,lvl:lvOf(Math.min(qi,D.length-1))+1,ts:Date.now()});
 }
-async function saveScore(){
-  if(test)return;
-  var rec={name:name,score:score,lvl:lvOf(Math.min(qi,D.length-1))+1,ts:Date.now()};
-  ls("mine",JSON.stringify(rec));
-  if(db&&uid){try{await db.collection("scores").doc(uid).set(rec)}catch(e){}}
+function rankVisible(){return FB.cfg().showRank!==false}
+async function refresh(){cache=await getList();repaint()}
+function repaint(){
+  if(!$("s-game").classList.contains("hide"))live();
+  if(!$("s-rank").classList.contains("hide"))tbl("tb2");
+  if(!$("s-name").classList.contains("hide")){podium();tbl("tb")}
 }
 function mineIdx(){for(var i=0;i<cache.length;i++)if(isMe(cache[i]))return i;return-1}
 function tbl(el){
@@ -171,13 +180,20 @@ function podium(){
 function hasPlayed(){return !test&&(ls("played")==="1"||mineIdx()>=0)}
 function renderStart(){
   podium();tbl("tb");
+  $("rankpub").classList.toggle("hide",!rankVisible());
   var p=hasPlayed(),i=mineIdx();
   $("form").classList.toggle("hide",p);$("played").classList.toggle("hide",!p);$("tst").classList.toggle("hide",!test);
   if(p)$("played").innerHTML=i>=0?"Ya jugaste y ya figurás en la tabla: <b>puesto #"+(i+1)+"</b> con <b>"+cache[i].score+" pts</b>. Solo se puede jugar una vez.":"Ya jugaste. Solo se puede jugar una vez.";
 }
-async function init(){await ready;cache=await getList();renderStart()}
+async function init(){
+  await FB.readCfg();applyCfg();
+  D=await FB.loadQuestions();
+  cache=await getList();renderStart();
+  FB.watchCfg(function(){applyCfg();renderStart()});
+  FB.watchScores(function(l){cache=l;repaint()});
+}
 async function go(){show("s-name");cache=await getList();renderStart()}
-async function showRank(){show("s-rank");$("tb2").textContent="Cargando...";cache=await getList();tbl("tb2");$("rk-note").textContent=shared?"Ranking compartido con todos los jugadores.":"Ranking guardado solo en este dispositivo."}
+async function showRank(){show("s-rank");$("tb2").textContent="Cargando...";cache=await getList();tbl("tb2");$("rk-note").textContent=FB.shared()?"Ranking compartido: lo ven todos los jugadores, en vivo.":"Sin conexión a la base: ranking guardado solo en este dispositivo."}
 function merged(){
   var l=cache.filter(function(x){return !isMe(x)});l.push({name:name,score:score,id:"cur"});
   l.sort(function(a,b){return b.score-a.score});
@@ -198,7 +214,8 @@ function play(){
   if(hasPlayed())return;
   order=shuf(D);qi=0;hp=MAXHP;score=0;
   if(!test)ls("played","1");
-  saveScore().then(getList).then(function(l){cache=l;live()});ask();
+  $("live").classList.toggle("hide",!rankVisible());
+  saveScore().then(refresh);ask();
 }
 function ask(){
   var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
@@ -224,7 +241,7 @@ function reveal(b){
   if(b&&!good)b.classList.add("bad");
   if(!good)hp--;
   $("h-hp").innerHTML=hearts();$("h-sc").textContent=score+" pts";live();
-  saveScore().then(getList).then(function(l){cache=l;live()});
+  saveScore().then(refresh);
   setTimeout(function(){
     if(hp<=0)return end(false);
     qi++;
@@ -237,8 +254,10 @@ async function end(win){
   $("end-t").textContent=win?"¡GANASTE!":"GAME OVER";$("end-t").className="big "+(win?"yel":"red");
   $("end-s").textContent=win?name+", respondiste las "+order.length+" preguntas con "+hp+" vidas · "+score+" pts":"Te quedaste sin vidas en la pregunta "+(qi+1)+" · "+score+" pts";
   $("end-p").textContent="";$("end-r").classList.toggle("hide",!test);show("s-end");
-  await saveScore();cache=await getList();
-  var m=merged();$("end-p").textContent="Estás #"+(m.p+1)+" de "+m.l.length+" en el ranking";
+  await saveScore();await refresh();
+  var m=merged();
+  $("end-p").textContent=rankVisible()?"Estás #"+(m.p+1)+" de "+m.l.length+" en el ranking":"";
+  $("end-rk").classList.toggle("hide",!rankVisible());
 }
 var taps=0,tt=0;
 $("ttl").onclick=function(){var n=Date.now();if(n-tt>4000)taps=0;tt=n;if(++taps>=7){taps=0;$("pw").value="";$("pe").textContent="";$("adm").classList.remove("hide");$("pw").focus()}};

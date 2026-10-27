@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel admin — Trivia del Stream</title>
+<style>
+:root{--red:#ff3b6b;--pur:#c25bff;--yel:#ffe600;--grn:#3dff8a;--bg:#08030f;--bg2:#0f0620;--card:#120922;--tx:#fff;--mut:#cdb8e6}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{background:radial-gradient(circle at 15% 0,#4a0a5a55,transparent 50%),radial-gradient(circle at 95% 100%,#6a0a2a55,transparent 50%),var(--bg2);min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:22px 16px 60px}
+h1,h2,h3{font-family:"Courier New",ui-monospace,monospace;margin:0}
+h1{font-size:26px}
+h2{font-size:20px;margin:26px 0 10px;color:var(--pur)}
+h3{font-size:15px;color:var(--yel);margin:0 0 8px}
+a{color:var(--pur)}
+.mono{font-family:"Courier New",ui-monospace,monospace}
+.card{background:var(--card);border:1px solid #3a1a55;border-radius:14px;padding:16px;margin-bottom:14px}
+label{display:block;font:700 12px/1 "Courier New",monospace;letter-spacing:1px;color:var(--mut);margin:10px 0 5px;text-transform:uppercase}
+input,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a2568;background:#0b0518;color:var(--tx);font:15px/1.4 inherit}
+textarea{resize:vertical}
+button{padding:10px 16px;border-radius:10px;border:1px solid #5a2f80;background:#2d1050;color:#fff;font:700 14px/1 inherit;cursor:pointer;margin:6px 6px 0 0}
+button:active{transform:scale(.98)}
+button.p{background:#1a3a5a;border-color:#2f6ea8}
+button.r{background:#4a0d22;border-color:var(--red)}
+button.g{background:#0f3a24;border-color:var(--grn)}
+.hide{display:none!important}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1;min-width:120px}
+.row .fix{flex:0 0 auto;min-width:0}
+.small{font-size:13px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{padding:8px 6px;text-align:left;border-bottom:1px solid #3a1a55}
+th{color:var(--pur);font:700 12px "Courier New",monospace;letter-spacing:1px}
+td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
+.q{border:1px solid #331a4d;border-radius:12px;padding:12px;margin-bottom:10px}
+.q .lvl{font:700 11px/1 "Courier New",monospace;letter-spacing:1px;color:var(--mut)}
+.q .lvl b{color:var(--yel)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font:700 12px/1.4 "Courier New",monospace;border:1px solid}
+.ok{color:var(--grn);border-color:var(--grn)}
+.no{color:var(--red);border-color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="gate">
+    <h1>PANEL <span style="color:var(--yel)">ADMIN</span></h1>
+    <p class="small">Trivia del Stream — INPUT_</p>
+    <div class="card" style="max-width:420px">
+      <label>Clave</label>
+      <input id="pw" type="password" autocomplete="off" placeholder="••••••">
+      <button onclick="adm()">ENTRAR</button>
+      <div id="pe" style="color:var(--red);font-size:14px"></div>
+      <p class="small" style="margin-bottom:0">¿Sos jugador? <a href="index.html">Ir a la trivia</a></p>
+    </div>
+  </div>
+
+  <div id="app" class="hide">
+    <h1>PANEL <span style="color:var(--yel)">ADMIN</span></h1>
+    <p class="small" style="margin-top:4px">
+      <a href="index.html">Juego</a> · <a href="ranking.html" target="_blank">Ranking para OBS</a> ·
+      <span id="mode">comprobando base…</span>
+    </p>
+
+    <h2>Ranking</h2>
+    <div class="card">
+      <div class="row" style="margin-bottom:10px">
+        <div class="fix"><span class="badge" id="genb">—</span></div>
+        <div class="fix"><span class="badge" id="cntb">—</span></div>
+        <div class="fix"><button class="p" onclick="loadRank()">Actualizar</button></div>
+      </div>
+      <div id="tb" class="small">Cargando…</div>
+      <div style="margin-top:12px">
+        <button class="r" onclick="resetRank()">REINICIAR RANKING</button>
+        <span class="small">Borra la tabla para todos y empieza de cero (los jugadores pueden volver a jugar).</span>
+      </div>
+    </div>
+
+    <h2>Configuración del juego</h2>
+    <div class="card">
+      <div class="row">
+        <div><label>Segundos por pregunta</label><input id="c-t" type="number" min="5" max="60" step="1"></div>
+        <div><label>Preguntas fáciles (2 opciones)</label><input id="c-n1" type="number" min="1" max="50"></div>
+        <div><label>Preguntas medias (3 opciones)</label><input id="c-n2" type="number" min="0" max="50"></div>
+        <div><label>Preguntas difíciles (4 opciones)</label><input id="c-n3" type="number" min="0" max="50"></div>
+      </div>
+      <label style="margin-top:14px"><input type="checkbox" id="c-show" style="width:auto;margin-right:8px">Los jugadores ven el ranking (top 3 / top 10)</label>
+      <button class="g" onclick="saveCfg()">GUARDAR CONFIGURACIÓN</button>
+      <div id="cfgmsg" class="small"></div>
+    </div>
+
+    <h2>Preguntas <span class="small" id="qcount"></span></h2>
+    <div class="card">
+      <div class="row" style="margin-bottom:12px">
+        <div class="fix"><button class="g" onclick="saveQs()">GUARDAR PREGUNTAS</button></div>
+        <div class="fix"><button onclick="addQ()">+ AGREGAR</button></div>
+        <div class="fix"><button class="p" onclick="restoreQs()">RESTAURAR DEL ARCHIVO</button></div>
+        <div class="fix"><button onclick="exportQs()">EXPORTAR JSON</button></div>
+      </div>
+      <p class="small">El orden de la lista define el nivel: las primeras son fáciles, después medias y al final difíciles (según la configuración de arriba).</p>
+      <div id="qs"></div>
+    </div>
+
+    <p class="small">Recordá: los cambios se ven en vivo para todos. El juego y el ranking leen la misma base.</p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
+<script src="fb-config.js"></script>
+<script src="questions.js"></script>
+<script src="fb.js"></script>
+<script>
+var PWH=6118475695008877,qs=[],$=function(i){return document.getElementById(i)};
+function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function adm(){
+  if(hh($("pw").value)===PWH){
+    $("gate").classList.add("hide");$("app").classList.remove("hide");
+    boot();
+  }else $("pe").textContent="Clave incorrecta";
+}
+$("pw").onkeydown=function(e){if(e.key==="Enter")adm()};
+
+async function boot(){
+  await FB.readCfg();
+  $("mode").textContent=FB.shared()?"Base compartida conectada":"Modo local (sin base)";
+  $("mode").style.color=FB.shared()?"var(--grn)":"var(--red)";
+  loadCfgUI();loadRank();qs=await FB.loadQuestions();renderQs();
+  FB.watchCfg(function(){loadCfgUI()});
+}
+
+/* ---------- config ---------- */
+function loadCfgUI(){
+  var c=FB.cfg();
+  $("c-t").value=Math.round(c.t/1000);
+  $("c-n1").value=c.n[0];$("c-n2").value=c.n[1];$("c-n3").value=c.n[2];
+  $("c-show").checked=c.showRank!==false;
+  $("genb").textContent="Ranking #"+c.gen;
+}
+async function saveCfg(){
+  var n=[+$("c-n1").value|0,+$("c-n2").value|0,+$("c-n3").value|0];
+  var t=Math.max(5,Math.min(60,+$("c-t").value|0))*1000;
+  await FB.setCfg({t:t,n:n,showRank:$("c-show").checked});
+  $("cfgmsg").textContent="Guardado ✓ — total "+n[0]+"+"+n[1]+"+"+n[2]+" = "+(n[0]+n[1]+n[2])+" preguntas por partida";
+  setTimeout(function(){$("cfgmsg").textContent=""},6000);
+  loadCfgUI();
+}
+
+/* ---------- ranking ---------- */
+async function loadRank(){
+  var l=await FB.listScores();
+  $("cntb").textContent=l.length+(l.length===1?" jugador":" jugadores");
+  $("genb").textContent="Ranking #"+FB.cfg().gen;
+  if(!l.length){$("tb").textContent="Todavía no hay puntajes.";return}
+  var h="<table><tr><th>#</th><th>Jugador</th><th>Niv</th><th>Pts</th><th>Hora</th></tr>";
+  l.forEach(function(r,i){
+    h+="<tr><td>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td class='s'>"+r.score+"</td><td class='small'>"+(r.ts?new Date(r.ts).toLocaleTimeString("es-AR"):"—")+"</td></tr>";
+  });
+  $("tb").innerHTML=h+"</table>";
+}
+async function resetRank(){
+  if(!confirm("¿Reiniciar el ranking para todos? Los jugadores van a poder volver a jugar."))return;
+  await FB.resetRank();
+  await loadRank();
+}
+
+/* ---------- preguntas ---------- */
+function renderQs(){
+  var c=FB.cfg(),n1=c.n[0]|0,n2=c.n[1]|0,acc=n1+n2;
+  $("qcount").textContent="("+qs.length+")";
+  var h="";
+  qs.forEach(function(x,i){
+    var lv=i<n1?"FÁCIL":(i<acc?"MEDIO":"DIFÍCIL");
+    var opts=1+(x.bad||[]).length;
+    h+='<div class="q">'+
+      '<div class="lvl">'+(i+1)+' · <b>'+lv+'</b> · '+opts+' opciones <button class="r fix" style="float:right;padding:4px 10px;margin:0" onclick="delQ('+i+')">Borrar</button></div>'+
+      '<label>Pregunta</label><input data-f="q" data-i="'+i+'" value="'+esc(x.q)+'">'+
+      '<label>Respuesta correcta</label><input data-f="ok" data-i="'+i+'" value="'+esc(x.ok)+'">'+
+      '<label>Distractores (separados con |)</label><input data-f="bad" data-i="'+i+'" value="'+esc((x.bad||[]).join(" | "))+'">'+
+      '</div>';
+  });
+  $("qs").innerHTML=h;
+}
+function collect(){
+  var out=qs.map(function(x){return{q:x.q,ok:x.ok,bad:(x.bad||[]).slice()}});
+  var ins=$("qs").querySelectorAll("input[data-f]");
+  for(var i=0;i<ins.length;i++){
+    var f=ins[i].dataset.f,k=+ins[i].dataset.i;
+    if(!out[k])continue;
+    if(f==="bad")out[k].bad=ins[i].value.split("|").map(function(s){return s.trim()}).filter(Boolean);
+    else out[k][f]=ins[i].value.trim();
+  }
+  return out;
+}
+async function saveQs(){
+  var list=collect().filter(function(x){return x.q&&x.ok&&x.bad.length});
+  qs=list;renderQs();
+  await FB.saveQuestions(list);
+  alert("Preguntas guardadas: "+list.length);
+}
+function addQ(){
+  qs=collect();qs.push({q:"",ok:"",bad:["","",""]});renderQs();
+  window.scrollTo(0,document.body.scrollHeight);
+}
+function delQ(i){
+  qs=collect();
+  if(!confirm("¿Borrar la pregunta "+(i+1)+"?"))return;
+  qs.splice(i,1);renderQs();
+}
+function restoreQs(){
+  if(!confirm("Reemplazar todas las preguntas por las del archivo original (questions.js)?"))return;
+  qs=SEED.map(function(a){return{q:a[0],ok:a[1],bad:(a[2]||[]).slice()}});
+  renderQs();alert("Restauradas en pantalla. Tocá GUARDAR PREGUNTAS para aplicarlas.");
+}
+function exportQs(){
+  var data=JSON.stringify(collect(),null,2);
+  var a=document.createElement("a");
+  a.href="data:application/json;charset=utf-8,"+encodeURIComponent(data);
+  a.download="trivia-preguntas.json";a.click();
+}
+</script>
+</body>
+</html>

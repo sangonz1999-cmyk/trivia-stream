@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ranking en vivo — INPUT_</title>
+<style>
+:root{--red:#ff3b6b;--pur:#c25bff;--yel:#ffe600;--grn:#3dff8a;--tx:#fff;--mut:#cdb8e6}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;color:var(--tx);font:16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{display:flex;align-items:flex-start;justify-content:flex-end;padding:24px}
+#panel{width:min(560px,46vw);background:rgba(8,3,15,.62);border:2px solid rgba(194,91,255,.55);border-radius:18px;padding:18px 20px;box-shadow:0 12px 40px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+body.clear #panel{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none}
+h1{font:700 22px/1.1 "Courier New",ui-monospace,monospace;margin:0;letter-spacing:.5px}
+h1 span{color:var(--yel)}
+#sub{display:flex;justify-content:space-between;align-items:baseline;font:600 12px/1 "Courier New",monospace;color:var(--mut);margin:6px 0 14px;text-transform:uppercase;letter-spacing:1px}
+#dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--grn);margin-right:6px;box-shadow:0 0 8px var(--grn);animation:p 1.6s infinite}
+@keyframes p{50%{opacity:.25}}
+.row{display:grid;grid-template-columns:2.2em 1fr auto;gap:10px;align-items:center;padding:7px 8px;border-radius:10px;margin-bottom:2px}
+.row .p{font:700 16px/1 "Courier New",monospace;color:var(--mut);text-align:right}
+.row .n{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .s{font:700 17px/1 "Courier New",monospace;color:var(--yel)}
+.row.t1{background:linear-gradient(90deg,rgba(255,230,0,.22),transparent)}
+.row.t2{background:linear-gradient(90deg,rgba(205,184,230,.20),transparent)}
+.row.t3{background:linear-gradient(90deg,rgba(255,157,0,.20),transparent)}
+.row.t1 .p,.row.t1 .s{color:var(--yel)}.row.t2 .p{color:#e6dcf7}.row.t3 .p{color:#ff9d00}
+.row.t1 .n{font-size:20px}.row.t2 .n,.row.t3 .n{font-size:18px}
+.row.fresh .n{animation:pop .7s ease-out}
+@keyframes pop{0%{color:var(--yel);transform:scale(1.06)}100%{color:var(--tx);transform:none}}
+#empty{color:var(--mut);font-style:italic;padding:10px 8px}
+#foot{margin-top:10px;font:600 12px/1 "Courier New",monospace;color:var(--mut);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<div id="panel">
+  <h1>RANKING <span>EN VIVO</span></h1>
+  <div id="sub"><span><i id="dot"></i><b id="mode">Conectando…</b></span><span id="cnt"></span></div>
+  <div id="list"></div>
+  <div id="foot"><span>Trivia del Stream</span><span id="upd"></span></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
+<script src="fb-config.js"></script>
+<script src="fb.js"></script>
+<script>
+var q=new URLSearchParams(location.search);
+var N=Math.max(1,Math.min(30,+(q.get("n")||8)));
+if(q.get("clear")==="1")document.body.classList.add("clear");
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var cur=[],gen=null,fresh={};
+function paint(){
+  var list=cur.slice(0,N);
+  $("cnt").textContent=cur.length?cur.length+" jugadores":"";
+  if(!list.length){$("list").innerHTML='<div id="empty">Esperando jugadores…</div>';return}
+  var h="";
+  list.forEach(function(r,i){
+    h+='<div class="row t'+(i+1)+(fresh[r.uid]?" fresh":"")+'">'+
+       '<div class="p">'+(i+1)+'</div>'+
+       '<div class="n">'+esc(r.name)+'</div>'+
+       '<div class="s">'+r.score+'</div></div>';
+  });
+  $("list").innerHTML=h;
+  $("upd").textContent="Actualizado "+new Date().toLocaleTimeString("es-AR");
+  fresh={};
+}
+function $(i){return document.getElementById(i)}
+function start(){
+  FB.watchCfg(function(c){
+    $("mode").textContent=FB.shared()?"Compartido":"Local";
+    if(c.gen!==gen){
+      gen=c.gen;
+      FB.watchScores(function(l){
+        var prev={};cur.forEach(function(x){prev[x.uid]=x.score});
+        fresh={};
+        l.forEach(function(x){if(prev[x.uid]!==undefined&&prev[x.uid]!==x.score)fresh[x.uid]=1});
+        cur=l;paint();
+      });
+    }
+  });
+}
+if(!FB.shared()){$("mode").textContent="Sin conexión";$("list").innerHTML='<div id="empty">Falta la configuración de la base (fb-config.js).</div>';}
+else{FB.readCfg().then(start);}
+paint();
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "cfg": {
+      ".read": true,
+      ".write": true,
+      "t": { ".validate": "newData.isNumber() && newData.val() >= 5000 && newData.val() <= 60000" },
+      "gen": { ".validate": "newData.isNumber() && newData.val() >= 1" },
+      "showRank": { ".validate": "newData.isBoolean()" },
+      "n": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 50" }
+    },
+    "questions": {
+      ".read": true,
+      ".write": true,
+      "$qid": {
+        ".validate": "newData.hasChildren(['q','ok']) && newData.child('q').isString() && newData.child('q').val().length <= 300 && newData.child('ok').isString() && newData.child('ok').val().length <= 200"
+      }
+    },
+    "scores": {
+      ".read": true,
+      "$gen": {
+        "$uid": {
+          ".write": "!data.exists() || (newData.child('name').val() === data.child('name').val() && newData.child('score').val() >= data.child('score').val() && newData.child('ts').val() >= data.child('ts').val())",
+          ".validate": "newData.hasChildren(['name','score','lvl','ts']) && newData.child('name').isString() && newData.child('name').val().length <= 20 && newData.child('score').isNumber() && newData.child('score').val() >= 0 && newData.child('score').val() <= 2000000 && newData.child('lvl').isNumber() && newData.child('lvl').val() >= 1 && newData.child('lvl').val() <= 3 && newData.child('ts').isNumber()"
+        }
+      }
+    }
+  }
+}
