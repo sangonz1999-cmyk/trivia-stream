@@ -2,251 +2,375 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panel admin — Trivia del Stream</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>INPUT_ — Trivia del Stream</title>
 <style>
-:root{--red:#ff3b6b;--pur:#c25bff;--yel:#ffe600;--grn:#3dff8a;--bg:#08030f;--bg2:#0f0620;--card:#120922;--tx:#fff;--mut:#cdb8e6}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-body{background:radial-gradient(circle at 15% 0,#4a0a5a55,transparent 50%),radial-gradient(circle at 95% 100%,#6a0a2a55,transparent 50%),var(--bg2);min-height:100vh}
-.wrap{max-width:900px;margin:0 auto;padding:22px 16px 60px}
-h1,h2,h3{font-family:"Courier New",ui-monospace,monospace;margin:0}
-h1{font-size:26px}
-h2{font-size:20px;margin:26px 0 10px;color:var(--pur)}
-h3{font-size:15px;color:var(--yel);margin:0 0 8px}
-a{color:var(--pur)}
-.mono{font-family:"Courier New",ui-monospace,monospace}
-.card{background:var(--card);border:1px solid #3a1a55;border-radius:14px;padding:16px;margin-bottom:14px}
-label{display:block;font:700 12px/1 "Courier New",monospace;letter-spacing:1px;color:var(--mut);margin:10px 0 5px;text-transform:uppercase}
-input,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a2568;background:#0b0518;color:var(--tx);font:15px/1.4 inherit}
-textarea{resize:vertical}
-button{padding:10px 16px;border-radius:10px;border:1px solid #5a2f80;background:#2d1050;color:#fff;font:700 14px/1 inherit;cursor:pointer;margin:6px 6px 0 0}
-button:active{transform:scale(.98)}
-button.p{background:#1a3a5a;border-color:#2f6ea8}
-button.r{background:#4a0d22;border-color:var(--red)}
-button.g{background:#0f3a24;border-color:var(--grn)}
-.hide{display:none!important}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.row>*{flex:1;min-width:120px}
-.row .fix{flex:0 0 auto;min-width:0}
-.small{font-size:13px;color:var(--mut)}
-table{width:100%;border-collapse:collapse;font-size:15px}
-td,th{padding:8px 6px;text-align:left;border-bottom:1px solid #3a1a55}
-th{color:var(--pur);font:700 12px "Courier New",monospace;letter-spacing:1px}
-td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
-.q{border:1px solid #331a4d;border-radius:12px;padding:12px;margin-bottom:10px}
-.q .lvl{font:700 11px/1 "Courier New",monospace;letter-spacing:1px;color:var(--mut)}
-.q .lvl b{color:var(--yel)}
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font:700 12px/1.4 "Courier New",monospace;border:1px solid}
-.ok{color:var(--grn);border-color:var(--grn)}
-.no{color:var(--red);border-color:var(--red)}
+:root{--red:#ff3b6b;--pur:#c25bff;--yel:#ffe600;--bg:#08030f;--card:#120922;--tx:#fff;--mut:#cdb8e6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{background:radial-gradient(circle at 15% 0,#4a0a5a55,transparent 50%),radial-gradient(circle at 95% 100%,#6a0a2a55,transparent 50%),var(--bg);min-height:100vh}
+.wrap{max-width:540px;margin:0 auto;padding:20px 16px 40px}
+h1,h2,.mono{font-family:"Courier New",ui-monospace,monospace}
+h1{font-size:2.6rem;margin:.1em 0;color:var(--yel);text-shadow:0 0 10px var(--yel),0 0 28px #ff9d00;letter-spacing:3px;cursor:default;user-select:none}
+h2{color:var(--pur);text-shadow:0 0 10px var(--pur);margin:.6em 0 .3em;font-size:1.4rem}
+.red{color:var(--red)}.yel{color:var(--yel)}.mut,small{color:var(--mut)}
+.card{background:var(--card);border:2px solid var(--pur);border-radius:16px;padding:18px;box-shadow:0 0 16px #c25bff88;margin:14px 0}
+.card.y{border-color:var(--yel);box-shadow:0 0 16px #ffe60066}.card.r{border-color:var(--red);box-shadow:0 0 16px #ff3b6b88}
+#qcard{border-color:var(--lc,var(--red));box-shadow:0 0 16px var(--lg,#ff3b6b88)}
+label{font-size:.95rem;color:var(--mut);font-weight:600}
+input{width:100%;background:#05010b;border:2px solid var(--yel);color:#fff;font:inherit;font-size:1.15rem;padding:14px;border-radius:12px;margin:6px 0 14px;outline:none}
+button{font:inherit;font-weight:700;font-size:1.1rem;cursor:pointer;width:100%;padding:16px;margin:7px 0;border-radius:12px;background:#1b0e30;color:var(--yel);border:2px solid var(--yel);box-shadow:0 0 12px #ffe60055}
+button:active{transform:scale(.98)}button.p{color:#fff;background:#2d1050;border-color:var(--pur)}button.r{color:#fff;background:#4a0d22;border-color:var(--red)}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;color:#fff;border-color:var(--lc,var(--pur));box-shadow:none;font-weight:600;font-size:1.08rem;padding:14px}
+.opt b{flex:none;width:34px;height:34px;border-radius:50%;background:var(--lc,var(--pur));color:#12001f;display:grid;place-items:center;font-family:"Courier New",monospace}
+.opt.ok{background:#073d1e;border-color:#3dff8a}.opt.ok b{background:#3dff8a}.opt.bad{background:#4a0d22;border-color:var(--red)}.opt.bad b{background:var(--red)}
+.hud{display:flex;justify-content:space-between;align-items:center;font-size:.95rem;color:var(--mut);font-weight:600}
+.hearts{font-size:1.5rem;letter-spacing:3px;color:var(--red)}.hearts s{color:#4a3a5c;text-decoration:none}
+/* Última vida: el corazón late y el fondo pulsa en rojo */
+.hearts.low{display:inline-block;animation:hbeat 1.06s ease-in-out infinite;filter:drop-shadow(0 0 10px #ff3b6b)}
+@keyframes hbeat{0%,32%,58%,100%{transform:scale(1)}10%{transform:scale(1.45)}20%{transform:scale(.95)}44%{transform:scale(1.3)}52%{transform:scale(1)}}
+#danger{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:0;background:radial-gradient(ellipse at 50% 55%,#ff3b6b00 30%,#ff3b6bbb 100%)}
+#danger.on{animation:dbbeat 1.06s ease-in-out infinite}
+/* Nivel EXPERTO: mismo latido pero mucho más tenue, oscuro y lento */
+#danger.soft{background:radial-gradient(ellipse at 50% 55%,#5a0a2400 55%,#7a1238aa 100%)}
+#danger.on.soft{animation:dbsoft 1.6s ease-in-out infinite}
+@keyframes dbsoft{0%,100%{opacity:0}10%{opacity:.2}22%{opacity:.07}34%{opacity:.16}50%{opacity:.02}70%{opacity:0}}
+@keyframes dbbeat{0%,100%{opacity:0}8%{opacity:.55}16%{opacity:.18}26%{opacity:.45}40%{opacity:.05}60%{opacity:0}}
+.bar{height:10px;background:#2a1240;border-radius:6px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;width:100%;background:var(--yel);box-shadow:0 0 10px var(--yel)}.bar i.low{background:var(--red)}
+.qt{font-size:1.35rem;font-weight:700;margin:4px 0;line-height:1.35}
+#tag{display:inline-block;padding:3px 12px;border-radius:20px;border:2px solid var(--lc,var(--yel));color:var(--lc,var(--yel));font-weight:700;font-size:.85rem;margin-bottom:8px}
+.hide{display:none!important}ol{padding-left:22px;line-height:1.8}
+table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;border-bottom:1px solid #3a1a55}th{color:var(--pur)}tr.me td{color:var(--yel);font-weight:700;background:#ffe60014}
+.big{font-size:2.6rem;text-align:center;margin:.1em 0;font-family:"Courier New",monospace;font-weight:700}.c{text-align:center}
+.cur::after{content:"_";animation:b 1s steps(1) infinite}@keyframes b{50%{opacity:0}}
+.pod{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:6px 0 18px}
+.tw{flex:1;max-width:140px;min-width:0;text-align:center;--c:#ffd23f;--g:#ffd23f30}
+.tw.k2{--c:#cfe0ff;--g:#cfe0ff2a}.tw.k3{--c:#ff8a5b;--g:#ff8a5b2e}
+.md{font-size:1.5rem;line-height:1.2;min-height:1.8rem}
+.tn{font:700 1rem "Courier New",ui-monospace,monospace;color:var(--c);text-shadow:0 0 5px var(--c),0 0 14px var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tn.empty{color:var(--mut);text-shadow:none;font-weight:400}
+.ts{font-size:.82rem;color:var(--mut);margin-bottom:6px;min-height:1.3em}
+.bl{border-top:3px solid var(--c);border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--g),transparent);box-shadow:0 -5px 14px -8px var(--c);display:flex;justify-content:center;align-items:flex-start;padding-top:6px;font:700 1.4rem "Courier New",monospace;color:var(--c)}
+.rk{font-family:"Courier New",monospace;font-weight:700}.nm{font-family:"Courier New",ui-monospace,monospace;font-weight:700}
+td.n1{color:#ffd23f}td.n2{color:#cfe0ff}td.n3{color:#ff8a5b}
+tr td.nm.n1{color:#ffd23f}tr td.nm.n2{color:#cfe0ff}tr td.nm.n3{color:#ff8a5b}
+td.nm.n1{text-shadow:0 0 5px #ffd23f,0 0 13px #ffd23faa}td.nm.n2{text-shadow:0 0 5px #cfe0ff,0 0 13px #cfe0ffaa}td.nm.n3{text-shadow:0 0 5px #ff8a5b,0 0 13px #ff8a5baa}
+.l3{padding:10px 14px}.l3 div{display:flex;justify-content:space-between;font-size:.95rem}.l3 .you{margin-top:6px;padding-top:6px;border-top:1px solid #3a1a55;color:var(--yel);font-weight:700}
+/* Premio: el cartel ocupa ~3/4 de la pantalla y el apartado de continuar ~1/4 */
+#s-prize:not(.hide){display:flex;flex-direction:column;min-height:calc(100vh - 60px);min-height:calc(100dvh - 60px)}
+#s-prize .pz1{flex:3;display:flex;flex-direction:column;justify-content:center;align-items:center;margin:0 0 10px}
+#s-prize .pz2{flex:1;margin:0;display:flex;flex-direction:column;justify-content:center}
+#s-prize .pz2 button{margin:5px 0}
+#s-prize .big{font-size:clamp(1.5rem,8vw,2.1rem);letter-spacing:0}
+#s-prize .pz1 .em{font-size:clamp(2.6rem,9vh,4.2rem);line-height:1}
+#s-prize .pz1 p{font-size:clamp(1rem,2.8vh,1.2rem)!important;margin:.4em 0}
+#s-prize .pz2{padding:12px}#s-prize .pz2 button{padding:12px;font-size:1rem}
+.ln{font-family:"Courier New",ui-monospace,monospace;color:#ffd23f;text-shadow:0 0 5px #ffd23f,0 0 12px #ffd23f99}
+.rw{font-size:.95rem;line-height:1.35;margin:2px 0 2px 0;line-height:1.35}.rw b{color:var(--yel)}
+/* Nivel EXPERTO: todo compacto para que entren 6 opciones + vidas + tiempo en el celu */
+body.exp .wrap{padding:8px 12px 10px}
+body.exp .hud{font-size:.85rem;line-height:1.3}
+body.exp .hearts{font-size:1.2rem;letter-spacing:2px}
+body.exp .bar{margin:5px 0;height:8px}
+body.exp .card{margin:6px 0;border-width:1.5px}
+body.exp #qcard{padding:9px 12px}
+body.exp .qt{font-size:1.05rem;line-height:1.25;margin:2px 0}
+body.exp #tag{margin-bottom:3px;padding:0 10px;font-size:.75rem}
+body.exp .l3{padding:5px 12px}body.exp .l3 div{font-size:.85rem}
+body.exp .opt{padding:7px 10px;gap:10px;margin:4px 0;font-size:.92rem;line-height:1.2;border-width:1.5px}
+body.exp .opt b{width:24px;height:24px;font-size:.78rem}
+body.exp.xs .hud{font-size:.78rem}
+body.exp.xs .qt{font-size:.95rem;line-height:1.2}
+body.exp.xs #qcard{padding:6px 10px}
+body.exp.xs .opt{padding:5px 8px;margin:3px 0;font-size:.85rem}
+body.exp.xs .opt b{width:21px;height:21px}
+.ov{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}.ov .card{width:100%;max-width:340px}
 </style>
 </head>
 <body>
+<div id="danger"></div>
 <div class="wrap">
-
- <div id="gate">
- <h1>PANEL <span style="color:var(--yel)">ADMIN</span></h1>
- <p class="small">Trivia del Stream — INPUT_</p>
- <div class="card" style="max-width:420px">
- <label>Clave</label>
- <input id="pw" type="password" autocomplete="off" placeholder="••••••">
- <button onclick="adm()">ENTRAR</button>
- <div id="pe" style="color:var(--red);font-size:14px"></div>
- <p class="small" style="margin-bottom:0">¿Sos jugador? <a href="index.html">Ir a la trivia</a></p>
- </div>
- </div>
-
- <div id="app" class="hide">
- <h1>PANEL <span style="color:var(--yel)">ADMIN</span></h1>
- <p class="small" style="margin-top:4px">
- <a href="index.html">Juego</a> · <a href="ranking.html" target="_blank">Ranking para OBS</a> ·
- <span id="mode">comprobando base…</span>
- </p>
-
- <h2>Ranking</h2>
- <div class="card">
- <div class="row" style="margin-bottom:10px">
- <div class="fix"><span class="badge" id="genb">—</span></div>
- <div class="fix"><span class="badge" id="cntb">—</span></div>
- <div class="fix"><button class="p" onclick="loadRank()">Actualizar</button></div>
- </div>
- <div id="tb" class="small">Cargando…</div>
- <div style="margin-top:12px">
- <button class="r" onclick="resetRank()">REINICIAR RANKING</button>
- <span class="small">Borra la tabla para todos y empieza de cero (los jugadores pueden volver a jugar).</span>
- </div>
- </div>
-
- <h2>Configuración del juego</h2>
- <div class="card">
- <div class="row">
- <div><label>Segundos por pregunta</label><input id="c-t" type="number" min="5" max="60" step="1"></div>
- <div><label>Preguntas fáciles (2 opciones)</label><input id="c-n1" type="number" min="1" max="50"></div>
- <div><label>Preguntas medias (3 opciones)</label><input id="c-n2" type="number" min="0" max="50"></div>
- <div><label>Preguntas difíciles (4 opciones)</label><input id="c-n3" type="number" min="0" max="50"></div>
- </div>
- <label style="margin-top:14px"><input type="checkbox" id="c-show" style="width:auto;margin-right:8px">Los jugadores ven el ranking (top 3 / top 10)</label>
- <button class="g" onclick="saveCfg()">GUARDAR CONFIGURACIÓN</button>
- <div id="cfgmsg" class="small"></div>
- </div>
-
- <h2>Preguntas <span class="small" id="qcount"></span></h2>
- <div class="card">
- <div class="row" style="margin-bottom:12px">
- <div class="fix"><button class="g" onclick="saveQs()">GUARDAR PREGUNTAS</button></div>
- <div class="fix"><button onclick="addQ()">+ AGREGAR</button></div>
- <div class="fix"><button class="p" onclick="restoreQs()">RESTAURAR DEL ARCHIVO</button></div>
- <div class="fix"><button onclick="exportQs()">EXPORTAR JSON</button></div>
- <div class="fix"><button onclick="importQs()">IMPORTAR JSON</button></div>
- </div>
- <input id="impfile" type="file" accept=".json,application/json" style="display:none" onchange="readImport(this)">
- <p class="small">Todas las preguntas son un solo banco: en cada partida se mezclan todas y el nivel (color y cantidad de opciones) lo decide <b>la posición</b> en la partida, no la pregunta. Así cualquier pregunta puede tocar en cualquier nivel. Poné 5 distractores para que puedan mostrarse con 6 opciones.</p>
- <div id="qs"></div>
- </div>
-
- <p class="small">Recordá: los cambios se ven en vivo para todos. El juego y el ranking leen la misma base.</p>
- </div>
+<section id="s-name">
+<h1 class="cur" id="ttl">INPUT</h1>
+<p class="mono red" style="margin-top:0">// la trivia del stream</p>
+<div id="tst" class="hide yel mono c">[ MODO PRUEBA ]</div>
+<div class="card y hide" id="played"></div>
+<button class="hide" id="contbtn" onclick="resume()">CONTINUAR PARA AVANZAR EN EL RANKING ▶</button>
+<div class="card y" id="form"><label>NOMBRE</label><input id="nom" maxlength="20" autocomplete="given-name" placeholder="Nombre"><button onclick="start()">ENTRAR ▶</button><small id="err" class="red"></small></div>
+<div id="rankpub"><h2>TOP 3</h2><div class="pod" id="pod"></div>
+<h2>TOP 10</h2><div class="card"><div id="tb"></div></div><div id="rkst" class="small c" style="margin:-6px 0 10px"></div></div>
+</section>
+<section id="s-how" class="hide">
+<h2>CÓMO SE JUEGA</h2>
+<div class="card"><p style="margin-top:0">Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
+<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li>
+<li>Subís de nivel y cada uno tiene su premio:
+<div class="rw"><b style="color:#3dff8a">FÁCIL</b> · sticker o caramelos</div>
+<div class="rw"><b>MEDIO</b> · llavero plano</div>
+<div class="rw"><b style="color:var(--red)">DIFÍCIL</b> · llavero 3D</div>
+<div class="rw">🏆 <b>Ganar el nivel difícil</b> · logo 3D grande</div>
+<div class="rw">🎁 <b>Top del ranking</b> (modo experto, opcional) · caja con golosinas, alfajores, stickers, logo muy grande y más</div></li>
+<li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li></ol>
+<p style="margin-bottom:0"><b>Solo se puede jugar una vez.</b></p></div>
+<button onclick="play()">JUGAR ▶</button>
+</section>
+<section id="s-game" class="hide">
+<div class="hud"><span id="h-lv"></span><span class="hearts" id="h-hp"></span></div>
+<div class="bar"><i id="bar"></i></div>
+<div class="hud"><span id="h-q"></span><span id="h-sc"></span></div>
+<div class="card l3" id="live"></div>
+<div class="card" id="qcard"><span id="tag"></span><div class="qt" id="qt"></div></div>
+<div id="opts"></div>
+</section>
+<section id="s-end" class="hide">
+<div class="card r" id="end-c"><div class="big red" id="end-t"></div><p class="c" id="end-s"></p><p class="c" style="font-weight:700" id="end-pz"></p><p class="c yel" style="font-weight:700" id="end-p"></p></div>
+<button class="p" id="end-rk" onclick="showRank()">VER RANKING</button>
+<button class="r hide" id="end-r" onclick="play()">REINTENTAR (PRUEBA)</button>
+</section>
+<section id="s-prize" class="hide">
+<div class="card y c pz1"><div class="em">🏆</div><div class="big yel">¡FELICIDADES!</div><p style="font-weight:700;font-size:1.35rem;margin:.5em 0">Ganaste la recompensa máxima</p><p style="font-size:1.1rem;margin:0">Acercate al puesto del streaming y reclamá tu recompensa.</p></div>
+<div class="card c pz2"><p style="font-weight:700;margin:0">¿Querés seguir respondiendo preguntas para avanzar en el ranking?</p><p class="mut" style="margin:2px 0 6px;font-size:.9rem">(Si quedás en el top 3 tendrás una recompensa especial)</p>
+<button onclick="prizeGo()">CONTINUAR ▶</button><button class="r" onclick="prizeExit()">SALIR</button></div>
+</section>
+<section id="s-exp" class="hide">
+<h2>MODO EXPERTO</h2>
+<div class="card"><p style="margin-top:0">Tu recompensa máxima ya está ganada: lo que pase acá no te la quita. Ahora competís contra los demás por el <b class="yel">ranking</b>:</p>
+<ol><li><b>6 opciones</b> por pregunta.</li><li><b id="ex-t">12</b> segundos para responder.</li><li><b class="red">1 sola vida</b>: un error y termina.</li><li><b id="ex-n">100</b> preguntas en total (seguís desde la <b id="ex-from">17</b>).</li></ol></div>
+<button onclick="startExpert()">EMPEZAR ▶</button><button class="p" onclick="go()">VOLVER AL MENÚ</button>
+</section>
+<section id="s-rank" class="hide">
+<h2>RANKING</h2><div class="card"><div id="tb2">Cargando...</div></div>
+<small id="rk-note"></small>
+<button onclick="go()">VOLVER</button>
+</section>
 </div>
-
+<div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
 <script src="fb-config.js?v=13"></script>
 <script src="questions.js?v=13"></script>
 <script src="fb.js?v=13"></script>
 <script>
-var PWH=6118475695008877,qs=[],$=function(i){return document.getElementById(i)};
+var D=[];
+var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
+function applyCfg(){
+  var c=FB.cfg(),n1=c.n[0]|0,n2=c.n[1]|0,n3=c.n[2]|0;
+  T=c.t||15000;
+  LV=[["FÁCIL",0,n1,2,"#3dff8a"],["MEDIO",n1,n1+n2,3,"#ffe600"],["DIFÍCIL",n1+n2,n1+n2+n3,4,"#ff3b6b"],["EXPERTO",n1+n2+n3,9999,6,"#c25bff"]];
+}
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
+var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
+var racha=0,expertHp=false,TT=15000;
+var $=function(i){return document.getElementById(i)};
+function show(id){["s-name","s-how","s-game","s-end","s-prize","s-exp","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});var b=document.body;b.classList.toggle("exp",id==="s-game"); /* mismo tamaño compacto en todos los niveles */b.classList.remove("xs");danger();window.scrollTo(0,0)}
+// Con 1 sola vida el corazón late y el fondo pulsa en rojo.
+function danger(){
+  var last=hp<=1&&hp>0;
+  $("h-hp").classList.toggle("low",last);
+  var inGame=!$("s-game").classList.contains("hide");
+  $("danger").classList.toggle("on",last&&inGame);
+  $("danger").classList.toggle("soft",lvOf(qi)===3);
+}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+// En el nivel EXPERTO queda 1 sola vida, sin importar cuántas traía.
+function maxhpNow(){return lvOf(qi)===3?1:MAXHP}
+function hearts(){var t=maxhpNow(),h="";for(var i=0;i<t;i++)h+=i<hp?"♥":"<s>♥</s>";return h}
+// Multiplicador por respuestas seguidas sin perder vida: x1.1, x1.2... tope x2.
+function mult(){return Math.min(1+racha*0.1,2)}
+function scoreHud(){var m=mult();$("h-sc").textContent=score+" pts"+(m>1.001?" · x"+m.toFixed(1)+" racha":"")}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function adm(){
- if(hh($("pw").value)===PWH){
- $("gate").classList.add("hide");$("app").classList.remove("hide");
- boot();
- }else $("pe").textContent="Clave incorrecta";
+function lvOf(i){var c=FB.cfg(),a=c.n[0]|0,b=a+(c.n[1]|0),d=b+(c.n[2]|0);return i<a?0:(i<b?1:(i<d?2:3))}
+function totalQ(){var n=FB.cfg().n;return (n[0]|0)+(n[1]|0)+(n[2]|0)}
+function isValid(x){return !!(x&&x.q&&x.ok&&x.bad&&x.bad.length)}
+/* Arma la partida: mezcla TODO el banco. El nivel (color y cantidad de
+   opciones) lo decide la POSICIÓN de la pregunta en la partida, no la pregunta:
+   las 6 primeras son fáciles, después 5 medias, 5 difíciles y el resto experto. */
+function buildOrder(){
+  return shuf(D.filter(isValid));
 }
+function isMe(x){return x.uid===FB.uid()}
+function getList(){return FB.listScores()}
+function saveScore(force){
+  if(test)return Promise.resolve();
+  if(score<=0&&!force)return Promise.resolve();
+  var idx=order.length?Math.min(qi,order.length-1):0;
+  return FB.saveScore({uid:FB.uid(),name:name,score:score,lvl:lvOf(idx)+1,ts:Date.now()});
+}
+function status(){
+  var e=$("rkst");if(!e)return;
+  e.textContent=FB.shared()?(loaded?"Ranking compartido en vivo · "+cache.length+(cache.length===1?" jugador":" jugadores"):"Conectando al ranking…"):"Sin conexión: el ranking se guarda solo en este dispositivo";
+  e.style.color=FB.shared()?"":"var(--red)";
+}
+function rankVisible(){return FB.cfg().showRank!==false}
+async function refresh(){cache=await getList();loaded=true;repaint()}
+function repaint(){
+  if(!$("s-game").classList.contains("hide"))live();
+  if(!$("s-rank").classList.contains("hide"))tbl("tb2");
+  if(!$("s-name").classList.contains("hide")){podium();tbl("tb");status()}
+}
+function mineIdx(){if(!cache)return-1;for(var i=0;i<cache.length;i++)if(isMe(cache[i]))return i;return-1}
+function tbl(el){
+  if(!loaded){$(el).textContent="Cargando ranking…";return}
+  var l=cache,me=mineIdx();
+  if(!l.length){$(el).textContent="Todavía no hay puntajes. El primero que complete una partida aparece acá.";return}
+  var h="<table><tr><th>#</th><th>JUGADOR</th><th>NIV</th><th>PTS</th></tr>";
+  l.slice(0,10).forEach(function(r,i){var cl=i<3?" n"+(i+1):"";h+="<tr"+(i===me?" class='me'":"")+"><td class='rk"+cl+"'>"+(i+1)+"</td><td class='nm"+cl+"'>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td>"+r.score+"</td></tr>"});
+  if(me>=10)h+="<tr class='me'><td>"+(me+1)+"</td><td>"+esc(l[me].name)+" (vos)</td><td>"+l[me].lvl+"</td><td>"+l[me].score+"</td></tr>";
+  $(el).innerHTML=h+"</table>";
+}
+function podium(){
+  if(!loaded){$("pod").innerHTML="<div class='ts' style='flex:1'>Cargando ranking…</div>";return}
+  var h=[100,74,54],s="";
+  [1,0,2].forEach(function(k){var r=cache[k];s+="<div class='tw k"+(k+1)+"'><div class='tn"+(r?"":" empty")+"'>"+(r?esc(r.name):"—")+"</div><div class='ts'>"+(r?r.score+" pts":"")+"</div><div class='bl' style='height:"+h[k]+"px'>"+(k+1)+"</div></div>"});
+  $("pod").innerHTML=s;
+}
+function hasPlayed(){return !test&&ls("played")===String(FB.cfg().gen)}
+function renderStart(){
+  podium();tbl("tb");status();
+  $("rankpub").classList.toggle("hide",!rankVisible());
+  var p=hasPlayed(),i=mineIdx();
+  $("form").classList.toggle("hide",p);$("played").classList.toggle("hide",!p);$("tst").classList.toggle("hide",!test);
+  if(p)$("played").innerHTML=i>=0?"Ya jugaste y ya figurás en la tabla: <b>puesto #"+(i+1)+"</b> con <b>"+cache[i].score+" pts</b>. Solo se puede jugar una vez.":"Ya jugaste. Solo se puede jugar una vez.";
+  $("contbtn").classList.toggle("hide",!(p&&hasCont()));
+  if(p&&hasCont())$("played").innerHTML+="<br><br>Ya ganaste la <b>recompensa máxima</b>: podés continuar para avanzar en el ranking.";
+  $("how-t").textContent=Math.round(T/1000);$("how-v").textContent=MAXHP;
+}
+async function init(){
+  podium();tbl("tb");
+  await FB.readCfg();applyCfg();
+  D=await FB.loadQuestions();
+  cache=await getList();loaded=true;renderStart();
+  FB.watchCfg(function(){applyCfg();renderStart()});
+  FB.watchScores(function(l){cache=l;loaded=true;repaint()});
+}
+async function go(){show("s-name");cache=await getList();loaded=true;renderStart()}
+async function showRank(){show("s-rank");$("tb2").textContent="Cargando...";cache=await getList();loaded=true;tbl("tb2");$("rk-note").textContent=FB.shared()?"Ranking compartido: lo ven todos los jugadores, en vivo.":"Sin conexión a la base: ranking guardado solo en este dispositivo."}
+function merged(){
+  var l=cache.filter(function(x){return !isMe(x)});l.push({name:name,score:score,id:"cur"});
+  l.sort(function(a,b){return b.score-a.score});
+  return{l:l,p:l.findIndex(function(x){return x.id==="cur"})};
+}
+function live(){
+  var m=merged(),s="";
+  var t0_=m.l[0];$("live").innerHTML="<div><span><b class='ln'>"+esc(t0_.name)+"</b> · "+t0_.score+" pts</span><span class='yel'>Vos: #"+(m.p+1)+"</span></div>";return;
+  for(var i=0;i<3&&i<m.l.length;i++)s+="<div"+(m.l[i].id==="cur"?" class='yel'":"")+"><span>"+["🥇","🥈","🥉"][i]+" "+esc(m.l[i].name)+"</span><span>"+m.l[i].score+" pts</span></div>";
+  $("live").innerHTML=s+"<div class='you'><span>Vos: puesto #"+(m.p+1)+"</span><span>"+score+" pts</span></div>";
+}
+function start(){
+  var n=$("nom").value.trim();
+  if(!n){$("err").textContent="Falta el nombre";return}
+  if(hasPlayed()){renderStart();return}
+  name=n;ls("name",n);$("hi").textContent=n;$("err").textContent="";show("s-how");
+}
+function play(){
+  if(hasPlayed()){show("s-name");renderStart();return}
+  if(!D.length){show("s-name");$("err").textContent="No se cargaron las preguntas. Recargá la página.";return}
+  order=buildOrder();
+  if(!order.length){show("s-name");$("err").textContent="Las preguntas están incompletas. Avisale al admin.";return}
+  qi=0;hp=MAXHP;score=0;racha=0;expertHp=false;
+  if(!test)ls("played",String(FB.cfg().gen));
+  $("live").classList.toggle("hide",!rankVisible());
+  saveScore().then(refresh);ask();
+}
+function ask(){
+  var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
+  TT=(l===3)?Math.max(3000,T-3000):T; // experto: 3 segundos menos
+  // Al entrar al nivel EXPERTO (pregunta 17) queda 1 sola vida.
+  if(l===3&&!expertHp){expertHp=true;if(hp>1)hp=1}
+  var g=$("s-game");g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
+  // distractores y orden de opciones al azar: a cada persona le toca distinto
+  var bad=shuf(d.bad).slice(0,n-1);
+  var opts=shuf([d.ok].concat(bad));
+  $("h-lv").textContent="NIVEL "+(l+1)+" · "+L[0];$("h-hp").innerHTML=hearts();
+  $("h-q").textContent="Pregunta "+(qi+1)+" de "+(l===3?order.length:Math.min(totalQ(),order.length));scoreHud();
+  $("tag").textContent=L[0];$("qt").textContent=d.q;live();
+  var o=$("opts");o.innerHTML="";
+  opts.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+String.fromCharCode(65+i)+"</b><span>"+esc(t)+"</span>";b.dataset.ok=(t===d.ok)?"1":"0";b.onclick=function(){pick(b)};o.appendChild(b)});
+  show("s-game");t0=Date.now();clearInterval(tm);
+  if(document.body.classList.contains("exp")&&document.querySelector(".wrap").offsetHeight>window.innerHeight)document.body.classList.add("xs");
+  tm=setInterval(function(){var left=TT-(Date.now()-t0),bar=$("bar");bar.style.width=Math.max(0,left/TT*100)+"%";bar.classList.toggle("low",left<5000);if(left<=0){clearInterval(tm);if(!locked){locked=true;reveal(null)}}},100);
+}
+function pick(b){
+  if(locked)return;locked=true;clearInterval(tm);
+  var left=Math.max(0,TT-(Date.now()-t0));
+  if(b.dataset.ok==="1"){racha++;score+=Math.round((100+Math.round(left/100))*(lvOf(qi)+1)*mult())}
+  reveal(b);
+}
+function reveal(b){
+  var bs=$("opts").children,good=b&&b.dataset.ok==="1";
+  for(var i=0;i<bs.length;i++)if(bs[i].dataset.ok==="1")bs[i].classList.add("ok");
+  if(b&&!good)b.classList.add("bad");
+  if(!good){hp--;racha=0}
+  $("h-hp").innerHTML=hearts();scoreHud();live();danger();
+  saveScore().then(refresh);
+  setTimeout(function(){
+    if(hp<=0)return end(false);
+    qi++;
+    if(qi>=order.length)return end(true);
+    if(qi===totalQ())return showPrize();
+    ask();
+  },1400);
+}
+/* ---- Recompensa máxima (se completa el nivel difícil) y continuar al experto ---- */
+function contClear(){try{localStorage.removeItem("cont")}catch(e){}}
+function contSave(){
+  if(test)return;
+  ls("cont",JSON.stringify({gen:FB.cfg().gen,name:name,order:order.map(function(x){return x.q}),qi:qi,hp:hp,score:score,racha:racha}));
+}
+function hasCont(){
+  if(test)return false;
+  try{var c=JSON.parse(ls("cont")||"null");return !!(c&&String(c.gen)===String(FB.cfg().gen))}catch(e){return false}
+}
+function showPrize(){clearInterval(tm);contSave();show("s-prize")}
+function prizeExit(){go()}
+function expIntro(){
+  $("ex-t").textContent=Math.round(Math.max(3000,T-3000)/1000);$("ex-n").textContent=order.length;$("ex-from").textContent=qi+1;
+  show("s-exp");
+}
+function prizeGo(){expIntro()}
+function startExpert(){contClear();$("live").classList.toggle("hide",!rankVisible());ask()}
+function resume(){
+  var c=null;try{c=JSON.parse(ls("cont")||"null")}catch(e){}
+  if(!c||!D.length){contClear();go();return}
+  var map={};D.forEach(function(x){if(isValid(x))map[x.q]=x});
+  var o=c.order.map(function(q){return map[q]}).filter(Boolean);
+  if(o.length!==c.order.length||c.qi>=o.length){contClear();go();return}
+  order=o;name=c.name||name;qi=c.qi;hp=c.hp;score=c.score;racha=c.racha||0;expertHp=false;
+  expIntro();
+}
+async function end(win){
+  clearInterval(tm);if(win)score+=hp*100;contClear();
+  var early=!win&&qi<totalQ(); // se quedó sin vidas antes de la recompensa máxima
+  var good=win||early;
+  $("end-c").className="card "+(good?"y":"r");
+  $("end-t").textContent=win?"¡GANASTE!":(early?"¡FELICIDADES!":"GAME OVER");$("end-t").className="big "+(good?"yel":"red");
+  $("end-pz").className="c "+(good?"yel":"mut");
+  $("end-pz").textContent=early?"Llegaste hasta la dificultad "+LV[lvOf(qi)][0].toLowerCase()+". Acercate al puesto del streaming y reclamá tu recompensa.":(win?"Ganaste la recompensa máxima. Acercate al puesto del streaming y reclamá tu recompensa.":"Si todavía no reclamaste tu recompensa máxima, acercate al puesto del streaming.");
+  $("end-s").textContent=win?name+", respondiste las "+order.length+" preguntas con "+hp+(hp===1?" vida":" vidas")+" · "+score+" pts":"Te quedaste sin vidas en la pregunta "+(qi+1)+" · "+score+" pts";
+  $("end-p").textContent="";$("end-r").classList.toggle("hide",!test);show("s-end");
+  await saveScore(true);await refresh();
+  var m=merged();
+  $("end-p").textContent=rankVisible()?"Estás #"+(m.p+1)+" de "+m.l.length+" en el ranking":"";
+  $("end-rk").classList.toggle("hide",!rankVisible());
+}
+var taps=0,tt=0;
+$("ttl").onclick=function(){var n=Date.now();if(n-tt>4000)taps=0;tt=n;if(++taps>=7){taps=0;$("pw").value="";$("pe").textContent="";$("adm").classList.remove("hide");$("pw").focus()}};
 $("pw").onkeydown=function(e){if(e.key==="Enter")adm()};
-
-async function boot(){
- await FB.readCfg();
- $("mode").textContent=FB.shared()?"Base compartida conectada":"Modo local (sin base)";
- $("mode").style.color=FB.shared()?"var(--grn)":"var(--red)";
- loadCfgUI();loadRank();qs=await FB.loadQuestions();renderQs();
- FB.watchCfg(function(){loadCfgUI()});
-}
-
-/* ---------- config ---------- */
-function loadCfgUI(){
- var c=FB.cfg();
- $("c-t").value=Math.round(c.t/1000);
- $("c-n1").value=c.n[0];$("c-n2").value=c.n[1];$("c-n3").value=c.n[2];
- $("c-show").checked=c.showRank!==false;
- $("genb").textContent="Ranking #"+c.gen;
-}
-async function saveCfg(){
- var n=[+$("c-n1").value|0,+$("c-n2").value|0,+$("c-n3").value|0];
- var t=Math.max(5,Math.min(60,+$("c-t").value|0))*1000;
- await FB.setCfg({t:t,n:n,showRank:$("c-show").checked});
- $("cfgmsg").textContent="Guardado ✓ — total "+n[0]+"+"+n[1]+"+"+n[2]+" = "+(n[0]+n[1]+n[2])+" preguntas por partida";
- setTimeout(function(){$("cfgmsg").textContent=""},6000);
- loadCfgUI();
-}
-
-/* ---------- ranking ---------- */
-async function loadRank(){
- var l=await FB.listScores();
- $("cntb").textContent=l.length+(l.length===1?" jugador":" jugadores");
- $("genb").textContent="Ranking #"+FB.cfg().gen;
- if(!l.length){$("tb").textContent="Todavía no hay puntajes.";return}
- var h="<table><tr><th>#</th><th>Jugador</th><th>Niv</th><th>Pts</th><th>Hora</th></tr>";
- l.forEach(function(r,i){
- h+="<tr><td>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td class='s'>"+r.score+"</td><td class='small'>"+(r.ts?new Date(r.ts).toLocaleTimeString("es-AR"):"—")+"</td></tr>";
- });
- $("tb").innerHTML=h+"</table>";
-}
-async function resetRank(){
- if(!confirm("¿Reiniciar el ranking para todos? Los jugadores van a poder volver a jugar."))return;
- await FB.resetRank();
- await loadRank();
-}
-
-/* ---------- preguntas ---------- */
-function renderQs(){
- $("qcount").textContent="("+qs.length+")";
- var h="";
- qs.forEach(function(x,i){
- var opts=1+(x.bad||[]).length;
- h+='<div class="q">'+
- '<div class="lvl">Pregunta '+(i+1)+' · '+opts+' opciones <button class="r fix" style="float:right;padding:4px 10px;margin:0" onclick="delQ('+i+')">Borrar</button></div>'+
- '<label>Pregunta</label><input data-f="q" data-i="'+i+'" value="'+esc(x.q)+'">'+
- '<label>Respuesta correcta</label><input data-f="ok" data-i="'+i+'" value="'+esc(x.ok)+'">'+
- '<label>Distractores (separados con |)</label><input data-f="bad" data-i="'+i+'" value="'+esc((x.bad||[]).join(" | "))+'">'+
- '</div>';
- });
- $("qs").innerHTML=h;
-}
-function collect(){
- var out=qs.map(function(x){return{q:x.q,ok:x.ok,bad:(x.bad||[]).slice()}});
- var ins=$("qs").querySelectorAll("input[data-f]");
- for(var i=0;i<ins.length;i++){
- var f=ins[i].dataset.f,k=+ins[i].dataset.i;
- if(!out[k])continue;
- if(f==="bad")out[k].bad=ins[i].value.split("|").map(function(s){return s.trim()}).filter(Boolean);
- else out[k][f]=ins[i].value.trim();
- }
- return out;
-}
-async function saveQs(){
- var list=collect().filter(function(x){return x.q&&x.ok&&x.bad.length});
- qs=list;renderQs();
- await FB.saveQuestions(list);
- alert("Preguntas guardadas: "+list.length);
-}
-function addQ(){
- qs=collect();qs.push({q:"",ok:"",bad:["","","","",""]});renderQs();
- window.scrollTo(0,document.body.scrollHeight);
-}
-function delQ(i){
- qs=collect();
- if(!confirm("¿Borrar la pregunta "+(i+1)+"?"))return;
- qs.splice(i,1);renderQs();
-}
-function restoreQs(){
- if(!confirm("Reemplazar todas las preguntas por las del archivo original (questions.js)?"))return;
- qs=SEED.map(function(a){return{q:a[0],ok:a[1],bad:(a[2]||[]).slice()}});
- renderQs();alert("Restauradas en pantalla. Tocá GUARDAR PREGUNTAS para aplicarlas.");
-}
-function exportQs(){
- var data=JSON.stringify(collect(),null,2);
- var a=document.createElement("a");
- a.href="data:application/json;charset=utf-8,"+encodeURIComponent(data);
- a.download="trivia-preguntas.json";a.click();
-}
-function importQs(){$("impfile").value="";$("impfile").click()}
-function readImport(inp){
- var f=inp.files&&inp.files[0];if(!f)return;
- var r=new FileReader();
- r.onload=async function(){
- var arr=null;
- try{arr=JSON.parse(String(r.result))}catch(e){alert("Ese archivo no es un JSON válido.");return}
- if(arr&&!Array.isArray(arr)&&Array.isArray(arr.questions))arr=arr.questions;
- if(!Array.isArray(arr)){alert("El archivo tiene que tener una lista de preguntas.");return}
- var list=arr.map(function(x){
- if(Array.isArray(x))return{q:String(x[0]||"").trim(),ok:String(x[1]||"").trim(),bad:(x[2]||[]).map(function(s){return String(s).trim()}).filter(Boolean)};
- x=x||{};
- return{q:String(x.q||"").trim(),ok:String(x.ok||"").trim(),bad:(x.bad||[]).map(function(s){return String(s).trim()}).filter(Boolean)};
- }).filter(function(x){return x.q&&x.ok&&x.bad.length});
- if(!list.length){alert("No encontré preguntas válidas en ese archivo.\nCada una necesita: pregunta, respuesta correcta y al menos 1 distractor.");return}
- var pocas=list.filter(function(x){return x.bad.length<5}).length;
- var msg="Se van a reemplazar las "+qs.length+" preguntas por las "+list.length+" del archivo.";
- if(pocas)msg+="\n\nOjo: "+pocas+(pocas===1?" pregunta tiene":" preguntas tienen")+" menos de 5 distractores, así que en el nivel experto se van a ver con menos de 6 opciones.";
- if(!confirm(msg+"\n\n¿Seguir?"))return;
- qs=list;renderQs();
- await FB.saveQuestions(list);
- alert("Importadas y guardadas: "+list.length+(list.length===1?" pregunta":" preguntas")+". Ya se ven en el juego.");
- };
- r.readAsText(f,"utf-8");
-}
+function adm(){if(hh($("pw").value)===PWH){test=true;$("adm").classList.add("hide");renderStart()}else $("pe").textContent="Incorrecta"}
+(function(){
+  var q=new URLSearchParams(location.search),force=q.get("reset")==="1";
+  if(force||ls("v")!=="2"){
+    try{
+      localStorage.removeItem("played");
+      localStorage.removeItem("mine");
+      localStorage.removeItem("trivia_scores");
+      localStorage.setItem("v","2");
+    }catch(e){}
+    if(force&&history.replaceState)history.replaceState(null,"",location.pathname+location.hash);
+  }
+})();
+(function(){var s=ls("name");if(s)$("nom").value=s})();
+init();
 </script>
-<script src="admin-parche.js?v=1"></script>
 </body>
 </html>
