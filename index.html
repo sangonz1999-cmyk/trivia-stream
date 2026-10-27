@@ -78,9 +78,9 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=4"></script>
-<script src="questions.js?v=4"></script>
-<script src="fb.js?v=4"></script>
+<script src="fb-config.js?v=5"></script>
+<script src="questions.js?v=5"></script>
+<script src="fb.js?v=5"></script>
 <script>
 var D=[];
 var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
@@ -90,7 +90,7 @@ function applyCfg(){
   LV=[["FÁCIL",0,n1,2,"#3dff8a"],["MEDIO",n1,n1+n2,3,"#ffe600"],["DIFÍCIL",n1+n2,n1+n2+n3,4,"#ff3b6b"]];
 }
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
-var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,db=null,uid=null,shared=false,cache=[];
+var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
 var $=function(i){return document.getElementById(i)};
 function show(id){["s-name","s-how","s-game","s-end","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});window.scrollTo(0,0)}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
@@ -106,14 +106,15 @@ function saveScore(){
   return FB.saveScore({uid:FB.uid(),name:name,score:score,lvl:lvOf(Math.min(qi,D.length-1))+1,ts:Date.now()});
 }
 function rankVisible(){return FB.cfg().showRank!==false}
-async function refresh(){cache=await getList();repaint()}
+async function refresh(){cache=await getList();loaded=true;repaint()}
 function repaint(){
   if(!$("s-game").classList.contains("hide"))live();
   if(!$("s-rank").classList.contains("hide"))tbl("tb2");
   if(!$("s-name").classList.contains("hide")){podium();tbl("tb")}
 }
-function mineIdx(){for(var i=0;i<cache.length;i++)if(isMe(cache[i]))return i;return-1}
+function mineIdx(){if(!cache)return-1;for(var i=0;i<cache.length;i++)if(isMe(cache[i]))return i;return-1}
 function tbl(el){
+  if(!loaded){$(el).textContent="Cargando ranking…";return}
   var l=cache,me=mineIdx();
   if(!l.length){$(el).textContent="Todavía no hay puntajes. ¡Sé el primero!";return}
   var h="<table><tr><th>#</th><th>JUGADOR</th><th>NIV</th><th>PTS</th></tr>";
@@ -122,6 +123,7 @@ function tbl(el){
   $(el).innerHTML=h+"</table>";
 }
 function podium(){
+  if(!loaded){$("pod").innerHTML="<div class='ts' style='flex:1'>Cargando ranking…</div>";return}
   var c=["#ffe600","#cdb8e6","#ff9d00"],h=[120,90,66],s="";
   [1,0,2].forEach(function(k){var r=cache[k];s+="<div class='tw'><div class='tn'>"+(r?esc(r.name):"—")+"</div><div class='ts'>"+(r?r.score+" pts":"")+"</div><div class='bl' style='height:"+h[k]+"px;color:"+c[k]+";border-color:"+c[k]+";box-shadow:0 0 14px "+c[k]+"66'>"+(k+1)+"</div></div>"});
   $("pod").innerHTML=s;
@@ -137,14 +139,15 @@ function renderStart(){
   $("how-t").textContent=Math.round(T/1000);$("how-v").textContent=MAXHP;
 }
 async function init(){
+  podium();tbl("tb");
   await FB.readCfg();applyCfg();
   D=await FB.loadQuestions();
-  cache=await getList();renderStart();
+  cache=await getList();loaded=true;renderStart();
   FB.watchCfg(function(){applyCfg();renderStart()});
-  FB.watchScores(function(l){cache=l;repaint()});
+  FB.watchScores(function(l){cache=l;loaded=true;repaint()});
 }
-async function go(){show("s-name");cache=await getList();renderStart()}
-async function showRank(){show("s-rank");$("tb2").textContent="Cargando...";cache=await getList();tbl("tb2");$("rk-note").textContent=FB.shared()?"Ranking compartido: lo ven todos los jugadores, en vivo.":"Sin conexión a la base: ranking guardado solo en este dispositivo."}
+async function go(){show("s-name");cache=await getList();loaded=true;renderStart()}
+async function showRank(){show("s-rank");$("tb2").textContent="Cargando...";cache=await getList();loaded=true;tbl("tb2");$("rk-note").textContent=FB.shared()?"Ranking compartido: lo ven todos los jugadores, en vivo.":"Sin conexión a la base: ranking guardado solo en este dispositivo."}
 function merged(){
   var l=cache.filter(function(x){return !isMe(x)});l.push({name:name,score:score,id:"cur"});
   l.sort(function(a,b){return b.score-a.score});

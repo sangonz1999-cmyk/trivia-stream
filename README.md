@@ -36,6 +36,10 @@ se ve en el juego, en el ranking para OBS y en el panel admin, en vivo.
 ## Ranking compartido
 
 - Base: **Firebase Realtime Database** (plan gratuito).
+  Proyecto: `trivia-stream-input` · base:
+  `https://trivia-stream-input-default-rtdb.firebaseio.com`
+- La config pública está en `fb-config.js` (la apiKey de Firebase no es un
+  secreto: la seguridad la dan las reglas).
 - `scores/<ranking>/<id>` guarda nombre, puntos, nivel y hora de cada jugador.
 - El id es un UUID por dispositivo: un celular no puede pisar el puntaje de otro,
   y los puntajes solo pueden subir (no bajar ni borrarse desde el cliente).
