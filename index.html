@@ -46,7 +46,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <p class="mono red" style="margin-top:0">// la trivia del stream</p>
 <div id="tst" class="hide yel mono c">[ MODO PRUEBA ]</div>
 <div id="rankpub"><h2>TOP 3</h2><div class="pod" id="pod"></div>
-<h2>TOP 10</h2><div class="card"><div id="tb"></div></div></div>
+<h2>TOP 10</h2><div class="card"><div id="tb"></div></div><div id="rkst" class="small c" style="margin:-6px 0 10px"></div></div>
 <div class="card y hide" id="played"></div>
 <div class="card y" id="form"><label>NOMBRE</label><input id="nom" maxlength="20" autocomplete="given-name" placeholder="Nombre"><button onclick="start()">ENTRAR ▶</button><small id="err" class="red"></small></div>
 </section>
@@ -78,9 +78,9 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=8"></script>
-<script src="questions.js?v=8"></script>
-<script src="fb.js?v=8"></script>
+<script src="fb-config.js?v=9"></script>
+<script src="questions.js?v=9"></script>
+<script src="fb.js?v=9"></script>
 <script>
 var D=[];
 var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
@@ -118,24 +118,29 @@ function buildOrder(){
 }
 function isMe(x){return x.uid===FB.uid()}
 function getList(){return FB.listScores()}
-function saveScore(){
+function saveScore(force){
   if(test)return Promise.resolve();
-  if(score<=0)return Promise.resolve();
+  if(score<=0&&!force)return Promise.resolve();
   var idx=order.length?Math.min(qi,order.length-1):0;
   return FB.saveScore({uid:FB.uid(),name:name,score:score,lvl:lvOf(idx)+1,ts:Date.now()});
+}
+function status(){
+  var e=$("rkst");if(!e)return;
+  e.textContent=FB.shared()?(loaded?"Ranking compartido en vivo · "+cache.length+(cache.length===1?" jugador":" jugadores"):"Conectando al ranking…"):"Sin conexión: el ranking se guarda solo en este dispositivo";
+  e.style.color=FB.shared()?"":"var(--red)";
 }
 function rankVisible(){return FB.cfg().showRank!==false}
 async function refresh(){cache=await getList();loaded=true;repaint()}
 function repaint(){
   if(!$("s-game").classList.contains("hide"))live();
   if(!$("s-rank").classList.contains("hide"))tbl("tb2");
-  if(!$("s-name").classList.contains("hide")){podium();tbl("tb")}
+  if(!$("s-name").classList.contains("hide")){podium();tbl("tb");status()}
 }
 function mineIdx(){if(!cache)return-1;for(var i=0;i<cache.length;i++)if(isMe(cache[i]))return i;return-1}
 function tbl(el){
   if(!loaded){$(el).textContent="Cargando ranking…";return}
   var l=cache,me=mineIdx();
-  if(!l.length){$(el).textContent="Todavía no hay puntajes. ¡Sé el primero!";return}
+  if(!l.length){$(el).textContent="Todavía no hay puntajes. El primero que complete una partida aparece acá.";return}
   var h="<table><tr><th>#</th><th>JUGADOR</th><th>NIV</th><th>PTS</th></tr>";
   l.slice(0,10).forEach(function(r,i){h+="<tr"+(i===me?" class='me'":"")+"><td>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td>"+r.score+"</td></tr>"});
   if(me>=10)h+="<tr class='me'><td>"+(me+1)+"</td><td>"+esc(l[me].name)+" (vos)</td><td>"+l[me].lvl+"</td><td>"+l[me].score+"</td></tr>";
@@ -149,7 +154,7 @@ function podium(){
 }
 function hasPlayed(){return !test&&ls("played")===String(FB.cfg().gen)}
 function renderStart(){
-  podium();tbl("tb");
+  podium();tbl("tb");status();
   $("rankpub").classList.toggle("hide",!rankVisible());
   var p=hasPlayed(),i=mineIdx();
   $("form").classList.toggle("hide",p);$("played").classList.toggle("hide",!p);$("tst").classList.toggle("hide",!test);
@@ -232,7 +237,7 @@ async function end(win){
   $("end-t").textContent=win?"¡GANASTE!":"GAME OVER";$("end-t").className="big "+(win?"yel":"red");
   $("end-s").textContent=win?name+", respondiste las "+order.length+" preguntas con "+hp+" vidas · "+score+" pts":"Te quedaste sin vidas en la pregunta "+(qi+1)+" · "+score+" pts";
   $("end-p").textContent="";$("end-r").classList.toggle("hide",!test);show("s-end");
-  await saveScore();await refresh();
+  await saveScore(true);await refresh();
   var m=merged();
   $("end-p").textContent=rankVisible()?"Estás #"+(m.p+1)+" de "+m.l.length+" en el ranking":"";
   $("end-rk").classList.toggle("hide",!rankVisible());
