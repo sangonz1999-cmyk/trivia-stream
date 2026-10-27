@@ -78,9 +78,9 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js"></script>
-<script src="questions.js"></script>
-<script src="fb.js"></script>
+<script src="fb-config.js?v=3"></script>
+<script src="questions.js?v=3"></script>
+<script src="fb.js?v=3"></script>
 <script>
 var D=[];
 var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
@@ -164,7 +164,9 @@ function start(){
 function play(){
   if(hasPlayed()){show("s-name");renderStart();return}
   if(!D.length){show("s-name");$("err").textContent="No se cargaron las preguntas. Recargá la página.";return}
-  order=shuf(D);qi=0;hp=MAXHP;score=0;
+  order=shuf(D.filter(function(x){return x&&x.q&&x.ok&&x.bad&&x.bad.length}));
+  if(!order.length){show("s-name");$("err").textContent="Las preguntas están incompletas. Avisale al admin.";return}
+  qi=0;hp=MAXHP;score=0;
   if(!test)ls("played",String(FB.cfg().gen));
   $("live").classList.toggle("hide",!rankVisible());
   saveScore().then(refresh);ask();
@@ -172,12 +174,12 @@ function play(){
 function ask(){
   var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
   var g=$("s-game");g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
-  var opts=shuf([d[1]].concat(d[2].slice(0,n-1)));
+  var opts=shuf([d.ok].concat(d.bad.slice(0,n-1)));
   $("h-lv").textContent="NIVEL "+(l+1)+" · "+L[0];$("h-hp").innerHTML=hearts();
   $("h-q").textContent="Pregunta "+(qi+1)+" de "+order.length;$("h-sc").textContent=score+" pts";
-  $("tag").textContent=L[0];$("qt").textContent=d[0];live();
+  $("tag").textContent=L[0];$("qt").textContent=d.q;live();
   var o=$("opts");o.innerHTML="";
-  opts.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+String.fromCharCode(65+i)+"</b><span>"+esc(t)+"</span>";b.dataset.ok=(t===d[1])?"1":"0";b.onclick=function(){pick(b)};o.appendChild(b)});
+  opts.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+String.fromCharCode(65+i)+"</b><span>"+esc(t)+"</span>";b.dataset.ok=(t===d.ok)?"1":"0";b.onclick=function(){pick(b)};o.appendChild(b)});
   show("s-game");t0=Date.now();clearInterval(tm);
   tm=setInterval(function(){var left=T-(Date.now()-t0),bar=$("bar");bar.style.width=Math.max(0,left/T*100)+"%";bar.classList.toggle("low",left<5000);if(left<=0){clearInterval(tm);if(!locked){locked=true;reveal(null)}}},100);
 }
