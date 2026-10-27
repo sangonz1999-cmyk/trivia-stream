@@ -53,7 +53,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <section id="s-how" class="hide">
 <h2>CÓMO SE JUEGA</h2>
 <div class="card"><p>Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
-<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">51</b> preguntas en total, en orden aleatorio, distinto para cada persona.</li><li><b>4 niveles</b> que cambian el color: fácil <b id="how-l1">6</b> (2 opciones), medio <b id="how-l2">5</b> (3), difícil <b id="how-l3">5</b> (4) y después <b>experto</b> (6 opciones).</li><li>Con las primeras <b id="how-prize">16</b> preguntas ya ganás el premio. Seguir sumando te sube en el ranking.</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o si respondés las <span id="how-n2">51</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
+<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">51</b> preguntas en total, en orden aleatorio, distinto para cada persona.</li><li><b>4 niveles</b> que cambian el color: fácil <b id="how-l1">6</b> (2 opciones), medio <b id="how-l2">5</b> (3), difícil <b id="how-l3">5</b> (4) y después <b>experto</b> (6 opciones).</li><li>Con las primeras <b id="how-prize">16</b> preguntas ya ganás el premio. Seguir sumando te sube en el ranking.</li><li><b class="yel">Racha</b>: cada respuesta seguida sin fallar sube el multiplicador (hasta <b>x2</b>). Si perdés una vida vuelve a x1.</li><li>Al entrar al nivel <b>experto</b> (pregunta 17) te queda <b class="red">1 sola vida</b>, aunque hayas llegado con más.</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o si respondés las <span id="how-n2">51</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
 <button onclick="play()">JUGAR ▶</button>
 </section>
 <section id="s-game" class="hide">
@@ -78,9 +78,9 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=10"></script>
-<script src="questions.js?v=10"></script>
-<script src="fb.js?v=10"></script>
+<script src="fb-config.js?v=11"></script>
+<script src="questions.js?v=11"></script>
+<script src="fb.js?v=11"></script>
 <script>
 var D=[];
 var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
@@ -91,10 +91,16 @@ function applyCfg(){
 }
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
 var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
+var racha=0,expertHp=false;
 var $=function(i){return document.getElementById(i)};
 function show(id){["s-name","s-how","s-game","s-end","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});window.scrollTo(0,0)}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
-function hearts(){var h="";for(var i=0;i<MAXHP;i++)h+=i<hp?"♥":"<s>♥</s>";return h}
+// En el nivel EXPERTO queda 1 sola vida, sin importar cuántas traía.
+function maxhpNow(){return lvOf(qi)===3?1:MAXHP}
+function hearts(){var t=maxhpNow(),h="";for(var i=0;i<t;i++)h+=i<hp?"♥":"<s>♥</s>";return h}
+// Multiplicador por respuestas seguidas sin perder vida: x1.1, x1.2... tope x2.
+function mult(){return Math.min(1+racha*0.1,2)}
+function scoreHud(){var m=mult();$("h-sc").textContent=score+" pts"+(m>1.001?" · x"+m.toFixed(1)+" racha":"")}
 function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function lvOf(i){var c=FB.cfg(),a=c.n[0]|0,b=a+(c.n[1]|0),d=b+(c.n[2]|0);return i<a?0:(i<b?1:(i<d?2:3))}
@@ -194,19 +200,21 @@ function play(){
   if(!D.length){show("s-name");$("err").textContent="No se cargaron las preguntas. Recargá la página.";return}
   order=buildOrder();
   if(!order.length){show("s-name");$("err").textContent="Las preguntas están incompletas. Avisale al admin.";return}
-  qi=0;hp=MAXHP;score=0;
+  qi=0;hp=MAXHP;score=0;racha=0;expertHp=false;
   if(!test)ls("played",String(FB.cfg().gen));
   $("live").classList.toggle("hide",!rankVisible());
   saveScore().then(refresh);ask();
 }
 function ask(){
   var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
+  // Al entrar al nivel EXPERTO (pregunta 17) queda 1 sola vida.
+  if(l===3&&!expertHp){expertHp=true;if(hp>1)hp=1}
   var g=$("s-game");g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
   // distractores y orden de opciones al azar: a cada persona le toca distinto
   var bad=shuf(d.bad).slice(0,n-1);
   var opts=shuf([d.ok].concat(bad));
   $("h-lv").textContent="NIVEL "+(l+1)+" · "+L[0];$("h-hp").innerHTML=hearts();
-  $("h-q").textContent="Pregunta "+(qi+1)+" de "+order.length;$("h-sc").textContent=score+" pts";
+  $("h-q").textContent="Pregunta "+(qi+1)+" de "+order.length;scoreHud();
   $("tag").textContent=L[0];$("qt").textContent=d.q;live();
   var o=$("opts");o.innerHTML="";
   opts.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+String.fromCharCode(65+i)+"</b><span>"+esc(t)+"</span>";b.dataset.ok=(t===d.ok)?"1":"0";b.onclick=function(){pick(b)};o.appendChild(b)});
@@ -216,15 +224,15 @@ function ask(){
 function pick(b){
   if(locked)return;locked=true;clearInterval(tm);
   var left=Math.max(0,T-(Date.now()-t0));
-  if(b.dataset.ok==="1")score+=(100+Math.round(left/100))*(lvOf(qi)+1);
+  if(b.dataset.ok==="1"){racha++;score+=Math.round((100+Math.round(left/100))*(lvOf(qi)+1)*mult())}
   reveal(b);
 }
 function reveal(b){
   var bs=$("opts").children,good=b&&b.dataset.ok==="1";
   for(var i=0;i<bs.length;i++)if(bs[i].dataset.ok==="1")bs[i].classList.add("ok");
   if(b&&!good)b.classList.add("bad");
-  if(!good)hp--;
-  $("h-hp").innerHTML=hearts();$("h-sc").textContent=score+" pts";live();
+  if(!good){hp--;racha=0}
+  $("h-hp").innerHTML=hearts();scoreHud();live();
   saveScore().then(refresh);
   setTimeout(function(){
     if(hp<=0)return end(false);
@@ -236,7 +244,7 @@ function reveal(b){
 async function end(win){
   clearInterval(tm);if(win)score+=hp*100;
   $("end-t").textContent=win?"¡GANASTE!":"GAME OVER";$("end-t").className="big "+(win?"yel":"red");
-  $("end-s").textContent=win?name+", respondiste las "+order.length+" preguntas con "+hp+" vidas · "+score+" pts":"Te quedaste sin vidas en la pregunta "+(qi+1)+" · "+score+" pts";
+  $("end-s").textContent=win?name+", respondiste las "+order.length+" preguntas con "+hp+(hp===1?" vida":" vidas")+" · "+score+" pts":"Te quedaste sin vidas en la pregunta "+(qi+1)+" · "+score+" pts";
   $("end-p").textContent="";$("end-r").classList.toggle("hide",!test);show("s-end");
   await saveScore(true);await refresh();
   var m=merged();

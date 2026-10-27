@@ -34,6 +34,10 @@ se ve en el juego, en el ranking para OBS y en el panel admin, en vivo.
 - Con las primeras 16 preguntas ya está el premio. Después se sigue jugando para
   sumar y subir en el ranking (desempate del premio mayor).
 - La partida termina al quedarse sin vidas o al responder las 51.
+- **Al llegar al nivel experto (pregunta 17) queda 1 sola vida**, sin importar
+  cuántas traía.
+- **Racha:** cada respuesta seguida sin fallar sube el multiplicador (x1.1, x1.2…
+  hasta **x2**). Al perder una vida vuelve a x1.
 - Las opciones se mezclan: la correcta puede caer en A, B, C, D, E o F, distinto
   para cada persona y cada partida.
 - 15 segundos por pregunta; más rápido y más nivel = más puntos.
