@@ -46,6 +46,33 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 .tn{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ts{font-size:.85rem;color:var(--mut);margin-bottom:4px;min-height:1.3em}
 .bl{border:2px solid;border-radius:10px 10px 0 0;background:var(--card);display:flex;justify-content:center;padding-top:6px;font:700 1.8rem "Courier New",monospace}
 .l3{padding:10px 14px}.l3 div{display:flex;justify-content:space-between;font-size:.95rem}.l3 .you{margin-top:6px;padding-top:6px;border-top:1px solid #3a1a55;color:var(--yel);font-weight:700}
+/* Premio: el cartel ocupa ~3/4 de la pantalla y el apartado de continuar ~1/4 */
+#s-prize:not(.hide){display:flex;flex-direction:column;min-height:calc(100vh - 60px);min-height:calc(100dvh - 60px)}
+#s-prize .pz1{flex:3;display:flex;flex-direction:column;justify-content:center;align-items:center;margin:0 0 10px}
+#s-prize .pz2{flex:1;margin:0;display:flex;flex-direction:column;justify-content:center}
+#s-prize .pz2 button{margin:5px 0}
+#s-prize .big{font-size:clamp(1.5rem,8vw,2.1rem);letter-spacing:0}
+#s-prize .pz1 .em{font-size:clamp(2.6rem,9vh,4.2rem);line-height:1}
+#s-prize .pz1 p{font-size:clamp(1rem,2.8vh,1.2rem)!important;margin:.4em 0}
+#s-prize .pz2{padding:12px}#s-prize .pz2 button{padding:12px;font-size:1rem}
+.rw{font-size:.95rem;line-height:1.35;margin:2px 0 2px 0;line-height:1.35}.rw b{color:var(--yel)}
+/* Nivel EXPERTO: todo compacto para que entren 6 opciones + vidas + tiempo en el celu */
+body.exp .wrap{padding:8px 12px 10px}
+body.exp .hud{font-size:.85rem;line-height:1.3}
+body.exp .hearts{font-size:1.2rem;letter-spacing:2px}
+body.exp .bar{margin:5px 0;height:8px}
+body.exp .card{margin:6px 0;border-width:1.5px}
+body.exp #qcard{padding:9px 12px}
+body.exp .qt{font-size:1.05rem;line-height:1.25;margin:2px 0}
+body.exp #tag{margin-bottom:3px;padding:0 10px;font-size:.75rem}
+body.exp .l3{padding:5px 12px}body.exp .l3 div{font-size:.85rem}
+body.exp .opt{padding:7px 10px;gap:10px;margin:4px 0;font-size:.92rem;line-height:1.2;border-width:1.5px}
+body.exp .opt b{width:24px;height:24px;font-size:.78rem}
+body.exp.xs .hud{font-size:.78rem}
+body.exp.xs .qt{font-size:.95rem;line-height:1.2}
+body.exp.xs #qcard{padding:6px 10px}
+body.exp.xs .opt{padding:5px 8px;margin:3px 0;font-size:.85rem}
+body.exp.xs .opt b{width:21px;height:21px}
 .ov{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}.ov .card{width:100%;max-width:340px}
 </style>
 </head>
@@ -64,8 +91,16 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 </section>
 <section id="s-how" class="hide">
 <h2>CÓMO SE JUEGA</h2>
-<div class="card"><p>Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
-<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">51</b> preguntas en total, en orden aleatorio, distinto para cada persona.</li><li><b>4 niveles</b> que cambian el color: fácil <b id="how-l1">6</b> (2 opciones), medio <b id="how-l2">5</b> (3), difícil <b id="how-l3">5</b> (4) y después <b>experto</b> (6 opciones).</li><li>Con las primeras <b id="how-prize">16</b> preguntas ya ganás el premio. Seguir sumando te sube en el ranking.</li><li><b class="yel">Racha</b>: cada respuesta seguida sin fallar sube el multiplicador (hasta <b>x2</b>). Si perdés una vida vuelve a x1.</li><li>Al entrar al nivel <b>experto</b> (pregunta 17) te queda <b class="red">1 sola vida</b>, aunque hayas llegado con más.</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o si respondés las <span id="how-n2">51</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
+<div class="card"><p style="margin-top:0">Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
+<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li>
+<li>Subís de nivel y cada uno tiene su premio:
+<div class="rw"><b style="color:#3dff8a">FÁCIL</b> · sticker o caramelos</div>
+<div class="rw"><b>MEDIO</b> · llavero plano</div>
+<div class="rw"><b style="color:var(--red)">DIFÍCIL</b> · llavero 3D</div>
+<div class="rw">🏆 <b>Ganar el nivel difícil</b> · logo 3D grande</div>
+<div class="rw">🎁 <b>Top del ranking</b> (modo experto, opcional) · caja con golosinas, alfajores, stickers, logo muy grande y más</div></li>
+<li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li></ol>
+<p style="margin-bottom:0"><b>Solo se puede jugar una vez.</b></p></div>
 <button onclick="play()">JUGAR ▶</button>
 </section>
 <section id="s-game" class="hide">
@@ -82,9 +117,15 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <button class="r hide" id="end-r" onclick="play()">REINTENTAR (PRUEBA)</button>
 </section>
 <section id="s-prize" class="hide">
-<div class="card y c"><div class="big yel">¡FELICIDADES!</div><p style="font-weight:700;font-size:1.2rem;margin:.4em 0">Ganaste la recompensa máxima 🏆</p><p style="margin-bottom:0">Acercate al puesto del streaming y reclamá tu recompensa.</p></div>
-<div class="card c"><p style="font-weight:700;margin-top:0">¿Querés seguir respondiendo preguntas para avanzar en el ranking?</p><p class="mut" style="margin-top:0">(Si quedás en el top 3 tendrás una recompensa especial)</p>
-<button class="r" onclick="prizeExit()">SALIR</button><button onclick="prizeGo()">CONTINUAR ▶</button></div>
+<div class="card y c pz1"><div class="em">🏆</div><div class="big yel">¡FELICIDADES!</div><p style="font-weight:700;font-size:1.35rem;margin:.5em 0">Ganaste la recompensa máxima</p><p style="font-size:1.1rem;margin:0">Acercate al puesto del streaming y reclamá tu recompensa.</p></div>
+<div class="card c pz2"><p style="font-weight:700;margin:0">¿Querés seguir respondiendo preguntas para avanzar en el ranking?</p><p class="mut" style="margin:2px 0 6px;font-size:.9rem">(Si quedás en el top 3 tendrás una recompensa especial)</p>
+<button onclick="prizeGo()">CONTINUAR ▶</button><button class="r" onclick="prizeExit()">SALIR</button></div>
+</section>
+<section id="s-exp" class="hide">
+<h2>MODO EXPERTO</h2>
+<div class="card"><p style="margin-top:0">Tu recompensa máxima ya está ganada: lo que pase acá no te la quita. Ahora competís contra los demás por el <b class="yel">ranking</b>:</p>
+<ol><li><b>6 opciones</b> por pregunta.</li><li><b id="ex-t">12</b> segundos para responder.</li><li><b class="red">1 sola vida</b>: un error y termina.</li><li><b id="ex-n">100</b> preguntas en total (seguís desde la <b id="ex-from">17</b>).</li><li><b class="yel">Racha</b>: respuestas seguidas suben el multiplicador (hasta x2).</li></ol></div>
+<button onclick="startExpert()">EMPEZAR ▶</button><button class="p" onclick="go()">VOLVER AL MENÚ</button>
 </section>
 <section id="s-rank" class="hide">
 <h2>RANKING</h2><div class="card"><div id="tb2">Cargando...</div></div>
@@ -108,9 +149,9 @@ function applyCfg(){
 }
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
 var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
-var racha=0,expertHp=false;
+var racha=0,expertHp=false,TT=15000;
 var $=function(i){return document.getElementById(i)};
-function show(id){["s-name","s-how","s-game","s-end","s-prize","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});danger();window.scrollTo(0,0)}
+function show(id){["s-name","s-how","s-game","s-end","s-prize","s-exp","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});var b=document.body;b.classList.toggle("exp",id==="s-game"&&lvOf(qi)===3);b.classList.remove("xs");danger();window.scrollTo(0,0)}
 // Con 1 sola vida el corazón late y el fondo pulsa en rojo.
 function danger(){
   var last=hp<=1&&hp>0;
@@ -182,10 +223,7 @@ function renderStart(){
   if(p)$("played").innerHTML=i>=0?"Ya jugaste y ya figurás en la tabla: <b>puesto #"+(i+1)+"</b> con <b>"+cache[i].score+" pts</b>. Solo se puede jugar una vez.":"Ya jugaste. Solo se puede jugar una vez.";
   $("contbtn").classList.toggle("hide",!(p&&hasCont()));
   if(p&&hasCont())$("played").innerHTML+="<br><br>Ya ganaste la <b>recompensa máxima</b>: podés continuar para avanzar en el ranking.";
-  $("how-n").textContent=D.length;$("how-n2").textContent=D.length;
   $("how-t").textContent=Math.round(T/1000);$("how-v").textContent=MAXHP;
-  var c=FB.cfg();$("how-l1").textContent=c.n[0]|0;$("how-l2").textContent=c.n[1]|0;$("how-l3").textContent=c.n[2]|0;
-  $("how-prize").textContent=Math.min(totalQ(),D.length);
 }
 async function init(){
   podium();tbl("tb");
@@ -204,6 +242,7 @@ function merged(){
 }
 function live(){
   var m=merged(),s="";
+  if(lvOf(qi)===3){var t0_=m.l[0];$("live").innerHTML="<div><span>🥇 "+esc(t0_.name)+" · "+t0_.score+" pts</span><span class='yel'>Vos: #"+(m.p+1)+"</span></div>";return}
   for(var i=0;i<3&&i<m.l.length;i++)s+="<div"+(m.l[i].id==="cur"?" class='yel'":"")+"><span>"+["🥇","🥈","🥉"][i]+" "+esc(m.l[i].name)+"</span><span>"+m.l[i].score+" pts</span></div>";
   $("live").innerHTML=s+"<div class='you'><span>Vos: puesto #"+(m.p+1)+"</span><span>"+score+" pts</span></div>";
 }
@@ -225,6 +264,7 @@ function play(){
 }
 function ask(){
   var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
+  TT=(l===3)?Math.max(3000,T-3000):T; // experto: 3 segundos menos
   // Al entrar al nivel EXPERTO (pregunta 17) queda 1 sola vida.
   if(l===3&&!expertHp){expertHp=true;if(hp>1)hp=1}
   var g=$("s-game");g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
@@ -232,16 +272,17 @@ function ask(){
   var bad=shuf(d.bad).slice(0,n-1);
   var opts=shuf([d.ok].concat(bad));
   $("h-lv").textContent="NIVEL "+(l+1)+" · "+L[0];$("h-hp").innerHTML=hearts();
-  $("h-q").textContent="Pregunta "+(qi+1)+" de "+order.length;scoreHud();
+  $("h-q").textContent="Pregunta "+(qi+1)+" de "+(l===3?order.length:Math.min(totalQ(),order.length));scoreHud();
   $("tag").textContent=L[0];$("qt").textContent=d.q;live();
   var o=$("opts");o.innerHTML="";
   opts.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+String.fromCharCode(65+i)+"</b><span>"+esc(t)+"</span>";b.dataset.ok=(t===d.ok)?"1":"0";b.onclick=function(){pick(b)};o.appendChild(b)});
   show("s-game");t0=Date.now();clearInterval(tm);
-  tm=setInterval(function(){var left=T-(Date.now()-t0),bar=$("bar");bar.style.width=Math.max(0,left/T*100)+"%";bar.classList.toggle("low",left<5000);if(left<=0){clearInterval(tm);if(!locked){locked=true;reveal(null)}}},100);
+  if(document.body.classList.contains("exp")&&document.querySelector(".wrap").offsetHeight>window.innerHeight)document.body.classList.add("xs");
+  tm=setInterval(function(){var left=TT-(Date.now()-t0),bar=$("bar");bar.style.width=Math.max(0,left/TT*100)+"%";bar.classList.toggle("low",left<5000);if(left<=0){clearInterval(tm);if(!locked){locked=true;reveal(null)}}},100);
 }
 function pick(b){
   if(locked)return;locked=true;clearInterval(tm);
-  var left=Math.max(0,T-(Date.now()-t0));
+  var left=Math.max(0,TT-(Date.now()-t0));
   if(b.dataset.ok==="1"){racha++;score+=Math.round((100+Math.round(left/100))*(lvOf(qi)+1)*mult())}
   reveal(b);
 }
@@ -272,7 +313,12 @@ function hasCont(){
 }
 function showPrize(){clearInterval(tm);contSave();show("s-prize")}
 function prizeExit(){go()}
-function prizeGo(){contClear();ask()}
+function expIntro(){
+  $("ex-t").textContent=Math.round(Math.max(3000,T-3000)/1000);$("ex-n").textContent=order.length;$("ex-from").textContent=qi+1;
+  show("s-exp");
+}
+function prizeGo(){expIntro()}
+function startExpert(){contClear();$("live").classList.toggle("hide",!rankVisible());ask()}
 function resume(){
   var c=null;try{c=JSON.parse(ls("cont")||"null")}catch(e){}
   if(!c||!D.length){contClear();go();return}
@@ -280,9 +326,7 @@ function resume(){
   var o=c.order.map(function(q){return map[q]}).filter(Boolean);
   if(o.length!==c.order.length||c.qi>=o.length){contClear();go();return}
   order=o;name=c.name||name;qi=c.qi;hp=c.hp;score=c.score;racha=c.racha||0;expertHp=false;
-  contClear();
-  $("live").classList.toggle("hide",!rankVisible());
-  saveScore().then(refresh);ask();
+  expIntro();
 }
 async function end(win){
   clearInterval(tm);if(win)score+=hp*100;contClear();
