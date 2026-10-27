@@ -42,9 +42,17 @@ button:active{transform:scale(.98)}button.p{color:#fff;background:#2d1050;border
 table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;border-bottom:1px solid #3a1a55}th{color:var(--pur)}tr.me td{color:var(--yel);font-weight:700;background:#ffe60014}
 .big{font-size:2.6rem;text-align:center;margin:.1em 0;font-family:"Courier New",monospace;font-weight:700}.c{text-align:center}
 .cur::after{content:"_";animation:b 1s steps(1) infinite}@keyframes b{50%{opacity:0}}
-.pod{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin:10px 0 18px}.tw{flex:1;max-width:150px;min-width:0;text-align:center}
-.tn{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ts{font-size:.85rem;color:var(--mut);margin-bottom:4px;min-height:1.3em}
-.bl{border:2px solid;border-radius:10px 10px 0 0;background:var(--card);display:flex;justify-content:center;padding-top:6px;font:700 1.8rem "Courier New",monospace}
+.pod{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:6px 0 18px}
+.tw{flex:1;max-width:140px;min-width:0;text-align:center;--c:#ffd23f;--g:#ffd23f30}
+.tw.k2{--c:#cfe0ff;--g:#cfe0ff2a}.tw.k3{--c:#ff8a5b;--g:#ff8a5b2e}
+.md{font-size:1.5rem;line-height:1.2;min-height:1.8rem}
+.tn{font:700 1rem "Courier New",ui-monospace,monospace;color:var(--c);text-shadow:0 0 5px var(--c),0 0 14px var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tn.empty{color:var(--mut);text-shadow:none;font-weight:400}
+.ts{font-size:.82rem;color:var(--mut);margin-bottom:6px;min-height:1.3em}
+.bl{border-top:3px solid var(--c);border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--g),transparent);box-shadow:0 -5px 14px -8px var(--c);display:flex;justify-content:center;align-items:flex-start;padding-top:3px;font:700 1.1rem "Courier New",monospace;color:var(--c)}
+.rk{font-family:"Courier New",monospace;font-weight:700}.nm{font-family:"Courier New",ui-monospace,monospace;font-weight:700}
+td.n1{color:#ffd23f}td.n2{color:#cfe0ff}td.n3{color:#ff8a5b}
+td.nm.n1{text-shadow:0 0 5px #ffd23f,0 0 13px #ffd23faa}td.nm.n2{text-shadow:0 0 5px #cfe0ff,0 0 13px #cfe0ffaa}td.nm.n3{text-shadow:0 0 5px #ff8a5b,0 0 13px #ff8a5baa}
 .l3{padding:10px 14px}.l3 div{display:flex;justify-content:space-between;font-size:.95rem}.l3 .you{margin-top:6px;padding-top:6px;border-top:1px solid #3a1a55;color:var(--yel);font-weight:700}
 /* Premio: el cartel ocupa ~3/4 de la pantalla y el apartado de continuar ~1/4 */
 #s-prize:not(.hide){display:flex;flex-direction:column;min-height:calc(100vh - 60px);min-height:calc(100dvh - 60px)}
@@ -83,11 +91,11 @@ body.exp.xs .opt b{width:21px;height:21px}
 <h1 class="cur" id="ttl">INPUT</h1>
 <p class="mono red" style="margin-top:0">// la trivia del stream</p>
 <div id="tst" class="hide yel mono c">[ MODO PRUEBA ]</div>
-<div id="rankpub"><h2>TOP 3</h2><div class="pod" id="pod"></div>
-<h2>TOP 10</h2><div class="card"><div id="tb"></div></div><div id="rkst" class="small c" style="margin:-6px 0 10px"></div></div>
 <div class="card y hide" id="played"></div>
 <button class="hide" id="contbtn" onclick="resume()">CONTINUAR PARA AVANZAR EN EL RANKING ▶</button>
 <div class="card y" id="form"><label>NOMBRE</label><input id="nom" maxlength="20" autocomplete="given-name" placeholder="Nombre"><button onclick="start()">ENTRAR ▶</button><small id="err" class="red"></small></div>
+<div id="rankpub"><h2>TOP 3</h2><div class="pod" id="pod"></div>
+<h2>TOP 10</h2><div class="card"><div id="tb"></div></div><div id="rkst" class="small c" style="margin:-6px 0 10px"></div></div>
 </section>
 <section id="s-how" class="hide">
 <h2>CÓMO SE JUEGA</h2>
@@ -124,7 +132,7 @@ body.exp.xs .opt b{width:21px;height:21px}
 <section id="s-exp" class="hide">
 <h2>MODO EXPERTO</h2>
 <div class="card"><p style="margin-top:0">Tu recompensa máxima ya está ganada: lo que pase acá no te la quita. Ahora competís contra los demás por el <b class="yel">ranking</b>:</p>
-<ol><li><b>6 opciones</b> por pregunta.</li><li><b id="ex-t">12</b> segundos para responder.</li><li><b class="red">1 sola vida</b>: un error y termina.</li><li><b id="ex-n">100</b> preguntas en total (seguís desde la <b id="ex-from">17</b>).</li><li><b class="yel">Racha</b>: respuestas seguidas suben el multiplicador (hasta x2).</li></ol></div>
+<ol><li><b>6 opciones</b> por pregunta.</li><li><b id="ex-t">12</b> segundos para responder.</li><li><b class="red">1 sola vida</b>: un error y termina.</li><li><b id="ex-n">100</b> preguntas en total (seguís desde la <b id="ex-from">17</b>).</li></ol></div>
 <button onclick="startExpert()">EMPEZAR ▶</button><button class="p" onclick="go()">VOLVER AL MENÚ</button>
 </section>
 <section id="s-rank" class="hide">
@@ -204,14 +212,14 @@ function tbl(el){
   var l=cache,me=mineIdx();
   if(!l.length){$(el).textContent="Todavía no hay puntajes. El primero que complete una partida aparece acá.";return}
   var h="<table><tr><th>#</th><th>JUGADOR</th><th>NIV</th><th>PTS</th></tr>";
-  l.slice(0,10).forEach(function(r,i){h+="<tr"+(i===me?" class='me'":"")+"><td>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td>"+r.score+"</td></tr>"});
+  l.slice(0,10).forEach(function(r,i){var cl=i<3?" n"+(i+1):"";h+="<tr"+(i===me?" class='me'":"")+"><td class='rk"+cl+"'>"+(i+1)+"</td><td class='nm"+cl+"'>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td>"+r.score+"</td></tr>"});
   if(me>=10)h+="<tr class='me'><td>"+(me+1)+"</td><td>"+esc(l[me].name)+" (vos)</td><td>"+l[me].lvl+"</td><td>"+l[me].score+"</td></tr>";
   $(el).innerHTML=h+"</table>";
 }
 function podium(){
   if(!loaded){$("pod").innerHTML="<div class='ts' style='flex:1'>Cargando ranking…</div>";return}
-  var c=["#ffe600","#cdb8e6","#ff9d00"],h=[120,90,66],s="";
-  [1,0,2].forEach(function(k){var r=cache[k];s+="<div class='tw'><div class='tn'>"+(r?esc(r.name):"—")+"</div><div class='ts'>"+(r?r.score+" pts":"")+"</div><div class='bl' style='height:"+h[k]+"px;color:"+c[k]+";border-color:"+c[k]+";box-shadow:0 0 14px "+c[k]+"66'>"+(k+1)+"</div></div>"});
+  var h=[58,42,32],md=["🥇","🥈","🥉"],s="";
+  [1,0,2].forEach(function(k){var r=cache[k];s+="<div class='tw k"+(k+1)+"'><div class='md'>"+(r?md[k]:"")+"</div><div class='tn"+(r?"":" empty")+"'>"+(r?esc(r.name):"—")+"</div><div class='ts'>"+(r?r.score+" pts":"")+"</div><div class='bl' style='height:"+h[k]+"px'>"+(k+1)+"</div></div>"});
   $("pod").innerHTML=s;
 }
 function hasPlayed(){return !test&&ls("played")===String(FB.cfg().gen)}
