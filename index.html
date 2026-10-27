@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>INPUT_ — Trivia del Stream</title>
+<style>
+:root{--red:#ff3b6b;--pur:#c25bff;--yel:#ffe600;--bg:#08030f;--card:#120922;--tx:#fff;--mut:#cdb8e6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{background:radial-gradient(circle at 15% 0,#4a0a5a55,transparent 50%),radial-gradient(circle at 95% 100%,#6a0a2a55,transparent 50%),var(--bg);min-height:100vh}
+.wrap{max-width:540px;margin:0 auto;padding:20px 16px 40px}
+h1,h2,.mono{font-family:"Courier New",ui-monospace,monospace}
+h1{font-size:2.6rem;margin:.1em 0;color:var(--yel);text-shadow:0 0 10px var(--yel),0 0 28px #ff9d00;letter-spacing:3px;cursor:default;user-select:none}
+h2{color:var(--pur);text-shadow:0 0 10px var(--pur);margin:.6em 0 .3em;font-size:1.4rem}
+.red{color:var(--red)}.yel{color:var(--yel)}.mut,small{color:var(--mut)}
+.card{background:var(--card);border:2px solid var(--pur);border-radius:16px;padding:18px;box-shadow:0 0 16px #c25bff88;margin:14px 0}
+.card.y{border-color:var(--yel);box-shadow:0 0 16px #ffe60066}.card.r{border-color:var(--red);box-shadow:0 0 16px #ff3b6b88}
+#qcard{border-color:var(--lc,var(--red));box-shadow:0 0 16px var(--lg,#ff3b6b88)}
+label{font-size:.95rem;color:var(--mut);font-weight:600}
+input{width:100%;background:#05010b;border:2px solid var(--yel);color:#fff;font:inherit;font-size:1.15rem;padding:14px;border-radius:12px;margin:6px 0 14px;outline:none}
+button{font:inherit;font-weight:700;font-size:1.1rem;cursor:pointer;width:100%;padding:16px;margin:7px 0;border-radius:12px;background:#1b0e30;color:var(--yel);border:2px solid var(--yel);box-shadow:0 0 12px #ffe60055}
+button:active{transform:scale(.98)}button.p{color:#fff;background:#2d1050;border-color:var(--pur)}button.r{color:#fff;background:#4a0d22;border-color:var(--red)}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;color:#fff;border-color:var(--lc,var(--pur));box-shadow:none;font-weight:600;font-size:1.08rem;padding:14px}
+.opt b{flex:none;width:34px;height:34px;border-radius:50%;background:var(--lc,var(--pur));color:#12001f;display:grid;place-items:center;font-family:"Courier New",monospace}
+.opt.ok{background:#073d1e;border-color:#3dff8a}.opt.ok b{background:#3dff8a}.opt.bad{background:#4a0d22;border-color:var(--red)}.opt.bad b{background:var(--red)}
+.hud{display:flex;justify-content:space-between;align-items:center;font-size:.95rem;color:var(--mut);font-weight:600}
+.hearts{font-size:1.5rem;letter-spacing:3px;color:var(--red)}.hearts s{color:#4a3a5c;text-decoration:none}
+.bar{height:10px;background:#2a1240;border-radius:6px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;width:100%;background:var(--yel);box-shadow:0 0 10px var(--yel)}.bar i.low{background:var(--red)}
+.qt{font-size:1.35rem;font-weight:700;margin:4px 0;line-height:1.35}
+#tag{display:inline-block;padding:3px 12px;border-radius:20px;border:2px solid var(--lc,var(--yel));color:var(--lc,var(--yel));font-weight:700;font-size:.85rem;margin-bottom:8px}
+.hide{display:none!important}ol{padding-left:22px;line-height:1.8}
+table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;border-bottom:1px solid #3a1a55}th{color:var(--pur)}tr.me td{color:var(--yel);font-weight:700;background:#ffe60014}
+.big{font-size:2.6rem;text-align:center;margin:.1em 0;font-family:"Courier New",monospace;font-weight:700}.c{text-align:center}
+.cur::after{content:"_";animation:b 1s steps(1) infinite}@keyframes b{50%{opacity:0}}
+.pod{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin:10px 0 18px}.tw{flex:1;max-width:150px;min-width:0;text-align:center}
+.tn{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ts{font-size:.85rem;color:var(--mut);margin-bottom:4px;min-height:1.3em}
+.bl{border:2px solid;border-radius:10px 10px 0 0;background:var(--card);display:flex;justify-content:center;padding-top:6px;font:700 1.8rem "Courier New",monospace}
+.l3{padding:10px 14px}.l3 div{display:flex;justify-content:space-between;font-size:.95rem}.l3 .you{margin-top:6px;padding-top:6px;border-top:1px solid #3a1a55;color:var(--yel);font-weight:700}
+.ov{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}.ov .card{width:100%;max-width:340px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section id="s-name">
+<h1 class="cur" id="ttl">INPUT</h1>
+<p class="mono red" style="margin-top:0">// la trivia del stream</p>
+<div id="tst" class="hide yel mono c">[ MODO PRUEBA ]</div>
+<h2>TOP 3</h2><div class="pod" id="pod"></div>
+<h2>TOP 10</h2><div class="card"><div id="tb"></div></div>
+<div class="card y hide" id="played"></div>
+<div class="card y" id="form"><label>NOMBRE</label><input id="nom" maxlength="20" autocomplete="given-name" placeholder="Nombre"><button onclick="start()">ENTRAR ▶</button><small id="err" class="red"></small></div>
+</section>
+<section id="s-how" class="hide">
+<h2>CÓMO SE JUEGA</h2>
+<div class="card"><p>Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
+<ol><li>Tenés <b class="red">4 vidas</b> ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b>51 preguntas</b> en orden aleatorio, distinto para cada persona.</li><li><b>3 niveles</b> que cambian el color del borde: fácil (2 opciones), medio (3) y difícil (4).</li><li>15 segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las 50.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
+<button onclick="play()">JUGAR ▶</button>
+</section>
+<section id="s-game" class="hide">
+<div class="hud"><span id="h-lv"></span><span class="hearts" id="h-hp"></span></div>
+<div class="bar"><i id="bar"></i></div>
+<div class="hud"><span id="h-q"></span><span id="h-sc"></span></div>
+<div class="card l3" id="live"></div>
+<div class="card" id="qcard"><span id="tag"></span><div class="qt" id="qt"></div></div>
+<div id="opts"></div>
+</section>
+<section id="s-end" class="hide">
+<div class="card r"><div class="big red" id="end-t"></div><p class="c" id="end-s"></p><p class="c yel" style="font-weight:700" id="end-p"></p></div>
+<button class="p" onclick="showRank()">VER RANKING</button>
+<button class="r hide" id="end-r" onclick="play()">REINTENTAR (PRUEBA)</button>
+</section>
+<section id="s-rank" class="hide">
+<h2>RANKING</h2><div class="card"><div id="tb2">Cargando...</div></div>
+<small id="rk-note"></small>
+<button onclick="go()">VOLVER</button>
+</section>
+</div>
+<div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small></div></div>
+<script>
+var D=[
+["¿Qué significan las siglas OBS?","Open Broadcaster Software",["Online Broadcast System","Output Broadcast Server","Optimal Base Studio"]],
+["En el equipo del stream, ¿qué puesto crea las miniaturas de los resúmenes?","Editor",["Productor","Sonidista","CM"]],
+["¿Qué significa CM en el equipo?","Community Manager",["Control de Mezcla","Camarógrafo Mayor","Contenido Multimedia"]],
+["¿Qué puesto del equipo crea un overlay personalizado para cada programa?","Productor",["Editor","Sonidista","CM"]],
+["¿Quién propuso hacer un streaming en lugar de una radio escolar?","Un preceptor",["El director","Una profesora de electrónica","Un alumno de ciclo básico"]],
+["¿Con qué programa se arma y se emite la transmisión en vivo del stream?","OBS",["DaVinci Resolve","Photoshop","CapCut"]],
+["¿Qué es un overlay?","Elementos gráficos que se superponen al video en vivo",["Un programa para editar audio","Un tipo de micrófono","Un cable de audio"]],
+["¿Qué es el bitrate?","La cantidad de datos por segundo con la que se transmite el video",["La cantidad de espectadores conectados","La velocidad del procesador","El tamaño del monitor"]],
+["¿Qué significa fps en un video?","Fotogramas por segundo",["Frecuencia de píxeles por señal","Fuentes por sesión de streaming","Formato de pantalla y sonido"]],
+["¿Cuál es la resolución de Full HD?","1920x1080",["1280x720","3840x2160","640x480"]],
+["¿Cuál de estos formatos de imagen permite fondo transparente?","PNG",["JPG","MP4","PDF"]],
+["¿Para qué sirve el chroma key (fondo verde)?","Reemplazar el fondo por otra imagen",["Ajustar el volumen del micrófono","Comprimir el video para subirlo","Cambiar la clave de transmisión"]],
+["En las plataformas de streaming, ¿qué es un VOD?","La grabación de una transmisión para verla después",["Un tipo de micrófono","Una donación de los espectadores","Un moderador del chat"]],
+["¿Qué es un raid?","Enviar tu audiencia a otro canal",["Borrar los mensajes del chat","Reportar un canal a la plataforma","Subir un clip del directo"]],
+["¿Qué es la latencia en un directo?","La demora entre que algo ocurre y se ve en la transmisión",["La calidad de la imagen","La cantidad de espectadores","El volumen del audio"]],
+["¿Qué es la stream key?","Una clave que enlaza OBS con el canal",["La contraseña de tu red wifi","Un atajo de teclado en OBS","Un código para recibir donaciones"]],
+["En audio, ¿qué es el ruido?","Un sonido no deseado en el audio",["Un efecto que mejora la voz","El volumen máximo del micrófono","Un tipo de cable de audio"]],
+["¿Cuál de estos es un programa de edición de video?","CapCut",["GIMP","Excel","PuTTY"]],
+["¿Para qué se usa principalmente GIMP?","Editar imágenes",["Editar video","Mezclar audio","Programar páginas web"]],
+["¿Qué empresa es dueña de CapCut?","ByteDance",["Google","Adobe","Meta"]],
+["¿Qué empresa desarrolló Photoshop?","Adobe",["Microsoft","Google","Apple"]],
+["¿Qué es la memoria RAM?","Memoria temporal que usan los programas abiertos",["Almacenamiento permanente de archivos","El componente que procesa los gráficos","La conexión a internet"]],
+["¿A qué componente se refiere la sigla CPU?","El procesador",["El disco de almacenamiento","La fuente de alimentación","La placa de video"]],
+["¿A qué componente se refiere la sigla GPU?","La placa de video",["La memoria","El gabinete","La fuente de alimentación"]],
+["¿Qué plataforma de videos pertenece a Google?","YouTube",["Twitch","TikTok","Instagram"]],
+["¿Cuál de estas capacidades es la mayor?","TB",["GB","MB","KB"]],
+["¿Cuál de estos es un navegador web?","Chrome",["Photoshop","Excel","OBS"]],
+["¿Para qué se usa Google Drive?","Guardar archivos en la nube",["Transmitir en directo","Mezclar audio","Editar videos en vivo"]],
+["¿Qué es un virus informático?","Un programa malicioso",["Un programa de edición","Un tipo de monitor","Un cable de red"]],
+["¿Qué red social es conocida por sus videos cortos?","TikTok",["Spotify","Discord","Twitch"]],
+["¿Qué es una dirección IP?","Un número que identifica a un equipo",["Una contraseña para entrar al wifi","Un programa antivirus gratuito","Un tipo de cable de red"]],
+["¿Qué hace un router?","Reparte internet entre dispositivos",["Amplifica el sonido del micrófono","Almacena archivos en la nube","Edita video en tiempo real"]],
+["¿Qué es una capturadora de video?","Un dispositivo que captura video externo",["Un programa para editar miniaturas","Un tipo de micrófono de estudio","Un cable para cargar el celular"]],
+["¿Qué mide el ping?","El tiempo de respuesta de la red",["La resolución de la pantalla","El volumen del micrófono","La cantidad de usuarios conectados"]],
+["¿Qué es el phishing?","Un engaño para robar datos",["Un virus que borra archivos","Un tipo de copia de seguridad","Una técnica de edición de video"]],
+["¿Qué hace una VPN?","Crea una conexión privada",["Aumenta los fps del juego","Es un tipo de monitor gamer","Convierte formatos de video"]],
+["¿Para qué se usa principalmente GitHub?","Alojar y compartir código",["Editar video","Comprar hardware","Transmitir en vivo"]],
+["¿Qué extensión tiene un archivo ejecutable de Windows?",".exe",[".docx",".png",".zip"]],
+["¿Qué significa USB?","Universal Serial Bus",["Ultra Speed Base","United System Board","Unified Stream Box"]],
+["¿Qué transmite un cable HDMI?","Audio y video juntos",["Solo audio digital","Solo video analógico","Solo corriente eléctrica"]],
+["¿Qué es un píxel?","La unidad mínima de imagen",["Un tipo de pantalla LED","Un formato de archivo de imagen","Un cable de video HDMI"]],
+["¿Cuál de estos es un periférico de entrada?","Micrófono",["Parlante","Monitor","Auriculares"]],
+["¿Qué es un backup?","Una copia de seguridad",["Un reinicio de la computadora","Un programa para acelerar la PC","Un formateo del disco"]],
+["En OBS, ¿qué es una escena?","Una composición de fuentes",["Un tipo de micrófono","Una cuenta de usuario","Un efecto de sonido"]],
+["¿Qué es un clip en una plataforma de streaming?","Un fragmento corto del directo",["Una donación de un espectador","Un moderador del chat","Un tipo de cable de audio"]],
+["¿Qué puesto del equipo avisa en cada stream que pronto sale su programa?","CM",["Editor","Productor","Sonidista"]],
+["¿Qué tarea es propia del sonidista?","Subir y bajar los niveles de audio y verificar que todos se escuchen",["Editar miniaturas","Publicar en redes sociales","Crear los overlays"]],
+["¿Qué es un streamer?","Una persona que transmite en vivo",["Un programa de edición","Un tipo de cable","Una red social"]],
+["¿En qué localidad queda el colegio donde funciona el stream?","Lomas de Zamora",["Lanús","Avellaneda","Quilmes"]],
+["¿Cuál de estos fue el primer programa del stream?","Abro hilo",["Desconectados","Los del fondo","Mente abierta"]],
+["¿En qué fecha fue el primer stream del canal?","5 de septiembre de 2025",["12 de septiembre de 2025","5 de octubre de 2025","5 de agosto de 2025"]]
+];
+var LV=[["FÁCIL",0,17,2,"#3dff8a"],["MEDIO",17,34,3,"#ffe600"],["DIFÍCIL",34,50,4,"#ff3b6b"]];
+var T=15000,MAXHP=4,PWH=6118475695008877;
+function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
+var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,db=null,uid=null,shared=false,cache=[];
+var $=function(i){return document.getElementById(i)};
+function show(id){["s-name","s-how","s-game","s-end","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});window.scrollTo(0,0)}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+function hearts(){var h="";for(var i=0;i<MAXHP;i++)h+=i<hp?"♥":"<s>♥</s>";return h}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function lvOf(i){return i<17?0:i<34?1:2}
+var ready=(async function(){try{var u=await claude.use("user");if(u&&u.id)uid=await u.id();var d=await claude.use("db");if(d&&uid){db=d;shared=true}}catch(e){}})();
+function isMe(x){return uid?x.id===uid:x.id==="me"}
+async function getList(){
+  if(db){try{var sn=await db.collection("scores").orderBy("score","desc").limit(300).get();return sn.docs.map(function(d){var x=d.data();x.id=d.id;return x})}catch(e){}}
+  try{var m=JSON.parse(ls("mine")||"null");if(m){m.id="me";return[m]}}catch(e){}
+  return[];
+}
+async function saveScore(){
+  if(test)return;
+  var rec={name:name,score:score,lvl:lvOf(Math.min(qi,D.length-1))+1,ts:Date.now()};
+  ls("mine",JSON.stringify(rec));
+  if(db&&uid){try{await db.collection("scores").doc(uid).set(rec)}catch(e){}}
+}
+function mineIdx(){for(var i=0;i<cache.length;i++)if(isMe(cache[i]))return i;return-1}
+function tbl(el){
+  var l=cache,me=mineIdx();
+  if(!l.length){$(el).textContent="Todavía no hay puntajes. ¡Sé el primero!";return}
+  var h="<table><tr><th>#</th><th>JUGADOR</th><th>NIV</th><th>PTS</th></tr>";
+  l.slice(0,10).forEach(function(r,i){h+="<tr"+(i===me?" class='me'":"")+"><td>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td>"+r.score+"</td></tr>"});
+  if(me>=10)h+="<tr class='me'><td>"+(me+1)+"</td><td>"+esc(l[me].name)+" (vos)</td><td>"+l[me].lvl+"</td><td>"+l[me].score+"</td></tr>";
+  $(el).innerHTML=h+"</table>";
+}
+function podium(){
+  var c=["#ffe600","#cdb8e6","#ff9d00"],h=[120,90,66],s="";
+  [1,0,2].forEach(function(k){var r=cache[k];s+="<div class='tw'><div class='tn'>"+(r?esc(r.name):"—")+"</div><div class='ts'>"+(r?r.score+" pts":"")+"</div><div class='bl' style='height:"+h[k]+"px;color:"+c[k]+";border-color:"+c[k]+";box-shadow:0 0 14px "+c[k]+"66'>"+(k+1)+"</div></div>"});
+  $("pod").innerHTML=s;
+}
+function hasPlayed(){return !test&&(ls("played")==="1"||mineIdx()>=0)}
+function renderStart(){
+  podium();tbl("tb");
+  var p=hasPlayed(),i=mineIdx();
+  $("form").classList.toggle("hide",p);$("played").classList.toggle("hide",!p);$("tst").classList.toggle("hide",!test);
+  if(p)$("played").innerHTML=i>=0?"Ya jugaste y ya figurás en la tabla: <b>puesto #"+(i+1)+"</b> con <b>"+cache[i].score+" pts</b>. Solo se puede jugar una vez.":"Ya jugaste. Solo se puede jugar una vez.";
+}
+async function init(){await ready;cache=await getList();renderStart()}
+async function go(){show("s-name");cache=await getList();renderStart()}
+async function showRank(){show("s-rank");$("tb2").textContent="Cargando...";cache=await getList();tbl("tb2");$("rk-note").textContent=shared?"Ranking compartido con todos los jugadores.":"Ranking guardado solo en este dispositivo."}
+function merged(){
+  var l=cache.filter(function(x){return !isMe(x)});l.push({name:name,score:score,id:"cur"});
+  l.sort(function(a,b){return b.score-a.score});
+  return{l:l,p:l.findIndex(function(x){return x.id==="cur"})};
+}
+function live(){
+  var m=merged(),s="";
+  for(var i=0;i<3&&i<m.l.length;i++)s+="<div"+(m.l[i].id==="cur"?" class='yel'":"")+"><span>"+["🥇","🥈","🥉"][i]+" "+esc(m.l[i].name)+"</span><span>"+m.l[i].score+" pts</span></div>";
+  $("live").innerHTML=s+"<div class='you'><span>Vos: puesto #"+(m.p+1)+"</span><span>"+score+" pts</span></div>";
+}
+function start(){
+  var n=$("nom").value.trim();
+  if(!n){$("err").textContent="Falta el nombre";return}
+  if(hasPlayed())return;
+  name=n;ls("name",n);$("hi").textContent=n;show("s-how");
+}
+function play(){
+  if(hasPlayed())return;
+  order=shuf(D);qi=0;hp=MAXHP;score=0;
+  if(!test)ls("played","1");
+  saveScore().then(getList).then(function(l){cache=l;live()});ask();
+}
+function ask(){
+  var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
+  var g=$("s-game");g.style.setProperty("--lc",L[4]);g.style.setProperty("--lg",L[4]+"88");
+  var opts=shuf([d[1]].concat(d[2].slice(0,n-1)));
+  $("h-lv").textContent="NIVEL "+(l+1)+" · "+L[0];$("h-hp").innerHTML=hearts();
+  $("h-q").textContent="Pregunta "+(qi+1)+" de "+order.length;$("h-sc").textContent=score+" pts";
+  $("tag").textContent=L[0];$("qt").textContent=d[0];live();
+  var o=$("opts");o.innerHTML="";
+  opts.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+String.fromCharCode(65+i)+"</b><span>"+esc(t)+"</span>";b.dataset.ok=(t===d[1])?"1":"0";b.onclick=function(){pick(b)};o.appendChild(b)});
+  show("s-game");t0=Date.now();clearInterval(tm);
+  tm=setInterval(function(){var left=T-(Date.now()-t0),bar=$("bar");bar.style.width=Math.max(0,left/T*100)+"%";bar.classList.toggle("low",left<5000);if(left<=0){clearInterval(tm);if(!locked){locked=true;reveal(null)}}},100);
+}
+function pick(b){
+  if(locked)return;locked=true;clearInterval(tm);
+  var left=Math.max(0,T-(Date.now()-t0));
+  if(b.dataset.ok==="1")score+=(100+Math.round(left/100))*(lvOf(qi)+1);
+  reveal(b);
+}
+function reveal(b){
+  var bs=$("opts").children,good=b&&b.dataset.ok==="1";
+  for(var i=0;i<bs.length;i++)if(bs[i].dataset.ok==="1")bs[i].classList.add("ok");
+  if(b&&!good)b.classList.add("bad");
+  if(!good)hp--;
+  $("h-hp").innerHTML=hearts();$("h-sc").textContent=score+" pts";live();
+  saveScore().then(getList).then(function(l){cache=l;live()});
+  setTimeout(function(){
+    if(hp<=0)return end(false);
+    qi++;
+    if(qi>=order.length)return end(true);
+    ask();
+  },1400);
+}
+async function end(win){
+  clearInterval(tm);if(win)score+=hp*100;
+  $("end-t").textContent=win?"¡GANASTE!":"GAME OVER";$("end-t").className="big "+(win?"yel":"red");
+  $("end-s").textContent=win?name+", respondiste las "+order.length+" preguntas con "+hp+" vidas · "+score+" pts":"Te quedaste sin vidas en la pregunta "+(qi+1)+" · "+score+" pts";
+  $("end-p").textContent="";$("end-r").classList.toggle("hide",!test);show("s-end");
+  await saveScore();cache=await getList();
+  var m=merged();$("end-p").textContent="Estás #"+(m.p+1)+" de "+m.l.length+" en el ranking";
+}
+var taps=0,tt=0;
+$("ttl").onclick=function(){var n=Date.now();if(n-tt>4000)taps=0;tt=n;if(++taps>=7){taps=0;$("pw").value="";$("pe").textContent="";$("adm").classList.remove("hide");$("pw").focus()}};
+$("pw").onkeydown=function(e){if(e.key==="Enter")adm()};
+function adm(){if(hh($("pw").value)===PWH){test=true;$("adm").classList.add("hide");renderStart()}else $("pe").textContent="Incorrecta"}
+(function(){var s=ls("name");if(s)$("nom").value=s})();
+init();
+</script>
+</body>
+</html>
