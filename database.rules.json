@@ -23,7 +23,7 @@
         ".indexOn": ["score"],
         "$uid": {
           ".write": "!data.exists() || (newData.child('name').val() === data.child('name').val() && newData.child('score').val() >= data.child('score').val() && newData.child('ts').val() >= data.child('ts').val())",
-          ".validate": "newData.hasChildren(['name','score','lvl','ts']) && newData.child('name').isString() && newData.child('name').val().length <= 20 && newData.child('score').isNumber() && newData.child('score').val() >= 0 && newData.child('score').val() <= 2000000 && newData.child('lvl').isNumber() && newData.child('lvl').val() >= 1 && newData.child('lvl').val() <= 3 && newData.child('ts').isNumber()"
+          ".validate": "newData.hasChildren(['name','score','lvl','ts']) && newData.child('name').isString() && newData.child('name').val().length <= 20 && newData.child('score').isNumber() && newData.child('score').val() >= 0 && newData.child('score').val() <= 2000000 && newData.child('lvl').isNumber() && newData.child('lvl').val() >= 1 && newData.child('lvl').val() <= 4 && newData.child('ts').isNumber()"
         }
       }
     }

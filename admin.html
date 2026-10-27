@@ -99,7 +99,7 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
         <div class="fix"><button class="p" onclick="restoreQs()">RESTAURAR DEL ARCHIVO</button></div>
         <div class="fix"><button onclick="exportQs()">EXPORTAR JSON</button></div>
       </div>
-      <p class="small">El banco está ordenado por dificultad: el primer tercio es fácil, el segundo medio y el último difícil. En cada partida el juego <b>elige al azar</b> las preguntas de cada nivel, así que no todos ven las mismas.</p>
+      <p class="small">El banco está ordenado por dificultad: el primer tercio es fácil, el segundo medio y el último difícil. En cada partida el juego <b>elige al azar</b> las preguntas de los 3 primeros niveles y después sigue con el resto del banco en nivel EXPERTO (6 opciones). Poné 5 distractores para que todas puedan mostrarse con 6 opciones.</p>
       <div id="qs"></div>
     </div>
 
@@ -109,9 +109,9 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
 
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=9"></script>
-<script src="questions.js?v=9"></script>
-<script src="fb.js?v=9"></script>
+<script src="fb-config.js?v=10"></script>
+<script src="questions.js?v=10"></script>
+<script src="fb.js?v=10"></script>
 <script>
 var PWH=6118475695008877,qs=[],$=function(i){return document.getElementById(i)};
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
@@ -202,7 +202,7 @@ async function saveQs(){
   alert("Preguntas guardadas: "+list.length);
 }
 function addQ(){
-  qs=collect();qs.push({q:"",ok:"",bad:["","",""]});renderQs();
+  qs=collect();qs.push({q:"",ok:"",bad:["","","","",""]});renderQs();
   window.scrollTo(0,document.body.scrollHeight);
 }
 function delQ(i){

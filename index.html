@@ -53,7 +53,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <section id="s-how" class="hide">
 <h2>CÓMO SE JUEGA</h2>
 <div class="card"><p>Hola <b class="yel" id="hi"></b> 👋 Respondé preguntas sobre streaming y tecnología.</p>
-<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">24</b> preguntas por partida, <b>elegidas al azar</b> de un banco de <span id="how-bank">51</span>. Cada persona juega una selección distinta.</li><li><b>3 niveles</b>: fácil (2 opciones), medio (3) y difícil (4). Cambian el color y te avisan en pantalla.</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o respondés las <span id="how-n2">24</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
+<ol><li>Tenés <b class="red" id="how-v">4</b> vidas ♥♥♥♥. Cada error o tiempo agotado te saca una.</li><li><b id="how-n">51</b> preguntas en total, en orden aleatorio, distinto para cada persona.</li><li><b>4 niveles</b> que cambian el color: fácil <b id="how-l1">6</b> (2 opciones), medio <b id="how-l2">5</b> (3), difícil <b id="how-l3">5</b> (4) y después <b>experto</b> (6 opciones).</li><li>Con las primeras <b id="how-prize">16</b> preguntas ya ganás el premio. Seguir sumando te sube en el ranking.</li><li><b id="how-t">15</b> segundos por pregunta: <b class="yel">cuanto más rápido, más puntos</b>.</li><li>El juego termina si perdés todas las vidas o si respondés las <span id="how-n2">51</span>.</li><li><b>Solo se puede jugar una vez.</b></li></ol></div>
 <button onclick="play()">JUGAR ▶</button>
 </section>
 <section id="s-game" class="hide">
@@ -78,16 +78,16 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=9"></script>
-<script src="questions.js?v=9"></script>
-<script src="fb.js?v=9"></script>
+<script src="fb-config.js?v=10"></script>
+<script src="questions.js?v=10"></script>
+<script src="fb.js?v=10"></script>
 <script>
 var D=[];
 var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
 function applyCfg(){
   var c=FB.cfg(),n1=c.n[0]|0,n2=c.n[1]|0,n3=c.n[2]|0;
   T=c.t||15000;
-  LV=[["FÁCIL",0,n1,2,"#3dff8a"],["MEDIO",n1,n1+n2,3,"#ffe600"],["DIFÍCIL",n1+n2,n1+n2+n3,4,"#ff3b6b"]];
+  LV=[["FÁCIL",0,n1,2,"#3dff8a"],["MEDIO",n1,n1+n2,3,"#ffe600"],["DIFÍCIL",n1+n2,n1+n2+n3,4,"#ff3b6b"],["EXPERTO",n1+n2+n3,9999,6,"#c25bff"]];
 }
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
 var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
@@ -97,14 +97,14 @@ function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorag
 function hearts(){var h="";for(var i=0;i<MAXHP;i++)h+=i<hp?"♥":"<s>♥</s>";return h}
 function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function lvOf(i){var c=FB.cfg(),a=c.n[0]|0,b=a+(c.n[1]|0);return i<a?0:(i<b?1:2)}
+function lvOf(i){var c=FB.cfg(),a=c.n[0]|0,b=a+(c.n[1]|0),d=b+(c.n[2]|0);return i<a?0:(i<b?1:(i<d?2:3))}
 function totalQ(){var n=FB.cfg().n;return (n[0]|0)+(n[1]|0)+(n[2]|0)}
 function isValid(x){return !!(x&&x.q&&x.ok&&x.bad&&x.bad.length)}
-/* Arma la partida: elige AL AZAR las preguntas de cada nivel.
-   El banco va ordenado por dificultad (primer tercio fácil,
-   segundo medio, último difícil), así que cada tercio es un pozo. */
+/* Arma la partida. Primeras preguntas: al azar de cada tercio del banco
+   (fácil, medio, difícil). Después sigue el nivel EXPERTO con TODO lo que
+   queda del banco, hasta agotar las reservas de preguntas. */
 function buildOrder(){
-  var c=FB.cfg(),ns=[c.n[0]|0,c.n[1]|0,c.n[2]|0],need=ns[0]+ns[1]+ns[2];
+  var c=FB.cfg(),ns=[c.n[0]|0,c.n[1]|0,c.n[2]|0];
   var bank=D.filter(isValid),t=Math.round(bank.length/3);
   var pools=[bank.slice(0,t),bank.slice(t,2*t),bank.slice(2*t)];
   var out=[],used={};
@@ -112,8 +112,7 @@ function buildOrder(){
     var p=shuf(pools[i]);
     for(var k=0;k<ns[i]&&k<p.length;k++){out.push(p[k]);used[p[k].id]=1}
   }
-  var rest=shuf(bank).filter(function(x){return !used[x.id]});
-  while(out.length<need&&rest.length)out.push(rest.shift());
+  shuf(bank).forEach(function(x){if(!used[x.id]){out.push(x);used[x.id]=1}});
   return out;
 }
 function isMe(x){return x.uid===FB.uid()}
@@ -159,8 +158,10 @@ function renderStart(){
   var p=hasPlayed(),i=mineIdx();
   $("form").classList.toggle("hide",p);$("played").classList.toggle("hide",!p);$("tst").classList.toggle("hide",!test);
   if(p)$("played").innerHTML=i>=0?"Ya jugaste y ya figurás en la tabla: <b>puesto #"+(i+1)+"</b> con <b>"+cache[i].score+" pts</b>. Solo se puede jugar una vez.":"Ya jugaste. Solo se puede jugar una vez.";
-  $("how-n").textContent=Math.min(totalQ(),D.length);$("how-n2").textContent=Math.min(totalQ(),D.length);
-  $("how-t").textContent=Math.round(T/1000);$("how-v").textContent=MAXHP;$("how-bank").textContent=D.length;
+  $("how-n").textContent=D.length;$("how-n2").textContent=D.length;
+  $("how-t").textContent=Math.round(T/1000);$("how-v").textContent=MAXHP;
+  var c=FB.cfg();$("how-l1").textContent=c.n[0]|0;$("how-l2").textContent=c.n[1]|0;$("how-l3").textContent=c.n[2]|0;
+  $("how-prize").textContent=Math.min(totalQ(),D.length);
 }
 async function init(){
   podium();tbl("tb");

@@ -5,7 +5,7 @@
    igual pero guardando en el navegador (ranking local).
    ============================================================ */
 var FB = (function () {
-  var DEF = { t: 15000, n: [8, 8, 8], showRank: true, gen: 1 };
+  var DEF = { t: 15000, n: [6, 5, 5], showRank: true, gen: 1 };
   var db = null, cfg = DEF, shared = false, lastError = "";
 
   try {
