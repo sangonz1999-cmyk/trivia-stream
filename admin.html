@@ -98,8 +98,10 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
         <div class="fix"><button onclick="addQ()">+ AGREGAR</button></div>
         <div class="fix"><button class="p" onclick="restoreQs()">RESTAURAR DEL ARCHIVO</button></div>
         <div class="fix"><button onclick="exportQs()">EXPORTAR JSON</button></div>
+        <div class="fix"><button onclick="importQs()">IMPORTAR JSON</button></div>
       </div>
-      <p class="small">El banco está ordenado por dificultad: el primer tercio es fácil, el segundo medio y el último difícil. En cada partida el juego <b>elige al azar</b> las preguntas de los 3 primeros niveles y después sigue con el resto del banco en nivel EXPERTO (6 opciones). Poné 5 distractores para que todas puedan mostrarse con 6 opciones.</p>
+      <input id="impfile" type="file" accept=".json,application/json" style="display:none" onchange="readImport(this)">
+      <p class="small">Todas las preguntas son un solo banco: en cada partida se mezclan todas y el nivel (color y cantidad de opciones) lo decide <b>la posición</b> en la partida, no la pregunta. Así cualquier pregunta puede tocar en cualquier nivel. Poné 5 distractores para que puedan mostrarse con 6 opciones.</p>
       <div id="qs"></div>
     </div>
 
@@ -109,9 +111,9 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
 
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=12"></script>
-<script src="questions.js?v=12"></script>
-<script src="fb.js?v=12"></script>
+<script src="fb-config.js?v=13"></script>
+<script src="questions.js?v=13"></script>
+<script src="fb.js?v=13"></script>
 <script>
 var PWH=6118475695008877,qs=[],$=function(i){return document.getElementById(i)};
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
@@ -169,14 +171,12 @@ async function resetRank(){
 
 /* ---------- preguntas ---------- */
 function renderQs(){
-  var t=Math.round(qs.length/3);
   $("qcount").textContent="("+qs.length+")";
   var h="";
   qs.forEach(function(x,i){
-    var lv=i<t?"FÁCIL":(i<2*t?"MEDIO":"DIFÍCIL");
     var opts=1+(x.bad||[]).length;
     h+='<div class="q">'+
-      '<div class="lvl">'+(i+1)+' · <b>'+lv+'</b> · '+opts+' opciones <button class="r fix" style="float:right;padding:4px 10px;margin:0" onclick="delQ('+i+')">Borrar</button></div>'+
+      '<div class="lvl">Pregunta '+(i+1)+' · '+opts+' opciones <button class="r fix" style="float:right;padding:4px 10px;margin:0" onclick="delQ('+i+')">Borrar</button></div>'+
       '<label>Pregunta</label><input data-f="q" data-i="'+i+'" value="'+esc(x.q)+'">'+
       '<label>Respuesta correcta</label><input data-f="ok" data-i="'+i+'" value="'+esc(x.ok)+'">'+
       '<label>Distractores (separados con |)</label><input data-f="bad" data-i="'+i+'" value="'+esc((x.bad||[]).join(" | "))+'">'+
@@ -220,6 +220,31 @@ function exportQs(){
   var a=document.createElement("a");
   a.href="data:application/json;charset=utf-8,"+encodeURIComponent(data);
   a.download="trivia-preguntas.json";a.click();
+}
+function importQs(){$("impfile").value="";$("impfile").click()}
+function readImport(inp){
+  var f=inp.files&&inp.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=async function(){
+    var arr=null;
+    try{arr=JSON.parse(String(r.result))}catch(e){alert("Ese archivo no es un JSON válido.");return}
+    if(arr&&!Array.isArray(arr)&&Array.isArray(arr.questions))arr=arr.questions;
+    if(!Array.isArray(arr)){alert("El archivo tiene que tener una lista de preguntas.");return}
+    var list=arr.map(function(x){
+      if(Array.isArray(x))return{q:String(x[0]||"").trim(),ok:String(x[1]||"").trim(),bad:(x[2]||[]).map(function(s){return String(s).trim()}).filter(Boolean)};
+      x=x||{};
+      return{q:String(x.q||"").trim(),ok:String(x.ok||"").trim(),bad:(x.bad||[]).map(function(s){return String(s).trim()}).filter(Boolean)};
+    }).filter(function(x){return x.q&&x.ok&&x.bad.length});
+    if(!list.length){alert("No encontré preguntas válidas en ese archivo.\nCada una necesita: pregunta, respuesta correcta y al menos 1 distractor.");return}
+    var pocas=list.filter(function(x){return x.bad.length<5}).length;
+    var msg="Se van a reemplazar las "+qs.length+" preguntas por las "+list.length+" del archivo.";
+    if(pocas)msg+="\n\nOjo: "+pocas+(pocas===1?" pregunta tiene":" preguntas tienen")+" menos de 5 distractores, así que en el nivel experto se van a ver con menos de 6 opciones.";
+    if(!confirm(msg+"\n\n¿Seguir?"))return;
+    qs=list;renderQs();
+    await FB.saveQuestions(list);
+    alert("Importadas y guardadas: "+list.length+(list.length===1?" pregunta":" preguntas")+". Ya se ven en el juego.");
+  };
+  r.readAsText(f,"utf-8");
 }
 </script>
 </body>

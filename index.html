@@ -85,9 +85,9 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=12"></script>
-<script src="questions.js?v=12"></script>
-<script src="fb.js?v=12"></script>
+<script src="fb-config.js?v=13"></script>
+<script src="questions.js?v=13"></script>
+<script src="fb.js?v=13"></script>
 <script>
 var D=[];
 var LV=[],T=15000,MAXHP=4,PWH=6118475695008877;
@@ -119,20 +119,11 @@ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;
 function lvOf(i){var c=FB.cfg(),a=c.n[0]|0,b=a+(c.n[1]|0),d=b+(c.n[2]|0);return i<a?0:(i<b?1:(i<d?2:3))}
 function totalQ(){var n=FB.cfg().n;return (n[0]|0)+(n[1]|0)+(n[2]|0)}
 function isValid(x){return !!(x&&x.q&&x.ok&&x.bad&&x.bad.length)}
-/* Arma la partida. Primeras preguntas: al azar de cada tercio del banco
-   (fácil, medio, difícil). Después sigue el nivel EXPERTO con TODO lo que
-   queda del banco, hasta agotar las reservas de preguntas. */
+/* Arma la partida: mezcla TODO el banco. El nivel (color y cantidad de
+   opciones) lo decide la POSICIÓN de la pregunta en la partida, no la pregunta:
+   las 6 primeras son fáciles, después 5 medias, 5 difíciles y el resto experto. */
 function buildOrder(){
-  var c=FB.cfg(),ns=[c.n[0]|0,c.n[1]|0,c.n[2]|0];
-  var bank=D.filter(isValid),t=Math.round(bank.length/3);
-  var pools=[bank.slice(0,t),bank.slice(t,2*t),bank.slice(2*t)];
-  var out=[],used={};
-  for(var i=0;i<3;i++){
-    var p=shuf(pools[i]);
-    for(var k=0;k<ns[i]&&k<p.length;k++){out.push(p[k]);used[p[k].id]=1}
-  }
-  shuf(bank).forEach(function(x){if(!used[x.id]){out.push(x);used[x.id]=1}});
-  return out;
+  return shuf(D.filter(isValid));
 }
 function isMe(x){return x.uid===FB.uid()}
 function getList(){return FB.listScores()}

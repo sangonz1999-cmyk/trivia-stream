@@ -31,6 +31,9 @@ se ve en el juego, en el ranking para OBS y en el panel admin, en vivo.
 - 4 niveles, sin carteles (cambia el color del borde y la cantidad de opciones):
   fácil 6 (2 opciones), medio 5 (3), difícil 5 (4) y **experto** (el resto del
   banco, 6 opciones). El nivel cambia en la pregunta 7, en la 12 y en la 17.
+- El nivel lo decide **la posición** en la partida, no la pregunta: hay un solo
+  banco y todas las preguntas se mezclan, así que cualquiera puede tocar en
+  cualquier nivel.
 - Con las primeras 16 preguntas ya está el premio. Después se sigue jugando para
   sumar y subir en el ranking (desempate del premio mayor).
 - La partida termina al quedarse sin vidas o al responder las 51.
@@ -67,7 +70,8 @@ Clave: la misma de siempre (7 toques al título en el juego, o directo en
 - Ver y reiniciar el ranking.
 - Cambiar segundos por pregunta y cuántas preguntas hay de cada nivel.
 - Mostrar u ocultar el ranking a los jugadores.
-- Editar, agregar, borrar y exportar preguntas (los cambios se ven en vivo).
+- Editar, agregar, borrar, **exportar e importar** preguntas en JSON (los cambios
+  se ven en vivo).
 
 ## Para actualizar la web
 
