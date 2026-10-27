@@ -49,7 +49,7 @@ table{width:100%;border-collapse:collapse}td,th{padding:9px 6px;text-align:left;
 .tn{font:700 1rem "Courier New",ui-monospace,monospace;color:var(--c);text-shadow:0 0 5px var(--c),0 0 14px var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tn.empty{color:var(--mut);text-shadow:none;font-weight:400}
 .ts{font-size:.82rem;color:var(--mut);margin-bottom:6px;min-height:1.3em}
-.bl{border-top:3px solid var(--c);border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--g),transparent);box-shadow:0 -5px 14px -8px var(--c);display:flex;justify-content:center;align-items:flex-start;padding-top:3px;font:700 1.1rem "Courier New",monospace;color:var(--c)}
+.bl{border-top:3px solid var(--c);border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--g),transparent);box-shadow:0 -5px 14px -8px var(--c);display:flex;justify-content:center;align-items:flex-start;padding-top:6px;font:700 1.4rem "Courier New",monospace;color:var(--c)}
 .rk{font-family:"Courier New",monospace;font-weight:700}.nm{font-family:"Courier New",ui-monospace,monospace;font-weight:700}
 td.n1{color:#ffd23f}td.n2{color:#cfe0ff}td.n3{color:#ff8a5b}
 td.nm.n1{text-shadow:0 0 5px #ffd23f,0 0 13px #ffd23faa}td.nm.n2{text-shadow:0 0 5px #cfe0ff,0 0 13px #cfe0ffaa}td.nm.n3{text-shadow:0 0 5px #ff8a5b,0 0 13px #ff8a5baa}
@@ -218,8 +218,8 @@ function tbl(el){
 }
 function podium(){
   if(!loaded){$("pod").innerHTML="<div class='ts' style='flex:1'>Cargando ranking…</div>";return}
-  var h=[58,42,32],md=["🥇","🥈","🥉"],s="";
-  [1,0,2].forEach(function(k){var r=cache[k];s+="<div class='tw k"+(k+1)+"'><div class='md'>"+(r?md[k]:"")+"</div><div class='tn"+(r?"":" empty")+"'>"+(r?esc(r.name):"—")+"</div><div class='ts'>"+(r?r.score+" pts":"")+"</div><div class='bl' style='height:"+h[k]+"px'>"+(k+1)+"</div></div>"});
+  var h=[100,74,54],s="";
+  [1,0,2].forEach(function(k){var r=cache[k];s+="<div class='tw k"+(k+1)+"'><div class='tn"+(r?"":" empty")+"'>"+(r?esc(r.name):"—")+"</div><div class='ts'>"+(r?r.score+" pts":"")+"</div><div class='bl' style='height:"+h[k]+"px'>"+(k+1)+"</div></div>"});
   $("pod").innerHTML=s;
 }
 function hasPlayed(){return !test&&ls("played")===String(FB.cfg().gen)}
