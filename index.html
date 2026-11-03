@@ -112,7 +112,7 @@ body.exp.xs .opt b{width:21px;height:21px}
 .dots i.on{width:56px;background:linear-gradient(90deg,var(--yel),#ff9d3b);box-shadow:0 0 12px #ffe14d88}
 .view{overflow:hidden;border-radius:22px;touch-action:pan-y}
 .track{display:flex;transition:transform .5s cubic-bezier(.65,0,.25,1)}
-.slide{flex:0 0 100%;min-height:60vh;padding:26px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;opacity:.25;transform:scale(.94);transition:opacity .5s,transform .5s}
+.slide{flex:0 0 100%;height:100%;padding:12px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;opacity:.25;transform:scale(.94);transition:opacity .5s,transform .5s}
 .slide.on{opacity:1;transform:none}
 .slide .n{font:700 .8rem var(--mono);color:var(--pur);letter-spacing:.2em;border:1px solid var(--pur);border-radius:99px;padding:2px 12px}
 .slide .t{font-size:1.7rem;font-weight:700;line-height:1.2;margin:6px 0}
@@ -125,10 +125,6 @@ body.exp.xs .opt b{width:21px;height:21px}
 .ring::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:6px solid transparent;border-top-color:var(--yel);animation:spin 1.6s linear infinite}
 .ring b{font:700 3rem/1 var(--mono);color:var(--yel)}.ring small{color:var(--mut)}
 @keyframes spin{to{transform:rotate(360deg)}}
-.prz{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:8px}
-.prz div{display:grid;grid-template-columns:38px auto 1fr;align-items:center;gap:4px 10px;text-align:left;padding:9px 12px;border-radius:14px;background:#ffffff08;border:1px solid var(--line);border-left:3px solid var(--c)}
-.prz em{font-style:normal;font-size:1.6rem;grid-row:span 1}.prz b{color:var(--c);font-size:.95rem}.prz span{color:var(--mut);font-size:.85rem;line-height:1.25}
-.prz div:last-child{grid-template-columns:38px 1fr}.prz div:last-child span{grid-column:2}
 .nav{display:flex;gap:10px;margin-top:12px}.nav button{margin:0}.nav #how-b{width:64px;flex:none}.nav #how-n{flex:1}
 .nav #how-b.off{opacity:.25;pointer-events:none}
 
@@ -153,6 +149,45 @@ body.exp.xs .opt b{width:21px;height:21px}
 .rn{min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}.rn small{display:block;font-weight:500;font-size:.72rem}
 .rrow.me .rn{color:var(--yel)}
 .rs{font:700 1.05rem var(--mono);text-align:right;line-height:1.1}.rs small{display:block;font-size:.65rem;font-weight:500}
+
+/* Ajuste a la pantalla: las reglas ocupan exactamente el alto visible del celu */
+html{-webkit-text-size-adjust:100%}
+#s-how:not(.hide){display:flex;flex-direction:column;height:calc(100vh - 56px);height:calc(100dvh - 56px);min-height:420px}
+#s-how .hi{margin:0 0 8px;font-size:clamp(.95rem,2.6vh,1.1rem)}
+#s-how .dots{margin-bottom:8px}
+#s-how .view{flex:1;min-height:0;display:flex}
+#s-how .track{height:100%;width:100%}
+#s-how .slide{min-height:0;height:100%;padding:8px 10px;gap:clamp(2px,.8vh,8px);overflow:hidden}
+#s-how .slide .t{font-size:clamp(1.25rem,3.6vh,1.7rem);margin:2px 0}
+#s-how .slide p{font-size:clamp(.9rem,2.3vh,1.05rem)}
+#s-how .hearts-big{font-size:clamp(2.2rem,7vh,3.2rem);gap:clamp(6px,1.5vw,10px)}
+#s-how .ring{width:clamp(92px,17vh,130px);height:clamp(92px,17vh,130px)}
+#s-how .ring b{font-size:clamp(2.1rem,6vh,3rem)}
+#s-how .prz{gap:clamp(4px,1vh,8px);margin-top:2px}
+#s-how .prz div{padding:clamp(5px,1.2vh,9px) 10px}
+#s-how .prz em{font-size:clamp(1.2rem,3.4vh,1.6rem)}
+#s-how .prz span{font-size:clamp(.72rem,1.7vh,.85rem)}
+#s-how .nav{margin-top:10px;flex:none}
+#s-how .nav button{padding:clamp(11px,2vh,15px)}
+.wrap{padding-bottom:24px}
+@media (max-width:360px){body{font-size:16px}.big{font-size:2rem}.qt{font-size:1.15rem}}
+
+#s-how:not(.hide){display:flex;flex-direction:column;min-height:calc(100vh - 66px);min-height:calc(100dvh - 66px)}
+#s-how .view{flex:1;min-height:0;display:flex}
+#s-how .track{flex:1;min-height:0}
+.slide .t{font-size:clamp(1.35rem,6.2vw,1.8rem)}
+.slide p{font-size:clamp(.95rem,4.2vw,1.1rem)}
+.hearts-big{font-size:clamp(2.2rem,13vw,3.4rem);gap:clamp(4px,2.5vw,12px)}
+.ring{width:clamp(96px,32vw,132px);height:clamp(96px,32vw,132px)}.ring b{font-size:clamp(2.2rem,9vw,3rem)}
+.prz{display:flex;flex-direction:column;gap:clamp(10px,2.2vh,16px);width:100%;flex:1;max-height:440px;margin-top:10px}
+.prz div{flex:1;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;align-items:center;column-gap:16px;text-align:left;padding:0 18px;border-radius:20px;border:2px solid var(--c);background:linear-gradient(135deg,color-mix(in srgb,var(--c) 20%,transparent),color-mix(in srgb,var(--c) 5%,transparent));box-shadow:0 0 18px -4px var(--c),inset 0 0 18px -10px var(--c);opacity:0;transform:translateX(60px)}
+.slide.on .prz div{animation:slin .7s cubic-bezier(.2,.8,.2,1) both,glow 2.8s ease-in-out infinite;animation-delay:calc(var(--i)*.14s + .15s),calc(var(--i)*.14s + .9s)}
+@keyframes slin{from{opacity:0;transform:translateX(60px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes glow{50%{box-shadow:0 0 28px -2px var(--c),inset 0 0 22px -8px var(--c)}}
+.prz em{grid-row:span 2;font-style:normal;font-size:clamp(2.2rem,10vw,3rem);animation:fl 3s ease-in-out infinite;animation-delay:calc(var(--i)*.4s)}
+@keyframes fl{50%{transform:translateY(-6px) rotate(-6deg)}}
+.prz b{color:var(--c);font:700 clamp(1.1rem,5vw,1.4rem) var(--mono);letter-spacing:.08em;align-self:end}
+.prz span{color:var(--tx);font-size:clamp(.95rem,4vw,1.1rem);align-self:start}
 a{color:var(--pur)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
@@ -177,11 +212,9 @@ a{color:var(--pur)}
 <div class="slide"><div class="ic hearts-big"><span>♥</span><span>♥</span><span>♥</span><span>♥</span></div>
 <div class="n">1</div><div class="t"><b id="how-v">4</b> vidas</div><p>Cada error o tiempo agotado te saca una.</p></div>
 <div class="slide"><div class="n">2</div><div class="t">Subí de nivel, ganá premios</div>
-<div class="prz"><div style="--c:#3dff8a"><em>🍬</em><b>Fácil</b><span>sticker o caramelos</span></div>
-<div style="--c:#ffe14d"><em>🔑</em><b>Medio</b><span>llavero plano</span></div>
-<div style="--c:#ff4d7d"><em>🧊</em><b>Difícil</b><span>llavero 3D</span></div>
-<div style="--c:#ffd23f"><em>🏆</em><b>Ganar difícil</b><span>logo 3D grande</span></div>
-<div style="--c:#b86bff"><em>🎁</em><b>Top ranking</b><span>modo experto, opcional: caja con golosinas, alfajores, stickers, logo muy grande y más</span></div></div></div>
+<div class="prz"><div style="--c:#3dff8a;--i:0"><em>🍬</em><b>FÁCIL</b><span>sticker o caramelos</span></div>
+<div style="--c:#ffe14d;--i:1"><em>🔑</em><b>MEDIO</b><span>llavero plano</span></div>
+<div style="--c:#ff4d7d;--i:2"><em>🧊</em><b>DIFÍCIL</b><span>llavero 3D</span></div></div></div>
 <div class="slide"><div class="ic ring"><b id="how-t">15</b><small>seg</small></div>
 <div class="n">3</div><div class="t">Segundos por pregunta</div><p><b class="yel">Cuanto más rápido, más puntos.</b></p>
 <p class="once">Solo se puede jugar una vez.</p></div>
