@@ -225,22 +225,18 @@ function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c
 var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
 var racha=0,expertHp=false,TT=15000;
 
-/* ---------- Sonidos (Web Audio API, sin archivos externos) ---------- */
-var ctx=null;
-function audioCtx(){if(!ctx&&window.AudioContext)ctx=new(window.AudioContext||window.webkitAudioContext)();return ctx}
-function playSound(tipo){
-  var c=audioCtx();if(!c)return;
-  var osc=c.createOscillator(),g=c.createGain();
-  osc.connect(g);g.connect(c.destination);
-  if(tipo==="error"){
-    osc.type="sawtooth";osc.frequency.setValueAtTime(150,c.currentTime);osc.frequency.exponentialRampToValueAtTime(60,c.currentTime+.25);
-    g.gain.setValueAtTime(.12,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.25);
-    osc.start();osc.stop(c.currentTime+.25);
-  }else if(tipo==="ok"){
-    osc.type="sine";osc.frequency.setValueAtTime(600,c.currentTime);osc.frequency.linearRampToValueAtTime(900,c.currentTime+.1);
-    g.gain.setValueAtTime(.08,c.currentTime);g.gain.linearRampToValueAtTime(.001,c.currentTime+.15);
-    osc.start();osc.stop(c.currentTime+.15);
-  }
+/* ---------- Sonidos con archivos MP3 ---------- */
+var sndCorrecto=new Audio("correcto.mp3");
+var sndIncorrecto=new Audio("duolingo-incorrect.mp3");
+var sndTada=new Audio("tada_1.mp3");
+function playSonido(tipo){
+  var a;
+  if(tipo==="correcto"){a=sndCorrecto;}
+  else if(tipo==="incorrecto"){a=sndIncorrecto;}
+  else if(tipo==="tada"){a=sndTada;}
+  else return;
+  a.currentTime=0;
+  a.play().catch(function(){});
 }
 var $=function(i){return document.getElementById(i)};
 function show(id){["s-name","s-how","s-game","s-end","s-prize","s-exp","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});var b=document.body;b.classList.toggle("exp",id==="s-game"&&lvOf(qi)===3);b.classList.remove("xs");danger();window.scrollTo(0,0)}
@@ -391,7 +387,7 @@ function ask(){
 function pick(b){
   if(locked)return;locked=true;clearInterval(tm);
   var left=Math.max(0,TT-(Date.now()-t0));
-  if(b.dataset.ok==="1"){racha++;score+=Math.round((100+Math.round(left/100))*(lvOf(qi)+1)*mult())}
+  if(b.dataset.ok==="1"){racha++;score+=Math.round((100+Math.round(left/100))*(lvOf(qi)+1)*mult());playSonido("correcto")}
   reveal(b);
 }
 function reveal(b){
@@ -405,11 +401,9 @@ function reveal(b){
     msg.textContent=b?"ERRÓNEO":"TIEMPO AGOTADO";
     msg.className=b?"":"tiempo";
     msg.classList.add("on");
-    playSound("error");
+    playSonido("incorrecto");
     try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
     setTimeout(function(){flash.classList.remove("on");msg.classList.remove("on")},700);
-  }else{
-    playSound("ok");
   }
   $("h-hp").innerHTML=hearts();scoreHud();live();danger();
   saveScore().then(refresh);
@@ -450,6 +444,7 @@ function resume(){
 }
 async function end(win){
   clearInterval(tm);if(win)score+=hp*100;contClear();
+  if(win)playSonido("tada");
   var early=!win&&qi<totalQ(); // se quedó sin vidas antes de la recompensa máxima
   var good=win||early;
   $("end-c").className="card "+(good?"y":"r");
