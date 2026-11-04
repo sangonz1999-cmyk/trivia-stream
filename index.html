@@ -267,12 +267,13 @@ function applyCfg(){
 }
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
 var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
-var racha=0,expertHp=false,TT=15000;
+var racha=0,expertHp=false,TT=15000,tictacPlayed=false;
 
 /* ---------- Sonidos MP3 ---------- */
 var sndCorrecto=new Audio("correcto.mp3");
 var sndIncorrecto=new Audio("duolingo-incorrect.mp3");
 var sndTada=new Audio("tada_1.mp3");
+var sndTictac=new Audio("tictac.mp3");
 function playSonido(tipo){
   var a;
   if(tipo==="correcto"){a=sndCorrecto;}
@@ -281,6 +282,10 @@ function playSonido(tipo){
   else return;
   a.currentTime=0;
   a.play().catch(function(){});
+}
+function playTictac(){
+  sndTictac.currentTime=0;
+  sndTictac.play().catch(function(){});
 }
 var $=function(i){return document.getElementById(i)};
 function show(id){["s-name","s-how","s-game","s-end","s-prize","s-exp","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});var b=document.body;b.classList.toggle("exp",id==="s-game"&&lvOf(qi)===3);b.classList.remove("xs");danger();window.scrollTo(0,0)}
@@ -419,7 +424,7 @@ function play(){
   saveScore().then(refresh);ask();
 }
 function ask(){
-  var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;
+  var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;tictacPlayed=false;
   TT=(l===3)?Math.max(3000,T-3000):T; // experto: 3 segundos menos
   // Al entrar al nivel EXPERTO (pregunta 17) queda 1 sola vida.
   if(l===3&&!expertHp){expertHp=true;if(hp>1)hp=1}
@@ -434,7 +439,7 @@ function ask(){
   opts.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+String.fromCharCode(65+i)+"</b><span>"+esc(t)+"</span>";b.dataset.ok=(t===d.ok)?"1":"0";b.onclick=function(){pick(b)};o.appendChild(b)});
   show("s-game");t0=Date.now();clearInterval(tm);
   if(document.body.classList.contains("exp")&&document.querySelector(".wrap").offsetHeight>window.innerHeight)document.body.classList.add("xs");
-  tm=setInterval(function(){var left=TT-(Date.now()-t0),bar=$("bar");bar.style.width=Math.max(0,left/TT*100)+"%";bar.classList.toggle("low",left<5000);if(left<=0){clearInterval(tm);if(!locked){locked=true;reveal(null)}}},100);
+  tm=setInterval(function(){var left=TT-(Date.now()-t0),bar=$("bar");bar.style.width=Math.max(0,left/TT*100)+"%";bar.classList.toggle("low",left<5000);if(left<=2000&&left>0&&!tictacPlayed){tictacPlayed=true;playTictac()}if(left<=0){clearInterval(tm);if(!locked){locked=true;reveal(null)}}},100);
 }
 function pick(b){
   if(locked)return;locked=true;clearInterval(tm);
