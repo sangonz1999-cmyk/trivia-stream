@@ -573,9 +573,9 @@ function resume(){
 }
 async function end(win){
   clearInterval(tm);if(win)score+=hp*100;contClear();
-  if(win)playSonido("tada");
-  var early=!win&&qi<totalQ(); // se quedó sin vidas antes de la recompensa máxima
+  var early=!win&&qi<totalQ();
   var good=win||early;
+  if(good)playSonido("tada");
   $("end-c").className="card "+(good?"y":"r");
   $("end-t").textContent=win?"¡GANASTE!":(early?"¡FELICIDADES!":"GAME OVER");$("end-t").className="big "+(good?"yel":"red");
   $("end-pz").className="c "+(good?"yel":"mut");
