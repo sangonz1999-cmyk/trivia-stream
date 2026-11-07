@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#07030e">
 <title>INPUT_ — Trivia del Stream</title>
 <style>
@@ -73,7 +73,7 @@ tr.me td{color:var(--yel);font-weight:700;background:#ffe14d1c}
 .tn{font:700 .95rem var(--mono);color:var(--c);text-shadow:0 0 12px var(--g);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
 .tn.empty{color:var(--mut);text-shadow:none;font-weight:400}
 .ts{font-size:.78rem;color:var(--mut);margin-bottom:6px;min-height:1.3em}
-.bl{border:1px solid var(--c);border-bottom:0;border-radius:12px 12px 0 0;background:linear-gradient(180deg,var(--g),transparent);display:flex;justify-content:center;align-items:flex-start;padding-top:8px;font:700 1.5rem var(--mono);color:var(--c)}
+.bl{border:1px solid var(--c);border-bottom:0;border-radius:12px 12px 0 0;background:linear-gradient(180deg,var(--g),transparent);display:flex;justify-content:center;align-items:flex-start;padding-top:8px;font:700 1.5rem/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--c)}
 .rk,.nm{font-family:var(--mono);font-weight:700}
 td.n1{color:#ffd23f}td.n2{color:#cfe0ff}td.n3{color:#ff8a5b}
 td.nm.n1{text-shadow:0 0 10px #ffd23f88}td.nm.n2{text-shadow:0 0 10px #cfe0ff66}td.nm.n3{text-shadow:0 0 10px #ff8a5b77}
@@ -114,7 +114,7 @@ body.exp.xs .opt b{width:21px;height:21px}
 .track{display:flex;transition:transform .5s cubic-bezier(.65,0,.25,1)}
 .slide{flex:0 0 100%;height:100%;padding:12px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;opacity:.25;transform:scale(.94);transition:opacity .5s,transform .5s}
 .slide.on{opacity:1;transform:none}
-.slide .n{font:700 .8rem var(--mono);color:var(--pur);letter-spacing:.2em;border:1px solid var(--pur);border-radius:99px;padding:2px 12px}
+.slide .n{display:grid;place-items:center;min-width:34px;height:34px;padding:0;box-sizing:border-box;font:700 .95rem/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--pur);letter-spacing:0;border:1.5px solid var(--pur);border-radius:99px;text-align:center}
 .slide .t{font-size:1.7rem;font-weight:700;line-height:1.2;margin:6px 0}
 .slide p{margin:0;color:var(--mut);font-size:1.05rem;max-width:320px}.slide .once{margin-top:18px;color:var(--yel);font-weight:700}
 .ic{margin-bottom:10px}
@@ -144,8 +144,8 @@ body.exp.xs .opt b{width:21px;height:21px}
 .rrow.t1{--c:#ffd23f;background:linear-gradient(90deg,#ffd23f1f,#ffffff08);border-color:#ffd23f55}
 .rrow.t2{--c:#cfe0ff;border-color:#cfe0ff44}.rrow.t3{--c:#ff8a5b;border-color:#ff8a5b44}
 .rrow.me{background:#ffe14d1c;border-color:var(--yel);--c:var(--yel)}
-.rpos{font:700 1rem var(--mono);text-align:center;color:var(--mut)}.rrow.t1 .rpos,.rrow.t2 .rpos,.rrow.t3 .rpos{font-size:1.4rem}
-.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:700 1rem var(--mono);color:#12001f;background:linear-gradient(135deg,var(--c,var(--pur)),#ffffffaa)}
+.rpos{font:700 1rem/1 var(--mono);font-variant-numeric:tabular-nums;text-align:center;color:var(--mut)}.rrow.t1 .rpos,.rrow.t2 .rpos,.rrow.t3 .rpos{font-size:1.4rem}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:700 1rem/1 var(--mono);color:#12001f;background:linear-gradient(135deg,var(--c,var(--pur)),#ffffffaa)}
 .rn{min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}.rn small{display:block;font-weight:500;font-size:.72rem}
 .rrow.me .rn{color:var(--yel)}
 .rs{font:700 1.05rem var(--mono);text-align:right;line-height:1.1}.rs small{display:block;font-size:.65rem;font-weight:500}
@@ -200,7 +200,7 @@ html{-webkit-text-size-adjust:100%}
 .gl,.gt{border-radius:16px;border:1.5px solid var(--line);background:linear-gradient(180deg,#ffffff0d,#ffffff04),var(--card);display:grid;place-items:center}
 .gl{aspect-ratio:1;height:100%}.glogo{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 0 10px #2b7bff66);pointer-events:none}
 .gt{flex:1;min-width:0;white-space:nowrap}
-.gt b{font:700 clamp(.8rem,4vw,1.35rem) var(--mono);letter-spacing:.12em;background:linear-gradient(90deg,var(--yel),#ff9d3b 55%,var(--red));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px #ff9d3b44)}
+.gt b{font:900 clamp(.8rem,4vw,1.3rem) "Orbitron",var(--mono);letter-spacing:.16em;padding-left:.16em;background:linear-gradient(90deg,#3de8ff,#7b8cff 50%,#c25bff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px #5ab4ff55)}
 .nv{position:relative;flex:none;margin-top:10px;border:2px solid var(--lc,var(--yel));border-radius:18px;padding:8px 14px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;background:linear-gradient(135deg,color-mix(in srgb,var(--lc,var(--yel)) 16%,transparent),color-mix(in srgb,var(--lc,var(--yel)) 3%,transparent));box-shadow:0 0 20px -6px var(--lc,var(--yel))}
 .nvt{white-space:nowrap;font:700 clamp(.95rem,2.8vh,1.4rem) var(--mono);color:var(--lc,var(--yel));letter-spacing:.06em}
 .nvs{grid-column:1/-1;display:flex;justify-content:space-between;font-size:.8rem;color:var(--mut);font-weight:700;letter-spacing:.05em}
@@ -259,6 +259,24 @@ body.exp.xs .gh{height:32px}body.exp.xs .nvs{display:none}body.exp.xs #next{padd
 }
 a{color:var(--pur)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+.pbadge{margin:18px 0 6px;text-align:center}
+.pk2{text-align:center;font:700 .72rem var(--mono);letter-spacing:.22em;color:var(--mut);margin:12px 0}
+.pbadge .pk{font:700 .72rem var(--mono);letter-spacing:.22em;padding-left:.22em;color:var(--mut);margin-bottom:8px}
+.pbadge .pb{--c:var(--yel);display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:16px;text-align:left;padding:14px 20px;border-radius:20px;border:2px solid var(--c);background:linear-gradient(135deg,color-mix(in srgb,var(--c) 22%,transparent),color-mix(in srgb,var(--c) 5%,transparent));box-shadow:0 0 22px -4px var(--c),inset 0 0 18px -10px var(--c)}
+.pbadge .pb em{grid-row:span 2;font-style:normal;font-size:3rem;line-height:1;filter:drop-shadow(0 0 10px var(--c))}
+.pbadge .pb b{color:var(--c);font:700 1.6rem/1.1 var(--mono);letter-spacing:.08em;align-self:end}
+.pbadge .pb span{color:var(--tx);font-weight:700;font-size:1.15rem;align-self:start}
+.scr{max-height:min(46vh,420px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.scr,#tb2{scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-y}.scr::-webkit-scrollbar,#tb2::-webkit-scrollbar{display:none;width:0;height:0}
+.scr th{position:sticky;top:0;background:var(--card);z-index:1}
+.pzc{font-size:.85rem;white-space:nowrap}
+#tb2 .rrow{flex:none}
+#tb2{max-height:58vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0}
+.st{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 4px;border-radius:16px;border:1.5px solid var(--c);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 20%,transparent),color-mix(in srgb,var(--c) 4%,transparent));min-width:0}
+.st small{font:700 .62rem/1 var(--mono);letter-spacing:.14em;color:var(--mut);margin-bottom:8px}
+.st b{font:700 clamp(1.3rem,6.5vw,1.9rem)/1 var(--mono);color:var(--c);font-variant-numeric:tabular-nums;text-shadow:0 0 14px color-mix(in srgb,var(--c) 55%,transparent)}
+.st b i{display:block;font:500 .7rem/1.3 var(--sans);color:var(--mut);text-shadow:none;margin-top:4px}
 </style>
 </head>
 <body>
@@ -273,7 +291,7 @@ a{color:var(--pur)}
 <button class="hide" id="contbtn" onclick="resume()">CONTINUAR PARA AVANZAR EN EL RANKING ▶</button>
 <div class="card y" id="form"><label>TU NOMBRE</label><input id="nom" maxlength="20" autocomplete="given-name" placeholder="Cómo te anotamos"><button onclick="start()">ENTRAR ▶</button><small id="err" class="red"></small></div>
 <div id="rankpub"><h2>TOP 3</h2><div class="pod" id="pod"></div>
-<h2>TOP 10</h2><div class="card"><div id="tb"></div></div><div id="rkst" class="small c" style="margin:-6px 0 10px"></div></div>
+<h2>TOP 10</h2><div class="card"><div id="tb" class="scr"></div></div><div id="rkst" class="small c" style="margin:-6px 0 10px"></div></div>
 </section>
 <section id="s-how" class="hide">
 <p class="hi">Hola <b class="yel" id="hi"></b> 👋</p>
@@ -300,9 +318,12 @@ a{color:var(--pur)}
 <button id="next" class="off" disabled onclick="nextQ()">SIGUIENTE ▶</button>
 </section>
 <section id="s-end" class="hide">
-<div class="card r" id="end-c"><div class="big red" id="end-t"></div><p class="c" id="end-s"></p><p class="c" style="font-weight:700" id="end-pz"></p><p class="c yel" style="font-weight:700" id="end-p"></p></div>
+<div class="card r" id="end-c"><div class="big red" id="end-t"></div><div class="pk2" style="margin:10px 0 0">TU PREMIO · MOSTRALO EN EL PUESTO</div><div class="pbadge" id="end-badge" style="margin-top:8px"></div><p class="c yel" style="font-weight:700;font-size:1.1rem;margin:14px 0 0">Acercate a retirar tu premio en el puesto del streaming</p></div>
+<div class="card" id="end-d"><div class="stats"><div class="st" style="--c:#ffe14d"><small>PUNTOS</small><b id="st-pts">0</b></div><div class="st" style="--c:#b86bff"><small>PREGUNTA</small><b id="st-q">0</b></div><div class="st" id="st-pc" style="--c:#3dff8a"><small>POSICIÓN</small><b id="st-pos">–</b></div></div>
+<p class="c yel" style="font-weight:700;margin:14px 0 0" id="end-pz"></p><p class="hide" id="end-p"></p></div>
+<div id="end-btns">
 <button class="p" id="end-rk" onclick="showRank()">VER RANKING</button>
-<button class="r hide" id="end-r" onclick="play()">REINTENTAR (PRUEBA)</button>
+<button class="r hide" id="end-r" onclick="play()">REINTENTAR (PRUEBA)</button></div>
 </section>
 <section id="s-prize" class="hide">
 <div class="card y c pz1"><div class="em">🏆</div><div class="big yel">¡FELICIDADES!</div><p style="font-weight:700;font-size:1.35rem;margin:.5em 0">Ganaste la recompensa máxima</p><p style="font-size:1.1rem;margin:0">Acercate al puesto del streaming y reclamá tu recompensa.</p></div>
@@ -323,7 +344,7 @@ a{color:var(--pur)}
 <section id="s-rank" class="hide">
 <h2>RANKING</h2><div class="live"><i></i><span id="rk-note"></span></div>
 <div class="pod" id="pod2"></div><div class="rlist" id="tb2">Cargando...</div>
-<button onclick="go()">VOLVER</button>
+<button onclick="show('s-end')">VOLVER</button>
 </section>
 </div>
 <div class="ov hide" id="adm"><div class="card y"><label>CLAVE</label><input id="pw" type="password" autocomplete="off"><button onclick="adm()">OK</button><button class="p" onclick="$('adm').classList.add('hide')">CANCELAR</button><small id="pe" class="red"></small><a href="admin.html" style="display:block;text-align:center;margin-top:12px;font-size:.9rem">Panel admin completo →</a></div></div>
@@ -353,8 +374,12 @@ var audioUnlocked=false;
 function unlockAudio(){
   if(audioUnlocked)return;
   audioUnlocked=true;
-  var a=new Audio();a.src="data:audio/mp3;base64,//uQxAAA==";a.play().catch(function(){});
-  sndCorrecto.play().catch(function(){});sndIncorrecto.play().catch(function(){});sndTada.play().catch(function(){});sndTictac.play().catch(function(){});
+  [sndCorrecto,sndIncorrecto,sndTada,sndTictac].forEach(function(x){
+    x.muted=true;
+    var p=x.play();
+    var done=function(){x.pause();x.currentTime=0;x.muted=false};
+    if(p&&p.then)p.then(done,function(){x.muted=false});else done();
+  });
 }
 function playSonido(tipo){
   unlockAudio();
@@ -425,15 +450,13 @@ function tbl(el){
   var l=cache,me=mineIdx();
   if(!l.length){$(el).textContent="Todavía no hay puntajes. El primero que complete una partida aparece acá.";return}
   if(el==="tb2"){
-    var mx=Math.max(1,l[0].score),s2="",rows=l.slice(0,10).map(function(r,i){return[r,i]});
-    if(me>=10)rows.push([l[me],me]);
+    var mx=Math.max(1,l[0].score),s2="",rows=l.map(function(r,i){return[r,i]});
     rows.forEach(function(x,k){var r=x[0],i=x[1],t=i<3?" t"+(i+1):"";
       s2+="<div class='rrow"+t+(i===me?" me":"")+"' style='--i:"+k+";--w:"+Math.round(r.score/mx*100)+"%'><span class='rpos'>"+(i<3?["🥇","🥈","🥉"][i]:i+1)+"</span><span class='av'>"+esc((r.name||"?").charAt(0).toUpperCase())+"</span><span class='rn'>"+esc(r.name)+(i===me?" (vos)":"")+"<small class='mut'>Nivel "+r.lvl+"</small></span><span class='rs'>"+r.score+"<small class='mut'>pts</small></span><i class='bar2'></i></div>"});
     $(el).innerHTML=s2;return;
   }
   var h="<table><tr><th>#</th><th>JUGADOR</th><th>NIV</th><th>PTS</th></tr>";
-  l.slice(0,10).forEach(function(r,i){var cl=i<3?" n"+(i+1):"";h+="<tr"+(i===me?" class='me'":"")+"><td class='rk"+cl+"'>"+(i+1)+"</td><td class='nm"+cl+"'>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td>"+r.score+"</td></tr>"});
-  if(me>=10)h+="<tr class='me'><td>"+(me+1)+"</td><td>"+esc(l[me].name)+" (vos)</td><td>"+l[me].lvl+"</td><td>"+l[me].score+"</td></tr>";
+  l.forEach(function(r,i){var cl=i<3?" n"+(i+1):"";h+="<tr"+(i===me?" class='me'":"")+"><td class='rk"+cl+"'>"+(i+1)+"</td><td class='nm"+cl+"'>"+esc(r.name)+"</td><td>"+r.lvl+"</td><td>"+r.score+"</td></tr>"});
   $(el).innerHTML=h+"</table>";
 }
 function podium(id){
@@ -588,12 +611,15 @@ async function end(win){
   $("end-c").className="card "+(good?"y":"r");
   $("end-t").textContent=win?"¡GANASTE!":(early?"¡FELICIDADES!":"GAME OVER");$("end-t").className="big "+(good?"yel":"red");
   $("end-pz").className="c "+(good?"yel":"mut");
-  $("end-pz").textContent=early?"Llegaste hasta la dificultad "+LV[lvOf(qi)][0].toLowerCase()+". Acercate al puesto del streaming y reclamá tu recompensa.":(win?"Ganaste la recompensa máxima. Acercate al puesto del streaming y reclamá tu recompensa.":"Si todavía no reclamaste tu recompensa máxima, acercate al puesto del streaming.");
-  $("end-s").textContent=win?name+", respondiste las "+order.length+" preguntas con "+hp+(hp===1?" vida":" vidas")+" · "+score+" pts":"Te quedaste sin vidas en la pregunta "+(qi+1)+" · "+score+" pts";
-  $("end-p").textContent="";$("end-r").classList.toggle("hide",!test);show("s-end");
+  $("end-pz").textContent=early?"Llegaste hasta la dificultad "+LV[lvOf(qi)][0].toLowerCase():(win?"¡Respondiste todas las preguntas!":"Llegaste hasta el nivel experto");
+  $("st-pts").textContent=score;$("st-q").textContent=win?order.length:(qi+1);$("st-pos").textContent="–";
+  var PZ=[["🍬","sticker o caramelos"],["🔑","llavero plano"],["🧊","llavero 3D"],["🧊","llavero 3D"]],li=win?3:lvOf(qi),lc=LV[li][4];
+  $("end-badge").innerHTML="<div class='pb' style='--c:"+lc+"'><em>"+PZ[li][0]+"</em><b>"+LV[li][0]+"</b><span>"+PZ[li][1]+"</span></div>";
+  $("end-p").textContent="";$("end-r").classList.toggle("hide",!test);
+  show("s-end");
   await saveScore(true);await refresh();
   var m=merged();
-  $("end-p").textContent=rankVisible()?"Estás #"+(m.p+1)+" de "+m.l.length+" en el ranking":"";
+  $("st-pos").innerHTML=rankVisible()?"#"+(m.p+1)+"<i> de "+m.l.length+"</i>":"–";$("st-pc").classList.toggle("hide",!rankVisible());
   $("end-rk").classList.toggle("hide",!rankVisible());
 }
 var taps=0,tt=0;
