@@ -349,7 +349,15 @@ var sndCorrecto=new Audio("correcto.mp3");
 var sndIncorrecto=new Audio("duolingo-incorrect.mp3");
 var sndTada=new Audio("tada_1.mp3");
 var sndTictac=new Audio("tictac.mp3");
+var audioUnlocked=false;
+function unlockAudio(){
+  if(audioUnlocked)return;
+  audioUnlocked=true;
+  var a=new Audio();a.src="data:audio/mp3;base64,//uQxAAA==";a.play().catch(function(){});
+  sndCorrecto.play().catch(function(){});sndIncorrecto.play().catch(function(){});sndTada.play().catch(function(){});sndTictac.play().catch(function(){});
+}
 function playSonido(tipo){
+  unlockAudio();
   var a;
   if(tipo==="correcto"){a=sndCorrecto;}
   else if(tipo==="incorrecto"){a=sndIncorrecto;}
@@ -359,6 +367,7 @@ function playSonido(tipo){
   a.play().catch(function(){});
 }
 function playTictac(){
+  unlockAudio();
   sndTictac.currentTime=0;
   sndTictac.play().catch(function(){});
 }
@@ -604,6 +613,7 @@ function adm(){if(hh($("pw").value)===PWH){test=true;$("adm").classList.add("hid
   }
 })();
 (function(){var s=ls("name");if(s)$("nom").value=s})();
+document.body.addEventListener("click",unlockAudio,{once:true});
 init();
 </script>
 </body>
