@@ -97,13 +97,19 @@ body.exp #qcard{padding:9px 12px}
 body.exp .qt{font-size:1.05rem;line-height:1.25;margin:2px 0}
 body.exp #tag{margin-bottom:3px;padding:0 10px;font-size:.68rem}
 body.exp .l3{padding:5px 12px}body.exp .l3 div{font-size:.82rem}
-body.exp .opt{padding:7px 10px;gap:10px;margin:4px 0;font-size:.92rem;line-height:1.2;border-radius:12px}
+body.exp .opt{padding:7px 10px;gap:10px;margin:4px 0;font-size:var(--ofs,.92rem);line-height:1.2;border-radius:12px}
 body.exp .opt b{width:24px;height:24px;font-size:.78rem;border-radius:7px}
 body.exp.xs .hud{font-size:.72rem}
 body.exp.xs .qt{font-size:.95rem;line-height:1.2}
 body.exp.xs #qcard{padding:6px 10px}
-body.exp.xs .opt{padding:5px 8px;margin:3px 0;font-size:.85rem}
+body.exp.xs .opt{padding:5px 8px;margin:3px 0;font-size:var(--ofs,.85rem)}
 body.exp.xs .opt b{width:21px;height:21px}
+body.exp.xxs .gh{display:none}body.exp.xxs #live{display:none}
+body.exp.xxs .nv{margin-top:2px;padding:2px 10px}body.exp.xxs #s-game .bar{margin:4px 0}
+body.exp.xxs #qcard{padding:5px 8px;margin-bottom:4px}body.exp.xxs .qt{font-size:.9rem;line-height:1.15;margin:2px 0 0}
+body.exp.xxs .opt{padding:4px 7px;margin:2px 0;gap:8px;line-height:1.15}body.exp.xxs .opt b{width:19px;height:19px;font-size:.7rem}
+body.exp.xxs #qcard #opts{gap:3px;padding-top:4px}body.exp.xxs #next{padding:8px}
+.opt span{min-width:0;overflow-wrap:anywhere;hyphens:auto}
 .ov{position:fixed;inset:0;background:#000b;backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}.ov .card{width:100%;max-width:340px}
 
 .hi{font-size:1.1rem;margin:4px 0 12px;text-align:center}
@@ -208,9 +214,9 @@ html{-webkit-text-size-adjust:100%}
 #s-game .bar{flex:none;margin:10px 0}
 body:not(.exp) #live{display:none}
 #live{flex:none;margin:0 0 10px;padding:7px 12px;line-height:1.3}#live div{font-size:.82rem}
-#qcard{flex:1;min-height:0;display:flex;flex-direction:column;margin:0 0 10px;padding:clamp(12px,2.2vh,18px)}
+#qcard{flex:1 0 auto;display:flex;flex-direction:column;margin:0 0 10px;padding:clamp(12px,2.2vh,18px)}
 #qcard .qt{font-size:clamp(1.05rem,3vh,1.4rem);margin:6px 0 0}
-#qcard #opts{display:flex;flex-direction:column;gap:clamp(6px,1.4vh,10px);margin-top:auto;padding-top:10px}
+#qcard #opts{display:flex;flex-direction:column;gap:clamp(6px,1.4vh,10px);margin-top:0;padding-top:12px}
 #qcard .opt{flex:none;min-height:clamp(52px,8vh,70px);margin:0}
 #next{flex:none;margin:0;transition:background .3s,color .3s,box-shadow .3s,transform .12s}
 #next.off{background:#ffffff12;color:#ffffff55;box-shadow:none;border:1px solid var(--line);pointer-events:none;filter:none}
@@ -223,7 +229,7 @@ body.exp #s-game .bar{margin:6px 0}
 body.exp #live{margin:0 0 6px;padding:4px 10px;line-height:1.2}body.exp #live div{font-size:.74rem}
 body.exp #qcard{padding:8px 10px;margin-bottom:6px}
 body.exp #qcard .qt{font-size:clamp(.95rem,2.4vh,1.15rem);margin:3px 0 0;line-height:1.25}
-body.exp #qcard #opts{gap:5px;margin-top:auto;padding-top:6px}
+body.exp #qcard #opts{gap:5px;margin-top:0;padding-top:6px}
 body.exp #qcard .opt{min-height:0}
 body.exp #next{padding:11px}
 body.exp.xs .gh{height:32px}body.exp.xs .nvs{display:none}body.exp.xs #next{padding:9px}
@@ -252,6 +258,7 @@ body.exp.xs .gh{height:32px}body.exp.xs .nvs{display:none}body.exp.xs #next{padd
   .logo-c{height:34px}
   #s-game:not(.hide){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);grid-template-rows:auto auto auto 1fr auto;column-gap:14px;row-gap:6px;min-height:calc(100dvh - 20px)}
   #s-game>.gh{grid-column:1;grid-row:1}#s-game>.nv{grid-column:1;grid-row:2;margin-top:0}#s-game>.bar{grid-column:1;grid-row:3;margin:2px 0}
+  #s-game>#qcard{min-height:0;overflow-y:auto}
   #s-game>#live{grid-column:1;grid-row:4;align-self:start;margin:0}#s-game>#next{grid-column:1;grid-row:5}#s-game>#qcard{grid-column:2;grid-row:1/6;margin:0}
   .gh{height:44px}
   .hearts-big{font-size:2rem}
@@ -364,39 +371,45 @@ function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c
 var name="",order=[],qi=0,hp=MAXHP,score=0,t0=0,tm=null,locked=false,test=false,loaded=false,cache=[];
 var racha=0,expertHp=false,TT=15000,tictacPlayed=false;
 
-/* ---------- Sonidos MP3 ---------- */
-var sndCorrecto=new Audio("correcto.mp3");
-var sndIncorrecto=new Audio("duolingo-incorrect.mp3");
-var sndTada=new Audio("tada_1.mp3");
-var sndTictac=new Audio("tictac.mp3");
-var audioUnlocked=false;
+/* ---------- Sonidos MP3 ----------
+   Cada sonido es un <audio> precargado. El navegador del celular solo deja
+   sonar audio después de un toque del usuario, así que en el primer toque
+   se "destraba" cada uno con play()+pause() inmediato (queda en silencio).
+   Nada de mutear: un audio muteado que todavía está cargando se quedaba
+   mudo justo cuando tenía que sonar. */
+var SND_FILES={correcto:"correcto.mp3",incorrecto:"duolingo-incorrect.mp3",tada:"tada_1.mp3",tictac:"tictac.mp3"};
+var SND={},audioUnlocked=false;
+Object.keys(SND_FILES).forEach(function(k){
+  var a=new Audio();a.preload="auto";a.src=SND_FILES[k];SND[k]=a;
+  try{a.load()}catch(e){}
+});
 function unlockAudio(){
   if(audioUnlocked)return;
   audioUnlocked=true;
-  [sndCorrecto,sndIncorrecto,sndTada,sndTictac].forEach(function(x){
-    x.muted=true;
-    var p=x.play();
-    var done=function(){x.pause();x.currentTime=0;x.muted=false};
-    if(p&&p.then)p.then(done,function(){x.muted=false});else done();
+  Object.keys(SND).forEach(function(k){
+    var a=SND[k],p;
+    try{a.volume=0}catch(e){}
+    try{p=a.play();if(p&&p.catch)p.catch(function(){})}catch(e){}
+    try{a.pause()}catch(e){}
+    try{a.currentTime=0}catch(e){}
+    try{a.volume=1}catch(e){}
   });
 }
+function sndPlay(k){
+  var a=SND[k];if(!a)return;
+  try{a.muted=false;a.volume=1}catch(e){}
+  try{a.currentTime=0}catch(e){}
+  var p;
+  try{p=a.play()}catch(e){audioUnlocked=false;return}
+  // si el navegador lo bloqueó, se vuelve a destrabar en el próximo toque
+  if(p&&p.catch)p.catch(function(){audioUnlocked=false});
+}
 function playSonido(tipo){
-  unlockAudio();
-  var a;
-  if(tipo==="correcto"){a=sndCorrecto;}
-  else if(tipo==="incorrecto"){a=sndIncorrecto;}
-  else if(tipo==="tada"){a=sndTada;}
-  else return;
-  a.currentTime=0;
-  a.play().catch(function(){});
+  if(tipo==="correcto"||tipo==="incorrecto"||tipo==="tada")sndPlay(tipo);
 }
-function playTictac(){
-  unlockAudio();
-  sndTictac.currentTime=0;
-  sndTictac.play().catch(function(){});
-}
+function playTictac(){sndPlay("tictac")}
 var $=function(i){return document.getElementById(i)};
-function show(id){["s-name","s-how","s-game","s-end","s-prize","s-exp","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});var b=document.body;b.classList.toggle("exp",id==="s-game"&&lvOf(qi)===3);b.classList.remove("xs");danger();window.scrollTo(0,0)}
+function show(id){["s-name","s-how","s-game","s-end","s-prize","s-exp","s-rank"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});var b=document.body;b.classList.toggle("exp",id==="s-game"&&lvOf(qi)===3);b.classList.remove("xs","xxs");b.style.removeProperty("--ofs");danger();window.scrollTo(0,0)}
 // Con 1 sola vida el corazón late y el fondo pulsa en rojo.
 function danger(){
   var last=hp<=1&&hp>0;
@@ -528,6 +541,28 @@ function play(){
   $("live").classList.toggle("hide",!rankVisible());
   saveScore().then(refresh);ask();
 }
+/* Modo experto: si hay respuestas largas, achica de a poco (letra, márgenes y
+   por último el encabezado) hasta que entren todas las opciones en pantalla.
+   Si aun así no entran, la página simplemente se puede deslizar. */
+function fitExp(){
+  var b=document.body;
+  b.classList.remove("xs","xxs");b.style.removeProperty("--ofs");
+  if(!b.classList.contains("exp")||$("s-game").classList.contains("hide"))return;
+  var de=document.documentElement,over=function(){return de.scrollHeight>window.innerHeight+1};
+  if(!over())return;
+  // 1) compacto; 2) más compacto (sin encabezado). En cada uno se prueba la
+  // letra más grande que entre, bajando de a poco hasta un mínimo legible.
+  var stages=[["xs",.88,.72],["xxs",.84,.62]];
+  for(var i=0;i<stages.length;i++){
+    b.classList.remove("xs","xxs");b.classList.add(stages[i][0]);
+    for(var f=stages[i][1];f>=stages[i][2]-.001;f-=.02){
+      b.style.setProperty("--ofs",f.toFixed(2)+"rem");
+      if(!over())return;
+    }
+  }
+}
+var fitT=null;
+window.addEventListener("resize",function(){clearTimeout(fitT);fitT=setTimeout(function(){if(!$("s-game").classList.contains("hide"))fitExp()},200)});
 function ask(){
   var d=order[qi],l=lvOf(qi),L=LV[l],n=L[3];locked=false;tictacPlayed=false;$("next").disabled=true;$("next").classList.add("off");$("next").textContent="SIGUIENTE ▶";
   TT=(l===3)?Math.max(3000,T-3000):T; // experto: 3 segundos menos
@@ -543,7 +578,7 @@ function ask(){
   var o=$("opts");o.innerHTML="";
   opts.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.innerHTML="<b>"+String.fromCharCode(65+i)+"</b><span>"+esc(t)+"</span>";b.dataset.ok=(t===d.ok)?"1":"0";b.onclick=function(){pick(b)};o.appendChild(b)});
   show("s-game");t0=Date.now();clearInterval(tm);
-  if(document.body.classList.contains("exp")&&document.querySelector(".wrap").offsetHeight>window.innerHeight)document.body.classList.add("xs");
+  fitExp();
   tm=setInterval(function(){var left=TT-(Date.now()-t0),bar=$("bar");bar.style.width=Math.max(0,left/TT*100)+"%";bar.classList.toggle("low",left<5000);if(left<=2000&&left>0&&!tictacPlayed){tictacPlayed=true;playTictac()}if(left<=0){clearInterval(tm);if(!locked){locked=true;reveal(null)}}},100);
 }
 function pick(b){
@@ -638,7 +673,7 @@ function adm(){if(hh($("pw").value)===PWH){test=true;$("adm").classList.add("hid
   }
 })();
 (function(){var s=ls("name");if(s)$("nom").value=s})();
-document.body.addEventListener("click",unlockAudio,{once:true});
+["pointerup","touchend","click","keydown"].forEach(function(ev){document.addEventListener(ev,unlockAudio,{capture:true,passive:true})});
 init();
 </script>
 </body>
