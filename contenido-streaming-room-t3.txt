@@ -1,0 +1,338 @@
+CONTENIDO DE LA PÁGINA STREAMING ROOM T3
+=========================================
+Editá lo que quieras y mandame el archivo. Donde dice [IMAGEN] o [LINK], escribí qué va ahí o el enlace.
+
+DATOS GENERALES
+Proyecto: Streaming Room T3
+YouTube: https://www.youtube.com/@StreamingRoomT3
+Instagram: https://www.instagram.com/streaming_roomt3/
+TikTok: https://www.tiktok.com/@streaming_roomt3?_r=1
+Menú: Historia | Equipo | Puestos | Recursos
+
+PORTADA
+Frase principal: E.E.S.T. N°3 Guillermo Kraft. Lomas de Zamora 🏫
+STREAMING ROOM 🗣️🎤🎧
+Hecho por estudiantes 🧠
+Botones: Ver el canal | Seguir en Instagram
+
+
+========================================
+PESTAÑA 1: Cómo se creó
+========================================
+Cómo se creó
+Así una idea de radio escolar se transformó en una sala de streaming con equipamiento profesional, paso a paso.
+Etapa 1 | Antes de empezar
+Informática es una tecnicatura nueva en el colegio, mientras que electrónica y química cuentan con muchos años de trayectoria. Para que la modalidad tuviera un proyecto propio, a la altura de las otras, surgió la idea de crear una radio escolar nocturna, inspirada en la que había funcionado en la institución hace mucho tiempo.
+
+[IMAGEN: Espacio para imagen o video: Antes de empezar]
+
+Etapa 2 | Vuelta de las vacaciones de verano
+Bruno, preceptor con experiencia en transmisiones en vivo, propuso realizar un streaming en lugar de una radio. El formato era poco habitual en una escuela, pero se consideró más actual. Ese mismo día el proyecto se presentó al director, que lo aprobó en principio.
+
+[IMAGEN: Espacio para imagen o video: Vuelta de las vacaciones de verano]
+
+Etapa 3 | Aprobación
+El proyecto se presentó formalmente a la dirección y fue aprobado en tres semanas. Los estudiantes de sexto año de informática aceptaron sumarse y Nicolás comenzó a diagramar todo lo necesario para crear la sala.
+
+[IMAGEN: Espacio para imagen o video: Aprobación]
+
+Etapa 4 | Equipamiento y lugar
+Durante tres o cuatro meses se fue comprando el equipamiento de a poco y se buscó un espacio, algo complejo en un colegio donde cada sala ya tenía su uso asignado. Una vez asignado el lugar, los estudiantes de sexto año remodelaron la sala por completo: renovaron la instalación eléctrica, colocaron los paneles acústicos, pintaron el espacio y armaron la computadora de transmisión. También se diseñaron el cableado, los diagramas de flujo y las conexiones entre los equipos de imagen y audio.
+
+[IMAGEN: Espacio para imagen o video: Equipamiento y lugar]
+
+Etapa 5 | Pruebas y aprendizaje
+Ningún integrante tenía experiencia previa en streaming, por lo que el equipo debió aprender a usar la consola de sonido, el programa de transmisión OBS y el resto de las herramientas mediante pruebas y errores. Para que la transmisión funcionara, al comienzo se utilizaron tres programas externos. Con el tiempo esos programas se eliminaron y se logró una configuración más simple, prolija y fácil de usar, pensada para transmitir por YouTube y Twitch. En esa etapa también hubo equivocaciones: una conexión incorrecta de componentes de audio estuvo cerca de dañar equipos. Los errores se tomaron como parte del aprendizaje y hoy sonidistas y productores saben cómo evitarlos y cómo resolver los problemas de audio.
+
+[IMAGEN: Espacio para imagen o video: Pruebas y aprendizaje]
+
+Etapa 6 | Inauguración
+El proyecto se estrenó en el acto escolar. Ese día la transmisión alcanzó unos 500 espectadores simultáneos y 5.000 visitas. Desde entonces comenzaron a emitirse los programas de cada modalidad.
+
+[IMAGEN: Espacio para imagen o video: Inauguración]
+
+Etapa 7 | Hoy
+Un equipo de 26 estudiantes reparte los cuatro puestos de trabajo. El proyecto está pensado para continuar: cada año un curso se hace cargo y luego pasa la posta al siguiente, y ciclo básico se va sumando a producción y edición.
+
+[IMAGEN: Espacio para imagen o video: Hoy]
+
+========================================
+PESTAÑA 2: Quiénes participaron
+========================================
+Quiénes participaron en su creación
+Docentes y estudiantes que hicieron posible la creación de la sala.
+
+[IMAGEN: Foto]
+Dalia Chavarria
+Docente
+Impulsora y coordinadora general del proyecto. Lo presentó a la dirección, reunió el apoyo de los docentes y organizó el trabajo del equipo en cada etapa.
+
+[IMAGEN: Foto]
+Lucía Chavarria
+Docente
+Profesora de informática. Participó desde la idea inicial y acompañó la organización del proyecto.
+
+[IMAGEN: Foto]
+Bruno
+Preceptor
+Preceptor con experiencia en transmisiones en vivo. Propuso transformar la radio escolar en un streaming y presentó la idea ante la dirección, lo que dio origen al proyecto. Ya había pensado una iniciativa similar con los estudiantes de informática de la promoción 2023.
+
+[IMAGEN: Foto]
+Mención especial | Nicolás
+Primer productor
+Estudiante y mención especial: su trabajo desde el primer día fue clave para que el proyecto llegara a ser lo que es hoy. Fue asistente de dirección, diagramó la sala de streaming y actualmente es productor general, apoyando y capacitando a los demás productores.
+
+[IMAGEN: Foto]
+Profes de apoyo
+Docentes
+Los profesores Atencio y Goyana, junto con otros docentes del colegio, colaboraron con su especialidad en redes, electricidad y el armado de la PC.
+
+[IMAGEN: Foto]
+El equipo estudiantil
+Estudiantes
+El proyecto se sostiene gracias a todos los estudiantes que trabajan cada día, detrás y delante de las cámaras: productores, sonidistas, CM y editores, además de los conductores y corresponsales de cada programa.
+
+========================================
+PESTAÑA 3: Por qué se creó y qué buscamos
+========================================
+Por qué se creó y qué buscamos
+Un proyecto pensado por y para los estudiantes, con metas claras.
+Por qué se creó
+Darle a informática un proyecto propio
+Al ser una modalidad nueva, informática todavía no tenía un proyecto emblemático como los de electrónica y química. La sala le da identidad, un lugar de trabajo y la oportunidad de mostrar lo que saben hacer sus estudiantes.
+
+Abrir un espacio para todo el colegio
+Aunque la sala fue pensada y construida por estudiantes de informática, es de todos: cualquier estudiante puede proponer un programa, conducirlo o participar, en un ambiente profesional y cómodo.
+
+Ir más allá de lo educativo
+No es solo un canal para hablar de la escuela. Es un lugar donde los adolescentes pueden mostrar sus intereses, sus hobbies y sus ideas, siempre con respeto.
+
+[IMAGEN: Espacio para imagen]
+
+Qué buscamos con el proyecto
+01
+Un espacio de todos
+Que cualquier estudiante pueda crear un programa, conducirlo y expresar sus ideas, siempre desde el respeto.
+
+02
+Aprender con práctica real
+Que los estudiantes trabajen con transmisión, sonido, edición y marketing en un entorno profesional, y lleguen mejor preparados a las prácticas de séptimo año.
+
+03
+Fortalecer informática
+Darle a la tecnicatura un proyecto propio, a la altura de las demás modalidades del colegio.
+
+04
+Continuidad
+Que el proyecto pase de generación en generación e incorpore a ciclo básico, con programas variados para todos los gustos.
+
+[IMAGEN: Espacio para imagen]
+
+========================================
+PESTAÑA 4: Cómo está distribuido
+========================================
+Cómo está distribuido
+Para que un programa salga al aire se necesitan cuatro tareas complementarias: producir, cuidar el sonido, difundir y editar. Cada una es un puesto del equipo, y cada año el curso se lo traspasa al siguiente. Seleccioná un puesto para ver sus funciones, sus herramientas y por qué es importante.
+Productor
+Dirige la transmisión desde la sala de control y coordina imagen, sonido y chat para que el programa salga tal como fue planificado.
+De qué se encarga
+
+- Operar los programas de transmisión, como OBS, y vigilar la imagen en dos pantallas
+
+- Revisar el guion y seguir la guía del programa, incluida la música
+
+- Cuidar que el chat en vivo se mantenga respetuoso
+
+- Proponer ideas y temáticas, y lograr que todos los programas mantengan la misma calidad
+
+- Diseñar un overlay propio para cada programa: los gráficos que aparecen sobre la imagen, como logos, nombres y carteles
+
+- Apoyar y capacitar a los demás productores (tarea del productor general)
+
+Herramientas
+OBS | SteelSeries | Programas del chat y proyector | Matrix
+Más información
+
+[LINK: Video: Tutorial: el trabajo del productor (enlace pendiente)]
+
+[LINK: Documento explicativo (enlace pendiente)]
+
+Sonidista
+Se ocupa de que todas las voces se escuchen con claridad durante el directo, sin que el audio quede bajo ni distorsionado.
+De qué se encarga
+
+- Ajustar el nivel de cada micrófono mientras el programa está al aire
+
+- Verificar que los participantes y los corresponsales se escuchen bien
+
+- Manejar Matrix y resolver sus fallas
+
+- Conocer el programa del sonidista y solucionar los problemas que aparezcan
+
+Herramientas
+Matrix | Programa del sonidista (GitHub)
+Más información
+
+[LINK: Video: Tutorial: configurar el audio con Matrix (enlace pendiente)]
+
+[LINK: Documento explicativo (enlace pendiente)]
+
+CM (Community Manager)
+Hace que el programa llegue a la gente: lo difunde, lo anuncia y mantiene activa a la comunidad en las redes sociales.
+De qué se encarga
+
+- Buscar que los programas se conozcan y alcancen más público
+
+- Pensar ideas y videos para las publicidades, y coordinar con los corresponsales para grabarlas
+
+- Anunciar durante cada stream que pronto sale su programa
+
+- Mirar el directo y marcar los momentos importantes para el resumen
+
+- Publicar las publicidades y manejar las redes de los programas
+
+- Trabajar en conjunto con el editor
+
+Herramientas
+Redes sociales | Material de publicidad
+Más información
+
+[LINK: Video: Guía: cómo se planifica una publicidad (enlace pendiente)]
+
+[LINK: Documento explicativo (enlace pendiente)]
+
+Editor
+Convierte lo que se grabó en contenido listo para publicar: resúmenes, miniaturas y publicidades.
+De qué se encarga
+
+- Seguir los pedidos del CM, con quien trabaja codo a codo
+
+- Editar los resúmenes de los directos
+
+- Crear las miniaturas de esos resúmenes
+
+- Editar las publicidades de cada programa
+
+Herramientas
+CapCut | DaVinci Resolve | GIMP | Photoshop
+Más información
+
+[LINK: Video: Tutorial: editar un resumen de directo (enlace pendiente)]
+
+[LINK: Documento explicativo (enlace pendiente)]
+
+========================================
+PESTAÑA 5: Cronograma
+========================================
+Cronograma actual e histórico
+Registro de todos los programas que forman o formaron parte del stream.
+
+[IMAGEN: Logo del programa]
+Desconectados
+Conductores e invitados de los distintos programas se reúnen a conversar sobre lo cotidiano y a desconectarse un rato.
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Abro Hilo
+Programa del centro de estudiantes. Invita a egresados y a miembros de la comunidad escolar.
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Noche de Chicas
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Entre Risas y Verdades
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Espacio Mixto
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Looksmaxxing
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Los del fondo
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Mar de mentes
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+4 mundos diferentes
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Bajen las térmicas
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Más allá del laboratorio
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Mente abierta
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+Reiniciados mal
+
+[LINK: Link (enlace pendiente)]
+
+[IMAGEN: Logo del programa]
+InfoT3C
+
+[LINK: Link (enlace pendiente)]
+
+========================================
+PESTAÑA 6: Videos y documentos
+========================================
+Videos y documentos
+Esta sección está pensada para los estudiantes que quieran participar del stream o que vayan a trabajar en él. Reúne videos técnicos y documentos detallados sobre las tareas de cada puesto.
+Videos
+
+[IMAGEN: Miniatura del video]
+Desconectados: primer programa
+
+[LINK: Link de YouTube (enlace pendiente)]
+
+[IMAGEN: Miniatura del video]
+Desconectados: entrevista al productor
+
+[LINK: Link de YouTube (enlace pendiente)]
+
+[IMAGEN: Miniatura del video]
+Título del video 3
+
+[LINK: Link de YouTube (enlace pendiente)]
+
+Documentos y guías
+Documento 1
+Descripción breve de qué explica.
+
+[LINK: Link al archivo (enlace pendiente)]
+
+Documento 2
+Descripción breve de qué explica.
+
+[LINK: Link al archivo (enlace pendiente)]
+
+Documento 3
+Descripción breve de qué explica.
+
+[LINK: Link al archivo (enlace pendiente)]
