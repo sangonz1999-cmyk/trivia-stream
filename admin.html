@@ -40,6 +40,11 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
 .badge{display:inline-block;padding:3px 10px;border-radius:20px;font:700 12px/1.4 "Courier New",monospace;border:1px solid}
 .ok{color:var(--grn);border-color:var(--grn)}
 .no{color:var(--red);border-color:var(--red)}
+.pz{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;border:1px solid #3a1a55;border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#0e0620}
+.pz .em{grid-row:span 2;font-size:28px}.pz b{font-size:16px}.pz .cd{font:700 13px "Courier New",monospace;color:var(--yel);letter-spacing:1px}
+.pz.done{opacity:.6;border-color:#1d5a38}.pz.hit{border-color:var(--yel);box-shadow:0 0 0 2px #ffe60044}
+.pz .act{grid-row:span 2;grid-column:3}
+.pz button{margin:0}
 </style>
 </head>
 <body>
@@ -76,6 +81,16 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
         <button class="r" onclick="resetRank()">REINICIAR RANKING</button>
         <span class="small">Borra la tabla para todos y empieza de cero (los jugadores pueden volver a jugar).</span>
       </div>
+    </div>
+
+    <h2>Premios <span class="small" id="pcount"></span></h2>
+    <div class="card">
+      <div class="row" style="align-items:end">
+        <div><label>Buscar por código del QR o nombre</label><input id="p-q" placeholder="Ej: 9RJV-4T46 o Steven" oninput="renderPr()" autocomplete="off"></div>
+        <div class="fix"><button id="pf-all" class="p" onclick="pFilter('all')">Todos</button><button id="pf-pen" onclick="pFilter('pen')">Pendientes</button><button id="pf-ok" onclick="pFilter('ok')">Reclamados</button></div>
+      </div>
+      <div id="pr" class="small" style="margin-top:12px">Cargando…</div>
+      <p class="small" style="margin-bottom:0">Escaneá el QR del jugador y buscá su código: si aparece acá, es válido. Al entregar el premio tocá <b>RECLAMADO</b> (no se puede deshacer).</p>
     </div>
 
     <h2>Configuración del juego</h2>
@@ -115,6 +130,18 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
 <script src="questions.js?v=13"></script>
 <script src="fb.js?v=13"></script>
 <script>
+/* Premios (QR): extiende FB sin tocar fb.js */
+(function(){
+  function db(){return (window.firebase&&FB.shared())?firebase.database():null}
+  FB.savePrize=function(r){var d=db();if(!d)return Promise.resolve();
+    return d.ref("prizes/"+r.gen+"/"+r.id).update({name:r.name,code:r.code,li:r.li|0,prize:r.prize,score:r.score|0,q:r.q|0,ts:r.ts})};
+  FB.watchPrizes=function(gen,cb){var d=db();if(!d){cb([]);return function(){}}
+    var ref=d.ref("prizes/"+gen),h=ref.on("value",function(s){var o=[];s.forEach(function(c){var v=c.val()||{};v.id=c.key;o.push(v)});cb(o)});
+    return function(){ref.off("value",h)}};
+  FB.claimPrize=function(gen,id){return db().ref("prizes/"+gen+"/"+id).update({claimed:true,claimedAt:Date.now()})};
+})();
+</script>
+<script>
 var PWH=6118475695008877,qs=[],$=function(i){return document.getElementById(i)};
 function hh(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -130,8 +157,8 @@ async function boot(){
   await FB.readCfg();
   $("mode").textContent=FB.shared()?"Base compartida conectada":"Modo local (sin base)";
   $("mode").style.color=FB.shared()?"var(--grn)":"var(--red)";
-  loadCfgUI();loadRank();qs=await FB.loadQuestions();renderQs();
-  FB.watchCfg(function(){loadCfgUI()});
+  loadCfgUI();loadRank();watchPr();qs=await FB.loadQuestions();renderQs();
+  FB.watchCfg(function(){loadCfgUI();watchPr()});
 }
 
 /* ---------- config ---------- */
@@ -149,6 +176,40 @@ async function saveCfg(){
   $("cfgmsg").textContent="Guardado ✓ — total "+n[0]+"+"+n[1]+"+"+n[2]+" = "+(n[0]+n[1]+n[2])+" preguntas por partida";
   setTimeout(function(){$("cfgmsg").textContent=""},6000);
   loadCfgUI();
+}
+
+/* ---------- premios ---------- */
+var PR=[],pG=null,pOff=null,pFil="all",PE=["🍬","🔑","🧊","🧊"],PC=["#3dff8a","#ffe600","#ff3b6b","#c25bff"];
+function watchPr(){
+  var g=FB.cfg().gen;if(pG===g)return;
+  if(pOff)pOff();pG=g;
+  if(!FB.shared()){$("pr").textContent="Sin base compartida: no hay registro de premios.";return}
+  pOff=FB.watchPrizes(g,function(l){PR=l;renderPr()});
+}
+function pFilter(f){pFil=f;["all","pen","ok"].forEach(function(k){$("pf-"+k).className=k===f?"p":""});renderPr()}
+function norm(s){return String(s).toUpperCase().replace(/[^A-Z0-9ÁÉÍÓÚÑ]/g,"")}
+function renderPr(){
+  if(!FB.shared())return;
+  var q=norm($("p-q").value),ok=PR.filter(function(x){return x.claimed}).length;
+  $("pcount").textContent="("+PR.length+" · "+ok+" reclamados · "+(PR.length-ok)+" pendientes)";
+  var l=PR.filter(function(x){
+    if(pFil==="pen"&&x.claimed)return false;if(pFil==="ok"&&!x.claimed)return false;
+    return !q||norm(x.code+" "+x.name).indexOf(q)>=0;
+  }).sort(function(a,b){return (a.claimed?1:0)-(b.claimed?1:0)||(b.ts||0)-(a.ts||0)});
+  if(!l.length){$("pr").textContent=PR.length?"Ningún premio coincide con la búsqueda.":"Todavía no hay premios registrados.";return}
+  var exact=q&&l.length===1;
+  $("pr").innerHTML=l.map(function(x){
+    var li=x.li|0,t=x.claimed?new Date(x.claimedAt||0).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"}):"";
+    return '<div class="pz'+(x.claimed?' done':'')+(exact?' hit':'')+'"><div class="em">'+PE[li]+'</div>'+
+      '<div><b>'+esc(x.name)+'</b> <span class="small">· '+x.score+' pts · pregunta '+(x.q||"?")+'</span></div>'+
+      '<div class="small"><span style="color:'+PC[li]+';font-weight:700">'+esc(x.prize||"")+'</span> · <span class="cd">'+esc(x.code)+'</span></div>'+
+      '<div class="act">'+(x.claimed?'<span class="badge ok">RECLAMADO ✓ '+t+'</span>':'<button class="g" onclick="claim(\''+esc(x.id)+'\')">RECLAMADO</button>')+'</div></div>';
+  }).join("");
+}
+async function claim(id){
+  var x=PR.filter(function(p){return p.id===id})[0];if(!x||x.claimed)return;
+  if(!confirm("¿Confirmás que "+x.name+" retiró su premio ("+x.prize+")?\n\nNo se puede deshacer."))return;
+  try{await FB.claimPrize(FB.cfg().gen,id)}catch(e){alert("No se pudo marcar: "+e.message)}
 }
 
 /* ---------- ranking ---------- */

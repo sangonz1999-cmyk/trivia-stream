@@ -17,6 +17,15 @@
         ".validate": "newData.hasChildren(['q','ok']) && newData.child('q').isString() && newData.child('q').val().length <= 300 && newData.child('ok').isString() && newData.child('ok').val().length <= 200"
       }
     },
+    "prizes": {
+      ".read": true,
+      "$gen": {
+        "$id": {
+          ".write": "!data.exists() || data.child('claimed').val() !== true",
+          ".validate": "newData.hasChildren(['name','code','li','score','ts']) && newData.child('name').isString() && newData.child('name').val().length <= 20 && newData.child('code').isString() && newData.child('code').val().length <= 20 && newData.child('li').isNumber() && newData.child('li').val() >= 0 && newData.child('li').val() <= 3 && newData.child('score').isNumber() && newData.child('ts').isNumber() && (!newData.child('prize').exists() || (newData.child('prize').isString() && newData.child('prize').val().length <= 60)) && (!newData.child('claimed').exists() || newData.child('claimed').isBoolean())"
+        }
+      }
+    },
     "scores": {
       ".read": true,
       "$gen": {
