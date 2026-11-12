@@ -4,20 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Panel admin — Trivia del Stream</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,600;0,700;0,800;0,900;1,800;1,900&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--red:#ff3b6b;--pur:#c25bff;--yel:#ffe600;--grn:#3dff8a;--bg:#08030f;--bg2:#0f0620;--card:#120922;--tx:#fff;--mut:#cdb8e6}
+:root{--red:#ff4d7d;--pur:#b86bff;--yel:#ffe14d;--grn:#3dff8a;--bg:#07030e;--bg2:#07030e;--card:#130b23;--tx:#f7f2ff;--mut:#b9a6d6}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:16px/1.5 "Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 body{background:radial-gradient(circle at 15% 0,#4a0a5a55,transparent 50%),radial-gradient(circle at 95% 100%,#6a0a2a55,transparent 50%),var(--bg2);min-height:100vh}
 .wrap{max-width:900px;margin:0 auto;padding:22px 16px 60px}
-h1,h2,h3{font-family:"Courier New",ui-monospace,monospace;margin:0}
+h1,h2,h3{font-family:"JetBrains Mono","Courier New",ui-monospace,monospace;margin:0}
 h1{font-size:26px}
 h2{font-size:20px;margin:26px 0 10px;color:var(--pur)}
 h3{font-size:15px;color:var(--yel);margin:0 0 8px}
 a{color:var(--pur)}
-.mono{font-family:"Courier New",ui-monospace,monospace}
+.mono{font-family:"JetBrains Mono","Courier New",ui-monospace,monospace}
 .card{background:var(--card);border:1px solid #3a1a55;border-radius:14px;padding:16px;margin-bottom:14px}
-label{display:block;font:700 12px/1 "Courier New",monospace;letter-spacing:1px;color:var(--mut);margin:10px 0 5px;text-transform:uppercase}
+label{display:block;font:700 12px/1 "JetBrains Mono","Courier New",monospace;letter-spacing:1px;color:var(--mut);margin:10px 0 5px;text-transform:uppercase}
 input,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a2568;background:#0b0518;color:var(--tx);font:15px/1.4 inherit}
 textarea{resize:vertical}
 button{padding:10px 16px;border-radius:10px;border:1px solid #5a2f80;background:#2d1050;color:#fff;font:700 14px/1 inherit;cursor:pointer;margin:6px 6px 0 0}
@@ -32,12 +34,12 @@ button.g{background:#0f3a24;border-color:var(--grn)}
 .small{font-size:13px;color:var(--mut)}
 table{width:100%;border-collapse:collapse;font-size:15px}
 td,th{padding:8px 6px;text-align:left;border-bottom:1px solid #3a1a55}
-th{color:var(--pur);font:700 12px "Courier New",monospace;letter-spacing:1px}
-td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
+th{color:var(--pur);font:700 12px "JetBrains Mono","Courier New",monospace;letter-spacing:1px}
+td.s{font-family:"JetBrains Mono","Courier New",monospace;color:var(--yel);font-weight:700}
 .q{border:1px solid #331a4d;border-radius:12px;padding:12px;margin-bottom:10px}
-.q .lvl{font:700 11px/1 "Courier New",monospace;letter-spacing:1px;color:var(--mut)}
+.q .lvl{font:700 11px/1 "JetBrains Mono","Courier New",monospace;letter-spacing:1px;color:var(--mut)}
 .q .lvl b{color:var(--yel)}
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font:700 12px/1.4 "Courier New",monospace;border:1px solid}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font:700 12px/1.4 "JetBrains Mono","Courier New",monospace;border:1px solid}
 .ok{color:var(--grn);border-color:var(--grn)}
 .no{color:var(--red);border-color:var(--red)}
 
@@ -45,7 +47,7 @@ td.s{font-family:"Courier New",monospace;color:var(--yel);font-weight:700}
 body.app-on{padding-bottom:84px}
 .ah{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
 .pane{animation:pin .3s ease both}@keyframes pin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-#t-scan,#t-pen,#t-ok{max-width:540px;margin:0 auto}
+#t-scan,#t-pen,#t-ok,#t-sal{max-width:540px;margin:0 auto}
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:#0b0518ee;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid #3a1a55;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
 .tabs button{flex:1;margin:0 3px;border:0;background:transparent;border-radius:12px;padding:7px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;font:700 11px/1.1 system-ui,sans-serif;color:var(--mut);position:relative;transition:background .25s,color .25s}
 .tabs button i{font-style:normal;font-size:20px}.tabs button.on{background:#2d1050;color:#fff}
@@ -59,19 +61,27 @@ body.app-on{padding-bottom:84px}
 .cam .fr b:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}.cam .fr b:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
 .cam .fr .ln{position:absolute;left:4%;right:4%;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--grn),transparent);box-shadow:0 0 12px var(--grn);top:0;opacity:0}
 .cam.live .fr .ln{opacity:1;animation:scan 2.2s ease-in-out infinite}@keyframes scan{0%,100%{top:2%}50%{top:96%}}
-.chip{flex:1;text-align:center;border:1px solid #3a1a55;border-radius:14px;padding:10px 4px;background:#0e0620}.chip b{display:block;font:700 24px "Courier New",monospace}
+.chip{flex:1;text-align:center;border:1px solid #3a1a55;border-radius:14px;padding:10px 4px;background:#0e0620}.chip b{display:block;font:700 24px "JetBrains Mono","Courier New",monospace}
 .pz{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;border:1px solid #3a1a55;border-radius:14px;padding:10px 12px;margin-bottom:8px;background:#0e0620;animation:pin .3s ease both}
-.pz .em{grid-row:span 2;font-size:30px}.pz b{font-size:16px}.pz .cd{font:700 12px "Courier New",monospace;color:var(--yel);letter-spacing:1px}
+.pz .em{grid-row:span 2;font-size:30px}.pz b{font-size:16px}.pz .cd{font:700 12px "JetBrains Mono","Courier New",monospace;color:var(--yel);letter-spacing:1px}
 .pz.done{border-color:#1d5a38}.pz .act{grid-row:span 2;grid-column:3}.pz button{margin:0}
 .prog{height:8px;border-radius:8px;background:#ffffff14;overflow:hidden;margin:6px 0 12px}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--grn),#9dffcb);width:0;transition:width .6s}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:40;transform:translateY(110%);transition:transform .4s cubic-bezier(.2,.8,.2,1);padding:0 10px calc(10px + env(safe-area-inset-bottom,0px));pointer-events:none}
 .sheet.on{transform:none;pointer-events:auto}
 #sbody{max-width:540px;margin:0 auto;background:#150a28;border:2px solid var(--c,#3a1a55);border-radius:24px;padding:18px;text-align:center;box-shadow:0 -10px 50px #000c,0 0 40px -10px var(--c,#000)}
 .sheet.ok{--c:var(--grn)}.sheet.pend{--c:var(--yel)}.sheet.dup{--c:#ff9d3b}.sheet.bad{--c:var(--red)}
-.sheet .big{font-size:54px;line-height:1}.sheet .tt{font:700 13px "Courier New",monospace;letter-spacing:2px;color:var(--c);margin:6px 0}
+.sheet .big{font-size:54px;line-height:1}.sheet .tt{font:700 13px "JetBrains Mono","Courier New",monospace;letter-spacing:2px;color:var(--c);margin:6px 0}
 .sheet .nm{font:700 26px/1.1 system-ui,sans-serif;margin:4px 0}.sheet .pr{font-size:20px;font-weight:700;margin:6px 0}
 .sheet button{width:100%;padding:16px;font-size:16px;margin:8px 0 0}
 .sheet.pend button.g{font-size:18px;padding:18px}
+@media (max-width:380px){.tabs button{font-size:10px;margin:0 1px}}
+.sa{border:1px solid #3a1a55;border-radius:16px;padding:12px;margin-bottom:10px;background:#0e0620;animation:pin .3s ease both}
+.sa.new{border-color:var(--yel);box-shadow:0 0 24px -8px var(--yel)}
+.sa .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}.sa .top .em{font-size:30px}
+.sa .top b{font:700 16px system-ui,sans-serif}.sa .btns{display:flex;gap:8px}.sa .btns button{margin:0;flex:1;padding:14px 8px}
+.sa .btns button.v{flex:2;font-size:16px}
+.salert{position:fixed;left:10px;right:10px;top:10px;z-index:50;max-width:540px;margin:0 auto;background:#2a2005;border:2px solid var(--yel);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 0 40px -6px var(--yel);transform:translateY(-130%);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.salert.on{transform:none}.salert b{flex:1}.salert button{margin:0;background:var(--yel);color:#1a1000;border:0}
 .sheet .warn{background:#4a0d22;border:1px solid var(--red);border-radius:10px;padding:6px 10px;margin:8px 0;font-size:13px}
 </style>
 </head>
@@ -111,6 +121,17 @@ body.app-on{padding-bottom:84px}
       <p class="small" style="margin-top:0">Jugaron pero todavía no retiraron su premio.</p>
       <input id="p-q" placeholder="Buscar por nombre o código" oninput="renderLists()" autocomplete="off" style="margin-bottom:10px">
       <div id="l-pen">Cargando…</div>
+    </div>
+
+    <div id="t-sal" class="pane hide">
+      <h2 style="margin-top:6px">👋 Saludá a la cámara <span class="small" id="sc1"></span></h2>
+      <p class="small" style="margin-top:0">Cada persona que escanea el QR del stand aparece acá. Enfocala con la cámara y, cuando salude, tocá <b>VALIDAR DESAFÍO</b>: en su celular le aparece el QR del premio. Para canjearlo usá la pestaña <b>Escanear</b> (o escribí el código).</p>
+      <div class="row" id="sachips" style="margin-bottom:6px"></div>
+      <div id="sa-pen" class="small">Conectando…</div>
+      <h3 style="margin-top:18px">Validados, esperando canje</h3>
+      <div id="sa-val" class="small"></div>
+      <h3 style="margin-top:18px">Historial</h3>
+      <div id="sa-his" class="small"></div>
     </div>
 
     <div id="t-ok" class="pane hide">
@@ -167,18 +188,20 @@ body.app-on{padding-bottom:84px}
     <nav class="tabs">
       <button id="tb-scan" class="on" onclick="tab('scan')"><i>📷</i>Escanear</button>
       <button id="tb-pen" onclick="tab('pen')"><i>⏳</i>Pendientes<span class="bd hide" id="bd-pen">0</span></button>
+      <button id="tb-sal" onclick="tab('sal')"><i>👋</i>Saludos<span class="bd hide" id="bd-sal">0</span></button>
       <button id="tb-ok" onclick="tab('ok')"><i>✅</i>Reclamados</button>
       <button id="tb-set" onclick="tab('set')"><i>⚙️</i>Ajustes</button>
     </nav>
+    <div class="salert" id="salert"><span style="font-size:28px">👋</span><b id="salertt">Nuevo saludo</b><button onclick="tab('sal');hideAlert()">VER</button></div>
     <div class="sheet" id="sheet"><div id="sbody"></div></div>
   </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=13"></script>
-<script src="questions.js?v=13"></script>
-<script src="fb.js?v=13"></script>
+<script src="fb-config.js?v=17"></script>
+<script src="questions.js?v=16"></script>
+<script src="fb.js?v=16"></script>
 <script>
 /* Premios (QR): extiende FB sin tocar fb.js */
 (function(){
@@ -1597,7 +1620,7 @@ async function boot(){
   await FB.readCfg();
   $("mode").textContent=FB.shared()?"Base compartida conectada":"Modo local (sin base)";
   $("mode").style.color=FB.shared()?"var(--grn)":"var(--red)";
-  loadCfgUI();loadRank();watchPr();qs=await FB.loadQuestions();renderQs();
+  loadCfgUI();loadRank();watchPr();watchSa();qs=await FB.loadQuestions();renderQs();
   FB.watchCfg(function(){loadCfgUI();watchPr()});
 }
 
@@ -1629,7 +1652,7 @@ function watchPr(){
   pOff=FB.watchPrizes(g,function(l){PR=l;renderLists()});
 }
 function tab(n){
-  ["scan","pen","ok","set"].forEach(function(k){$("t-"+k).classList.toggle("hide",k!==n);$("tb-"+k).classList.toggle("on",k===n)});
+  ["scan","pen","sal","ok","set"].forEach(function(k){$("t-"+k).classList.toggle("hide",k!==n);$("tb-"+k).classList.toggle("on",k===n)});
   if(n!=="scan"){camStop();closeSheet()}window.scrollTo(0,0);
 }
 function hm(t){return t?new Date(t).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"}):""}
@@ -1674,7 +1697,7 @@ function badSheet(t,m){showSheet("bad",'<div class="big">⛔</div><div class="tt
 function resolve(code,qrText){
   if(!FB.shared())return badSheet("SIN BASE","No hay conexión con la base de datos.");
   var id=code.slice(0,9),x=PR.filter(function(p){return p.id===id})[0];
-  if(!x)return badSheet("QR NO VÁLIDO","Ese código no está en la base: no entregar premio.");
+  if(!x)return resolveSa(code);
   var warn="";
   if(x.code!==code)warn='<div class="warn">ℹ Este QR es de una versión anterior del jugador. Vale lo que figura en la base.</div>';
   else if(qrText){var m=String(qrText).match(/Premio:\s*([^\n\r]+)/i);if(m&&x.prize&&nz(m[1])!==nz(x.prize))warn='<div class="warn">⚠ El QR dice «'+esc(m[1].trim())+'» pero la base dice «'+esc(x.prize)+'». Vale lo de la base.</div>'}
@@ -1688,6 +1711,79 @@ async function confirmClaim(){
   if(r.ok)showSheet("ok",'<div class="tt">✓ RECLAMADO</div>'+card(x||{li:0,name:"",score:0})+'<button class="g" onclick="closeSheet()">SEGUIR ESCANEANDO</button>');
   else if(r.dup)showSheet("dup",'<div class="tt">'+r.msg.toUpperCase()+'</div>'+card(x)+'<button class="p" onclick="closeSheet()">SEGUIR ESCANEANDO</button>');
   else{b.disabled=false;b.textContent="REINTENTAR";$("cmsg").textContent=r.msg}
+}
+
+
+/* ---------- saludos: desafío "Saludá a la cámara" ---------- */
+var SA=[],saOff=null,saInit=false,saSeen={},curSa=null,saTitle=document.title,saFlash=null,saHide=null,SAKEY=/^[2-9A-HJ-NP-Z]{4}-[2-9A-HJ-NP-Z]{4}$/;
+function sdb(){return (window.firebase&&FB.shared())?firebase.database():null}
+function saRnd(n){var a="23456789ABCDEFGHJKLMNPQRSTUVWXYZ",o="",b=new Uint8Array(n),i;try{crypto.getRandomValues(b)}catch(e){for(i=0;i<n;i++)b[i]=Math.random()*256}for(i=0;i<n;i++)o+=a.charAt(b[i]%32);return o}
+function hms(t){return t?new Date(t).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}):""}
+function ago(t){var s=Math.max(0,Math.round((Date.now()-t)/1000));return s<60?s+" s":Math.floor(s/60)+" min"}
+function watchSa(){
+  var d=sdb();if(!d||saOff){if(!d)$("sa-pen").textContent="Sin base compartida.";return}
+  var ref=d.ref("saludos"),h=ref.on("value",function(s){
+    var o=[];s.forEach(function(c){var v=c.val()||{};v.id=c.key;o.push(v)});
+    var fresh=o.filter(function(x){return x.status==="pending"&&!saSeen[x.id]});
+    o.forEach(function(x){saSeen[x.id]=1});
+    SA=o;renderSa();
+    if(saInit&&fresh.length)saAlert(fresh.length);
+    saInit=true;
+  },function(e){$("sa-pen").textContent="No se pudo leer la base: "+(e&&e.message)});
+  saOff=function(){ref.off("value",h)};
+  setInterval(function(){if(!$("t-sal").classList.contains("hide"))renderSa()},15000);
+}
+function saAlert(n){
+  try{var A=snd.c||(snd.c=new (window.AudioContext||window.webkitAudioContext)());if(A.state==="suspended")A.resume();
+    [880,1175,880,1175].forEach(function(f,i){var o=A.createOscillator(),g=A.createGain(),t=A.currentTime+i*.16;o.type="square";o.frequency.value=f;o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.14);o.start(t);o.stop(t+.16)})}catch(e){}
+  try{navigator.vibrate&&navigator.vibrate([200,80,200])}catch(e){}
+  var onTab=!$("t-sal").classList.contains("hide");
+  if(!onTab){$("salertt").textContent=n>1?n+" saludos nuevos":"Nuevo saludo: ¡enfocá la cámara!";$("salert").classList.add("on");clearTimeout(saHide);saHide=setTimeout(hideAlert,12000)}
+  if(document.hidden){var k=0;clearInterval(saFlash);saFlash=setInterval(function(){document.title=(k++%2?saTitle:"👋 NUEVO SALUDO");if(!document.hidden){clearInterval(saFlash);document.title=saTitle}},900)}
+}
+function hideAlert(){$("salert").classList.remove("on")}
+function renderSa(){
+  var pen=SA.filter(function(x){return x.status==="pending"}).sort(function(a,b){return (a.ts||0)-(b.ts||0)}),
+      val=SA.filter(function(x){return x.status==="validated"}).sort(function(a,b){return (b.validatedAt||0)-(a.validatedAt||0)}),
+      his=SA.filter(function(x){return x.status==="redeemed"||x.status==="rejected"}).sort(function(a,b){return (b.redeemedAt||b.rejectedAt||0)-(a.redeemedAt||a.rejectedAt||0)});
+  var red=SA.filter(function(x){return x.status==="redeemed"}).length;
+  $("sc1").textContent="("+pen.length+")";
+  var bd=$("bd-sal");bd.textContent=pen.length;bd.classList.toggle("hide",!pen.length);
+  $("sachips").innerHTML='<div class="chip" style="border-color:#ffe60066"><b style="color:var(--yel)">'+pen.length+'</b><span class="small">en espera</span></div><div class="chip" style="border-color:#b86bff66"><b style="color:var(--pur)">'+val.length+'</b><span class="small">sin canjear</span></div><div class="chip" style="border-color:#3dff8a66"><b style="color:var(--grn)">'+red+'</b><span class="small">canjeados</span></div>';
+  $("sa-pen").innerHTML=pen.length?pen.map(function(x,i){return '<div class="sa'+(i===0?' new':'')+'"><div class="top"><div class="em">👋</div><div><b>Persona '+esc(x.id)+'</b><div class="small">Escaneó a las '+hms(x.ts)+' · hace '+ago(x.ts||Date.now())+'</div></div></div><div class="btns"><button class="g v" onclick="saValidate(\''+esc(x.id)+'\',this)">VALIDAR DESAFÍO</button><button class="r" onclick="saReject(\''+esc(x.id)+'\',this)">RECHAZAR</button></div></div>'}).join(""):"Nadie esperando. Cuando alguien escanee el QR del stand aparece acá, con sonido.";
+  $("sa-val").innerHTML=val.length?val.map(function(x){return '<div class="pz"><div class="em">🎟️</div><div><b>Persona '+esc(x.id)+'</b></div><div class="small">validado '+hms(x.validatedAt)+' · esperando canje</div></div>'}).join(""):"Ninguno.";
+  $("sa-his").innerHTML=his.length?his.map(function(x){var r=x.status==="redeemed";return '<div class="pz'+(r?' done':'')+'"><div class="em">'+(r?'🎁':'✖️')+'</div><div><b>Persona '+esc(x.id)+'</b></div><div class="small">'+(r?'canjeado '+hms(x.redeemedAt):'rechazado '+hms(x.rejectedAt))+'</div></div>'}).join(""):"Sin movimientos todavía.";
+}
+function saBusy(b){if(b){b.disabled=true;b.style.opacity=".5"}}
+async function saValidate(id,b){
+  var d=sdb();if(!d)return;saBusy(b);
+  var code=id+"-"+saRnd(4),u={};
+  u["saludosCod/"+id+"/code"]=code;u["saludos/"+id+"/status"]="validated";u["saludos/"+id+"/validatedAt"]=firebase.database.ServerValue.TIMESTAMP;
+  try{await d.ref().update(u)}catch(e){alert("No se pudo validar: "+(e&&e.message)+"\n(Puede que otro panel ya lo haya resuelto.)");renderSa()}
+}
+async function saReject(id,b){
+  var d=sdb();if(!d)return;if(!confirm("¿Rechazar esta participación?"))return;saBusy(b);
+  try{await d.ref("saludos/"+id).update({status:"rejected",rejectedAt:firebase.database.ServerValue.TIMESTAMP})}catch(e){alert("No se pudo rechazar: "+(e&&e.message));renderSa()}
+}
+function saCard(x){return '<div class="big">👋</div><div class="nm">Saludá a la cámara</div><div class="pr" style="color:var(--grn)">Desafío completado</div><div class="small">escaneó '+hms(x.ts)+' · <span class="mono" style="color:var(--yel)">'+esc(x.code||x.id)+'</span></div>'}
+async function resolveSa(code){
+  var id=code.slice(0,9),x=SA.filter(function(p){return p.id===id})[0],d=sdb();
+  if(!x||!d)return badSheet("QR NO VÁLIDO","Ese código no está en la base: no entregar premio.");
+  var cs;try{cs=await d.ref("saludosCod/"+id).once("value")}catch(e){return badSheet("SIN CONEXIÓN","No pude verificar el código. Reintentá.")}
+  var real=cs.val()&&cs.val().code;
+  if(!real||real!==code)return badSheet("QR NO VÁLIDO","El código no coincide con ninguno validado: no entregar premio.");
+  x=Object.assign({},x,{code:code});curSa=id;
+  if(x.status==="redeemed")return showSheet("dup",'<div class="tt">YA FUE USADO · '+hms(x.redeemedAt)+'</div>'+saCard(x)+'<button class="p" onclick="closeSheet()">SEGUIR ESCANEANDO</button>');
+  if(x.status!=="validated")return badSheet("TODAVÍA NO VALIDADO","Producción aún no validó este desafío ("+esc(x.status)+").");
+  showSheet("pend",'<div class="tt">SALUDO VALIDADO · PREMIO PENDIENTE</div>'+saCard(x)+'<button class="g" id="cbtn" onclick="saRedeem()">ENTREGADO · MARCAR USADO</button><button class="p" onclick="closeSheet()">CANCELAR</button>');
+}
+async function saRedeem(){
+  var b=$("cbtn");b.disabled=true;b.textContent="Guardando…";var id=curSa,d=sdb(),x=SA.filter(function(p){return p.id===id})[0]||{id:id};
+  try{await d.ref("saludos/"+id).update({status:"redeemed",redeemedAt:firebase.database.ServerValue.TIMESTAMP});
+    showSheet("ok",'<div class="tt">✓ CANJEADO</div>'+saCard(x)+'<button class="g" onclick="closeSheet()">SEGUIR ESCANEANDO</button>')}
+  catch(e){var dn=/permission/i.test(e&&(e.code||e.message));
+    if(dn)showSheet("dup",'<div class="tt">YA FUE USADO: otro dispositivo lo canjeó</div>'+saCard(x)+'<button class="p" onclick="closeSheet()">SEGUIR ESCANEANDO</button>');
+    else{b.disabled=false;b.textContent="REINTENTAR";$("cmsg").textContent="No se pudo guardar: "+(e&&e.message)}}
 }
 
 /* --- lectura del código --- */

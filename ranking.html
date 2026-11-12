@@ -4,31 +4,37 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ranking en vivo — INPUT_</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,600;0,700;0,800;0,900;1,800;1,900&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--red:#ff3b6b;--pur:#c25bff;--yel:#ffe600;--grn:#3dff8a;--tx:#fff;--mut:#cdb8e6}
+:root{--red:#ff4d7d;--pur:#b86bff;--yel:#ffe14d;--grn:#3dff8a;--tx:#f7f2ff;--mut:#b9a6d6;
+--mono:"Exo 2","JetBrains Mono",ui-monospace,"Courier New",monospace;--sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--ease:cubic-bezier(.2,.8,.2,1)}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:transparent;color:var(--tx);font:16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+html,body{margin:0;height:100%;background:transparent;color:var(--tx);font:500 16px/1.35 var(--sans)}
 body{display:flex;align-items:flex-start;justify-content:flex-end;padding:24px}
-#panel{width:min(560px,46vw);background:rgba(8,3,15,.62);border:2px solid rgba(194,91,255,.55);border-radius:18px;padding:18px 20px;box-shadow:0 12px 40px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+#panel{width:min(560px,46vw);background:rgba(7,3,14,.72);border:1px solid #ffffff26;border-radius:18px;padding:18px 20px;box-shadow:0 12px 40px rgba(0,0,0,.45);backdrop-filter:blur(8px)}
 body.clear #panel{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none}
-h1{font:700 22px/1.1 "Courier New",ui-monospace,monospace;margin:0;letter-spacing:.5px}
+h1{font:700 20px/1.1 var(--mono);margin:0;letter-spacing:.12em}
 h1 span{color:var(--yel)}
-#sub{display:flex;justify-content:space-between;align-items:baseline;font:600 12px/1 "Courier New",monospace;color:var(--mut);margin:6px 0 14px;text-transform:uppercase;letter-spacing:1px}
+#sub{display:flex;justify-content:space-between;align-items:baseline;font:700 11px/1 var(--mono);color:var(--mut);margin:8px 0 14px;text-transform:uppercase;letter-spacing:.16em}
 #dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--grn);margin-right:6px;box-shadow:0 0 8px var(--grn);animation:p 1.6s infinite}
 @keyframes p{50%{opacity:.25}}
-.row{display:grid;grid-template-columns:2.2em 1fr auto;gap:10px;align-items:center;padding:7px 8px;border-radius:10px;margin-bottom:2px}
-.row .p{font:700 16px/1 "Courier New",monospace;color:var(--mut);text-align:right}
+#list{position:relative}
+.row{display:grid;grid-template-columns:2.2em 1fr auto;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;margin-bottom:4px;background:#ffffff0a;border-left:3px solid transparent}
+.row.new{animation:in .5s var(--ease) both}
+@keyframes in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.row .p{font:700 16px/1 var(--mono);color:var(--mut);text-align:center}
 .row .n{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.row .s{font:700 17px/1 "Courier New",monospace;color:var(--yel)}
-.row.t1{background:linear-gradient(90deg,rgba(255,230,0,.22),transparent)}
-.row.t2{background:linear-gradient(90deg,rgba(205,184,230,.20),transparent)}
-.row.t3{background:linear-gradient(90deg,rgba(255,157,0,.20),transparent)}
-.row.t1 .p,.row.t1 .s{color:var(--yel)}.row.t2 .p{color:#e6dcf7}.row.t3 .p{color:#ff9d00}
+.row .s{font:700 17px/1 var(--mono);color:var(--tx);font-variant-numeric:tabular-nums}
+.row.t1{--c:#ffd23f}.row.t2{--c:#cfe0ff}.row.t3{--c:#ff8a5b}
+.row.t1,.row.t2,.row.t3{border-left-color:var(--c);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 20%,transparent),#ffffff0a 70%)}
+.row.t1 .p,.row.t2 .p,.row.t3 .p,.row.t1 .s{color:var(--c)}
 .row.t1 .n{font-size:20px}.row.t2 .n,.row.t3 .n{font-size:18px}
-.row.fresh .n{animation:pop .7s ease-out}
-@keyframes pop{0%{color:var(--yel);transform:scale(1.06)}100%{color:var(--tx);transform:none}}
-#empty{color:var(--mut);font-style:italic;padding:10px 8px}
-#foot{margin-top:10px;font:600 12px/1 "Courier New",monospace;color:var(--mut);display:flex;justify-content:space-between}
+.row.fresh .s{animation:pop .7s var(--ease)}
+@keyframes pop{0%{color:var(--grn);transform:scale(1.25)}100%{transform:none}}
+#empty{color:var(--mut);padding:10px 8px}
+#foot{margin-top:10px;font:700 11px/1 var(--mono);letter-spacing:.1em;color:var(--mut);display:flex;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -41,26 +47,37 @@ h1 span{color:var(--yel)}
 
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database-compat.js"></script>
-<script src="fb-config.js?v=13"></script>
-<script src="fb.js?v=13"></script>
+<script src="fb-config.js?v=17"></script>
+<script src="fb.js?v=16"></script>
 <script>
 var q=new URLSearchParams(location.search);
 var N=Math.max(1,Math.min(30,+(q.get("n")||8)));
 if(q.get("clear")==="1")document.body.classList.add("clear");
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 var cur=[],gen=null,fresh={};
+// Las filas se reutilizan por jugador: al cambiar el orden se deslizan a su
+// nuevo puesto (FLIP) en vez de redibujarse de golpe.
+var rows={};
 function paint(){
-  var list=cur.slice(0,N);
+  var list=cur.slice(0,N),box=$("list");
   $("cnt").textContent=cur.length?cur.length+" jugadores":"";
-  if(!list.length){$("list").innerHTML='<div id="empty">Esperando jugadores…</div>';return}
-  var h="";
+  if(!list.length){rows={};box.innerHTML='<div id="empty">Esperando jugadores…</div>';return}
+  var em=$("empty");if(em)em.remove();
+  var old={},keep={},k;
+  for(k in rows)old[k]=rows[k].getBoundingClientRect().top;
   list.forEach(function(r,i){
-    h+='<div class="row t'+(i+1)+(fresh[r.uid]?" fresh":"")+'">'+
-       '<div class="p">'+(i+1)+'</div>'+
-       '<div class="n">'+esc(r.name)+'</div>'+
-       '<div class="s">'+r.score+'</div></div>';
+    var e=rows[r.uid],isNew=!e;
+    if(isNew){e=rows[r.uid]=document.createElement("div");e.innerHTML='<div class="p"></div><div class="n"></div><div class="s"></div>'}
+    e.className="row"+(i<3?" t"+(i+1):"")+(isNew?" new":"")+(fresh[r.uid]?" fresh":"");
+    e.children[0].textContent=i+1;e.children[1].textContent=r.name;e.children[2].textContent=r.score;
+    box.appendChild(e);keep[r.uid]=1;
   });
-  $("list").innerHTML=h;
+  for(k in rows)if(!keep[k]){rows[k].remove();delete rows[k]}
+  for(k in rows){
+    if(old[k]===undefined)continue;
+    var d=old[k]-rows[k].getBoundingClientRect().top;
+    if(d&&rows[k].animate)rows[k].animate([{transform:"translateY("+d+"px)"},{transform:"none"}],{duration:600,easing:"cubic-bezier(.2,.8,.2,1)"});
+  }
   $("upd").textContent="Actualizado "+new Date().toLocaleTimeString("es-AR");
   fresh={};
 }
